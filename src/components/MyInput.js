@@ -1,16 +1,11 @@
 //
-
-import './MyInput.css'
-
-const MyInput = ({inputName, ...props}) => {
-
-const {name, setName} = inputName
+const MyInput = (props) => {
 
 
   return(
     <div className="form-question-box">
       <div className='form-text'>{props.title}</div>
-      <input className='form-input' type="text" name="input" id="input" value={name} onChange={(e) => {setName(e.target.value)}}/>
+      <input className='form-input' type="text" name="input" id="input" value={props.insertText} {...props}/>
     </div>
   )
 }
