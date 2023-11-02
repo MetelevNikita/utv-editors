@@ -4,13 +4,18 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-body, html {
-  width: 1920px;
-  height: 100vh;
-}
 
 
 .logo {
-  width: 140px;
+  width: 1920px;
+  width: 300px;
+  margin-bottom: 20px;
+
 }
 
+.form-container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

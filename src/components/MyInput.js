@@ -1,3 +1,6 @@
+import './MyInput.css'
+
+
 //
 const MyInput = (props) => {
 
