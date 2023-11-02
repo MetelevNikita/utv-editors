@@ -19,3 +19,14 @@
   flex-direction: column;
   align-items: center;
 }
+
+
+
+.form-horizontal-box {
+  width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around
+}
+
+
