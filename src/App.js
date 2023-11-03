@@ -18,6 +18,8 @@ import MyDate from './components/MyDate'
 import MyButton from './components/MyButton'
 import MySelect from './components/MySelect'
 
+import userList from './userList'
+
 //
 
 import { useState, useEffect } from 'react'
@@ -32,7 +34,7 @@ const App = () => {
 
   const [user, setUser] = useState('')
   const [colums, setColums] = useState('')
-  const [selectedOption, setSelectionOption] = useState('')
+  const [selectedOptionId, setSelectionOptionId] = useState('')
 
   //
 
@@ -131,7 +133,7 @@ const App = () => {
       }
 
 
-
+      // исполняемые функции YouGile
 
 
 
@@ -147,35 +149,19 @@ const App = () => {
       }
 
 
-
-
-
-
     useEffect(() => {getColums()}, [])
 
 
 
-
-    console.log(user)
-
-
-
-
-
-
-
-
-
-
-
-
+    // message
 
 
   const messageYG = `ФИО АВТОРА ${fio} ПЕРЕДАЧА ПРОДАНА?\n ${sale} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
 
-
   const messageTG = `ФИО АВТОРА \n ${fio}\n ПЕРЕДАЧА ПРОДАНА?\n ${sale}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
 
+
+    //
 
 const sendToTelegram = () => {
 
@@ -199,8 +185,6 @@ const sendToTelegram = () => {
 }
 
 
-console.log(selectedOption)
-
 
 
 
@@ -218,7 +202,7 @@ const sendCard = () => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${companyKey}`
       },
-      body: JSON.stringify({title: title, columnId: '6a207040-1dc2-49b7-be53-6fbb1425de48', description: JSON.stringify(messageYG)})
+      body: JSON.stringify({title: title, columnId: selectedOptionId, description: JSON.stringify(messageYG)})
     }).then(responce => responce.json())
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
@@ -241,12 +225,6 @@ const sendCard = () => {
   } else {
     return alert('Заполните форму целиком')
   }
-
-
-
-
-
-
 
 
 }
@@ -273,7 +251,7 @@ const sendCard = () => {
 
 
             <div className='form-horizontal-box'>
-              <MySelect select={'Выберите исполнителя'} value={selectedOption} onChange={(e) => {setSelectionOption(e.target.value)}}>{Array.from(user).map((item) => {return <option>{item.title}</option>})}</MySelect>
+              <MySelect select={'Выберите исполнителя'} value={selectedOptionId} onChange={(e) => {setSelectionOptionId(e.target.value)}}>{userList.map((item) => {return <option value={item.columnId} id={item.name}>{item.name}</option>})}</MySelect>
               <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
 
             </div>
