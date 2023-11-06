@@ -34,7 +34,8 @@ const App = () => {
 
   const [user, setUser] = useState('')
   const [colums, setColums] = useState('')
-  const [selectedOptionId, setSelectionOptionId] = useState('')
+  const [selectedOption, setSelectionOption] = useState('выберите')
+
 
   //
 
@@ -54,8 +55,6 @@ const App = () => {
 
 
 
-  const id = useId()
-
   // Получаем id
 
   const fetchId = async () => {
@@ -68,68 +67,77 @@ const App = () => {
     })
 
     const data = await res.json()
-    console.log(data)
     console.log('1')
-    return localStorage.setItem('id', data.content[0].id)
+    return localStorage.setItem('id', data.content[1].id)
+
     }
 
 
     // получаем key
 
+    const userId = localStorage.getItem('id')
+    console.log(userId)
+
+
 
     const fetchKey = async () => {
-      const companyId = localStorage.getItem('id')
       const res = await fetch('https://yougile.com/api-v2/auth/keys/get', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: companyId})
+        body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: userId})
       })
 
       const data = await res.json()
-      console.log(data)
       console.log('2')
       return localStorage.setItem('key', data[0].key)
 
       }
 
+      const userKey = localStorage.getItem('key')
+      console.log(userKey)
+
+
+
       // получаем colums
 
 
       const fetchDesk = async () => {
-        const companyKey = localStorage.getItem('key')
         const res = await fetch('https://yougile.com/api-v2/columns', {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${companyKey}`
+            "Authorization": `Bearer ${userKey}`
           }
         })
 
         const data = await res.json()
-        console.log(data)
         console.log('3')
-        return setColums(data.content[0].id)
+        return setColums(data)
 
       }
+
+
+      console.log(colums)
+
+
 
 
       // получаем пользователей
 
       const fetchUser = async () => {
-        const companyKey = localStorage.getItem('key')
         const res = await fetch('https://yougile.com/api-v2/boards', {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${companyKey}`
+            "Authorization": `Bearer ${userKey}`
           }
         })
 
         const data = await res.json()
         console.log(data)
-        return setUser(data.content)
+        return setUser(data)
       }
 
 
@@ -138,18 +146,18 @@ const App = () => {
 
 
       const getColums = async () => {
-        let a = await fetchId()
-        console.log(a)
-        let b = await fetchKey()
-        console.log(b)
-        let c = await fetchDesk()
-        console.log(c)
-        let v = await fetchUser()
-        console.log(v)
+
+          await fetchId()
+          await fetchKey()
+          await fetchDesk()
+          await fetchUser()
+
       }
 
 
-    useEffect(() => {getColums()}, [])
+      // useEffect(() => {getColums()}, [])
+
+
 
 
 
@@ -163,26 +171,26 @@ const App = () => {
 
     //
 
-const sendToTelegram = () => {
+    const sendToTelegram = () => {
 
-  const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-  const CHAT_ID = '85252645'
-  const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
-
-
-  fetch(URL_API, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const CHAT_ID = '85252645'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
+      fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
 
-  }).then(responce => responce.json())
-    .then(data => console.log(data))
-    .catch(error => console.log(error, 'ERROR'))
-}
+
+
+      }).then(responce => responce.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error, 'ERROR'))
+    }
 
 
 
@@ -202,7 +210,7 @@ const sendCard = () => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${companyKey}`
       },
-      body: JSON.stringify({title: title, columnId: selectedOptionId, description: JSON.stringify(messageYG)})
+      body: JSON.stringify({title: title, columnId: selectedOption, description: JSON.stringify(messageYG)})
     }).then(responce => responce.json())
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
@@ -230,6 +238,10 @@ const sendCard = () => {
 }
 
 
+console.log(selectedOption)
+
+
+
   return(
 
     <Container fluid='md'>
@@ -251,12 +263,19 @@ const sendCard = () => {
 
 
             <div className='form-horizontal-box'>
-              <MySelect select={'Выберите исполнителя'} value={selectedOptionId} onChange={(e) => {setSelectionOptionId(e.target.value)}}>{userList.map((item) => {return <option value={item.columnId} id={item.name}>{item.name}</option>})}</MySelect>
+
+
+            <MySelect select={'Выберите исполнителя'} value={selectedOption} onChange={(e) => {setSelectionOption(e.target.value)}}>{userList.map((item, index) => {return <option key={index} value={JSON.stringify(item)}>{item.name}</option>})}</MySelect>
+
+
+
+
+
+
+
               <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
 
             </div>
-
-
 
             <MyInput title={'Площадка размещения ролика(эфир, ютуб *инстаграм (для коротких роликов автор пишет таймкоды)):'} value={destanation} onChange={(e) => {setDestanation(e.target.value)}}></MyInput>
 
