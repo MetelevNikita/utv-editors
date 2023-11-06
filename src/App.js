@@ -41,6 +41,13 @@ const App = () => {
   //
 
 
+  const [users, setUsers] = useState('')
+  const [userList, setUserLis] = useState('')
+
+
+  //
+
+
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
   const [sale, setSale] = useState('')
@@ -56,49 +63,84 @@ const App = () => {
 
 
 
-  // Получаем id
+  // // Получаем id
 
-  const fetchId = async () => {
-    const res = await fetch('https://yougile.com/api-v2/auth/companies', {
-      method: 'POST',
-      headers: {
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    })
+  // const fetchId = async () => {
+  //   const res = await fetch('https://yougile.com/api-v2/auth/companies', {
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type":"application/json"
+  //     },
+  //     body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
+  //   })
 
-    const data = await res.json()
-    console.log('1')
-    return localStorage.setItem('id', data.content[1].id)
+  //   const data = await res.json()
+  //   console.log('1')
+  //   return setUserId(data)
 
-    }
+  //   }
 
 
-    // получаем key
+  //   // получаем key
 
-    const userId = localStorage.getItem('id')
 
-    const fetchKey = async () => {
-      const res = await fetch('https://yougile.com/api-v2/auth/keys/get', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: userId})
-      })
+  // const fetchKey = async () => {
+  //     const res = await fetch('https://yougile.com/api-v2/auth/keys/get', {
+  //       method: 'POST',
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: userId.content[1].id})
+  //     })
 
-      const data = await res.json()
-      console.log('2')
-      return localStorage.setItem('key', data[0].key)
+  //     const data = await res.json()
+  //     console.log('2')
+
+  //     return setUserKey(data)
+  //   }
+
+
+
+      //
+
+
+      const fetchIdKey = () => {
+        fetch('https://yougile.com/api-v2/auth/companies', {
+          method: 'POST',
+          headers: {
+            "Content-Type":"application/json"
+          },
+          body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
+        }).then(responce => responce.json())
+          .then(data => {
+            console.log(data)
+            return fetch('https://yougile.com/api-v2/auth/keys/get', {
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[1].id})
+            }).then(responce => responce.json())
+              .then(data => {
+                console.log(data)
+                return localStorage.setItem('key', data[0].key)})
+          })
 
       }
 
+
       const userKey = localStorage.getItem('key')
+
+
+
+
+
 
       // получаем colums
 
 
       const fetchDesk = async () => {
+        const userKey = localStorage.getItem('key')
         const res = await fetch('https://yougile.com/api-v2/columns', {
           method: 'GET',
           headers: {
@@ -109,14 +151,17 @@ const App = () => {
 
         const data = await res.json()
         console.log('3')
+        console.log(data)
         return setColums(data)
 
       }
 
 
+
       // получаем пользователей
 
       const fetchUser = async () => {
+        const userKey = localStorage.getItem('key')
         const res = await fetch('https://yougile.com/api-v2/boards', {
           method: 'GET',
           headers: {
@@ -135,19 +180,30 @@ const App = () => {
 
 
 
-      const getColums = async () => {
+      // const getColums = async () => {
 
-          await fetchId()
-          await fetchKey()
-          await fetchDesk()
-          await fetchUser()
+      //     await fetchId()
+      //     await fetchKey()
+      //     await fetchDesk()
+      //     await fetchUser()
 
-      }
+      // }
 
 
       // useEffect(() => {getColums()}, [])
 
 
+      const getList = () => {
+        fetchIdKey()
+
+        setTimeout(() => {
+          fetchDesk()
+          fetchUser()
+        }, 5000)
+
+      }
+
+      useEffect(() => {getList()}, [])
 
 
 
@@ -198,7 +254,7 @@ const sendCard = () => {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${companyKey}`
+        "Authorization": `Bearer ${userKey[0].key}`
       },
       body: JSON.stringify({title: title, columnId: selectedOption.value, description: JSON.stringify(messageYG)})
     }).then(responce => responce.json())
