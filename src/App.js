@@ -34,7 +34,8 @@ const App = () => {
 
   const [user, setUser] = useState('')
   const [colums, setColums] = useState('')
-  const [selectedOption, setSelectionOption] = useState('выберите')
+  const [selectedOption, setSelectionOption] = useState('')
+  const [selectedOptionName, setSelectionOptionName] = useState('')
 
 
   //
@@ -76,9 +77,6 @@ const App = () => {
     // получаем key
 
     const userId = localStorage.getItem('id')
-    console.log(userId)
-
-
 
     const fetchKey = async () => {
       const res = await fetch('https://yougile.com/api-v2/auth/keys/get', {
@@ -96,9 +94,6 @@ const App = () => {
       }
 
       const userKey = localStorage.getItem('key')
-      console.log(userKey)
-
-
 
       // получаем colums
 
@@ -117,11 +112,6 @@ const App = () => {
         return setColums(data)
 
       }
-
-
-      console.log(colums)
-
-
 
 
       // получаем пользователей
@@ -164,9 +154,9 @@ const App = () => {
     // message
 
 
-  const messageYG = `ФИО АВТОРА ${fio} ПЕРЕДАЧА ПРОДАНА?\n ${sale} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
+  const messageYG = `ФИО АВТОРА ${fio} ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ ${selectedOption.label} ПЕРЕДАЧА ПРОДАНА?\n ${sale} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
 
-  const messageTG = `ФИО АВТОРА \n ${fio}\n ПЕРЕДАЧА ПРОДАНА?\n ${sale}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
+  const messageTG = `ФИО АВТОРА \n ${fio} \n ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ \n ${selectedOption.label} \n ПЕРЕДАЧА ПРОДАНА?\n ${sale}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
 
 
     //
@@ -210,7 +200,7 @@ const sendCard = () => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${companyKey}`
       },
-      body: JSON.stringify({title: title, columnId: selectedOption, description: JSON.stringify(messageYG)})
+      body: JSON.stringify({title: title, columnId: selectedOption.value, description: JSON.stringify(messageYG)})
     }).then(responce => responce.json())
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
@@ -264,16 +254,11 @@ console.log(selectedOption)
 
             <div className='form-horizontal-box'>
 
+                {/* <MySelect select={'Выберите исполнителя'} value={selectedOption} onChange={(e) => {setSelectionOption(e.target.value)}}>{userList.map((item, index) => {return <option key={index} value={item.columnId} label={item.name}>{item.name}</option>})}</MySelect> */}
 
-            <MySelect select={'Выберите исполнителя'} value={selectedOption} onChange={(e) => {setSelectionOption(e.target.value)}}>{userList.map((item, index) => {return <option key={index} value={JSON.stringify(item)}>{item.name}</option>})}</MySelect>
+                <MySelect select={'Выберите исполнителя'} options={userList} placeholder={'Выберите монтажера'} onChange={setSelectionOption}></MySelect>
 
-
-
-
-
-
-
-              <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+                <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
 
             </div>
 

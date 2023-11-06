@@ -10,14 +10,12 @@
   text-align: center;
 }
 
-.form-select {
+.select {
 
   margin-top: 5px;
   width: 280px;
   height: 45px;
-
-  border-radius: 5px;
-  border: 1px solid black;
   padding-left: 10px;
+
 }
 
