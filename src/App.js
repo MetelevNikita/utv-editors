@@ -3,13 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 import { Container, Col, Row } from 'react-bootstrap'
-import { useId } from 'react'
-
 
 // img
 
 import logoUTV from './asset/logoUTV.svg'
-
 
 // components
 
@@ -18,11 +15,11 @@ import MyDate from './components/MyDate'
 import MyButton from './components/MyButton'
 import MySelect from './components/MySelect'
 
-import userList from './userList'
 
 //
 
 import { useState, useEffect } from 'react'
+import { auto } from '@popperjs/core'
 
 
 
@@ -30,20 +27,9 @@ const App = () => {
 
   // auth
 
-
-
   const [user, setUser] = useState('')
   const [colums, setColums] = useState('')
   const [selectedOption, setSelectionOption] = useState('')
-  const [selectedOptionName, setSelectionOptionName] = useState('')
-
-
-  //
-
-
-  const [users, setUsers] = useState('')
-  const [userList, setUserLis] = useState('')
-
 
   //
 
@@ -62,42 +48,8 @@ const App = () => {
   const [destanation, setDestanation] = useState('')
 
 
-
-  // // Получаем id
-
-  // const fetchId = async () => {
-  //   const res = await fetch('https://yougile.com/api-v2/auth/companies', {
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type":"application/json"
-  //     },
-  //     body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-  //   })
-
-  //   const data = await res.json()
-  //   console.log('1')
-  //   return setUserId(data)
-
-  //   }
-
-
-  //   // получаем key
-
-
-  // const fetchKey = async () => {
-  //     const res = await fetch('https://yougile.com/api-v2/auth/keys/get', {
-  //       method: 'POST',
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: userId.content[1].id})
-  //     })
-
-  //     const data = await res.json()
-  //     console.log('2')
-
-  //     return setUserKey(data)
-  //   }
+  const newDate = new Date(date)
+  const timestamp = newDate.getTime()
 
 
 
@@ -132,21 +84,17 @@ const App = () => {
       const userKey = localStorage.getItem('key')
 
 
-
-
-
-
       // получаем colums
 
 
       const fetchDesk = async () => {
         const userKey = localStorage.getItem('key')
-        const res = await fetch('https://yougile.com/api-v2/columns', {
+        const res = await fetch('https://yougile.com/api-v2/columns?limit=100', {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${userKey}`
-          }
+          },
         })
 
         const data = await res.json()
@@ -176,22 +124,6 @@ const App = () => {
       }
 
 
-      // исполняемые функции YouGile
-
-
-
-      // const getColums = async () => {
-
-      //     await fetchId()
-      //     await fetchKey()
-      //     await fetchDesk()
-      //     await fetchUser()
-
-      // }
-
-
-      // useEffect(() => {getColums()}, [])
-
 
       const getList = () => {
         fetchIdKey()
@@ -220,7 +152,7 @@ const App = () => {
     const sendToTelegram = () => {
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const CHAT_ID = '85252645'
+      const CHAT_ID = '-1002013845900'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
@@ -247,16 +179,17 @@ const App = () => {
 
 
 const sendCard = () => {
+  const userKey = localStorage.getItem('key')
 
   if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '') {
-    const companyKey = localStorage.getItem('key')
+
     fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${userKey[0].key}`
+        "Authorization": `Bearer ${userKey}`
       },
-      body: JSON.stringify({title: title, columnId: selectedOption.value, description: JSON.stringify(messageYG)})
+      body: JSON.stringify({title: title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(messageYG)})
     }).then(responce => responce.json())
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
@@ -275,6 +208,9 @@ const sendCard = () => {
     setInfo('')
     setReferense('')
     setDate('')
+    setDestanation('')
+
+    alert('Вы создали карточку')
 
   } else {
     return alert('Заполните форму целиком')
@@ -288,11 +224,12 @@ console.log(selectedOption)
 
 
 
+
   return(
 
-    <Container fluid='md'>
+    <Container fluid>
       <Row>
-        <Col className='col-12 d-flex flex-column justify-content-center'>
+        <Col xl={12} md={12} sm={12} xs={12}>
             <div className='form-container'>
             <img className='logo' src={logoUTV} alt="logoUTV" />
 
@@ -309,13 +246,8 @@ console.log(selectedOption)
 
 
             <div className='form-horizontal-box'>
-
-                {/* <MySelect select={'Выберите исполнителя'} value={selectedOption} onChange={(e) => {setSelectionOption(e.target.value)}}>{userList.map((item, index) => {return <option key={index} value={item.columnId} label={item.name}>{item.name}</option>})}</MySelect> */}
-
-                <MySelect select={'Выберите исполнителя'} options={userList} placeholder={'Выберите монтажера'} onChange={setSelectionOption}></MySelect>
-
+                <MySelect select={'Выберите исполнителя'} placeholder={'Выберите монтажера'} onChange={setSelectionOption}></MySelect>
                 <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-
             </div>
 
             <MyInput title={'Площадка размещения ролика(эфир, ютуб *инстаграм (для коротких роликов автор пишет таймкоды)):'} value={destanation} onChange={(e) => {setDestanation(e.target.value)}}></MyInput>

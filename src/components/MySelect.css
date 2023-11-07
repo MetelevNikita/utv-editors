@@ -6,16 +6,9 @@
 
 
 .form-text {
-  width: max-content;
+  max-width: max-content;
   text-align: center;
 }
 
-.select {
 
-  margin-top: 5px;
-  width: 280px;
-  height: 45px;
-  padding-left: 10px;
-
-}
 

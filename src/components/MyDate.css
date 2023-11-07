@@ -12,6 +12,7 @@
 
 .form-date {
   margin-top: 5px;
+  margin-bottom: 7px;
   width: 200px;
   height: 45px;
 
@@ -19,6 +20,8 @@
 
 
   border-radius: 5px;
-  border: 1px solid black;
+  border: 1px solid hsl(0, 0%, 80%);
   padding-left: 10px;
+  padding-right: 10px;
+  color: hsl(0, 0%, 20%);;
 }

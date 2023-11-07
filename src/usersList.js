@@ -1,8 +1,9 @@
-const userList = [
+
+const usersList = [
 
   {
     label: 'На усмотрение руководителя',
-    value: '1234'
+    value: "8860a11e-c100-4949-8cbd-d01d945e20eb"
   },
 
   {
@@ -12,7 +13,7 @@ const userList = [
 
 
   {
-    label: 'Живая Природа',
+    label: 'Живи Активно',
     value: "f29cc9d9-a6fe-4ade-8607-925c403bbbb0"
   },
 
@@ -62,4 +63,4 @@ const userList = [
   },
 ]
 
-export default userList
+export default usersList
