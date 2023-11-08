@@ -8,11 +8,19 @@ const MyInput = (props) => {
 
 
   return(
+    <Container>
+      <Col xs={12}>
 
+        <Row>
 
         <div className="form-question-box">
           <input className='form-input' type="text" name="input" id="input" value={props.insertText} {...props}/>
         </div>
+
+        </Row>
+
+      </Col>
+    </Container>
 
   )
 }

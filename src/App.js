@@ -162,7 +162,7 @@ const App = () => {
 
       }
 
-      // useEffect(() => {getList()}, [])
+      useEffect(() => {getList()}, [])
 
 
 
@@ -270,7 +270,7 @@ const sendCard = () => {
                     </Col>
 
                     <Col md={6} xs={12}>
-                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 275 + 'px', marginTop: 2 + 'px', marginLeft: 10 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 275 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
                     </Col>
 
                   </Row>
@@ -300,7 +300,7 @@ const sendCard = () => {
 
 
 
-                  <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
                   <Row>
                     <Col md={6} xs={12} className='mt-3 d-flex justify-content-center align-items-center align-self-center'>
