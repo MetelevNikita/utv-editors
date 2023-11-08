@@ -7,6 +7,13 @@ import { Container, Col, Row } from 'react-bootstrap'
 // img
 
 import logoUTV from './asset/logoUTV.svg'
+import like from './asset/like.svg'
+import dislike from './asset/dislike.svg'
+
+
+import usersList from './usersList'
+import userPrice from './userPrice'
+import programType from './programType'
 
 // components
 
@@ -14,12 +21,17 @@ import MyInput from './components/MyInput'
 import MyDate from './components/MyDate'
 import MyButton from './components/MyButton'
 import MySelect from './components/MySelect'
+import Footer from './components/Footer'
+import MyTextArea from './components/MyTextArea'
+
+import ModalPageLike from './components/modalpage/Modal-page-like'
 
 
 //
 
 import { useState, useEffect } from 'react'
-import { auto } from '@popperjs/core'
+import ModalPageDislike from './components/modalpage/Modal-page-dislike'
+
 
 
 
@@ -46,10 +58,26 @@ const App = () => {
   const [referense, setReferense] = useState('')
   const [date, setDate] = useState('')
   const [destanation, setDestanation] = useState('')
+  const [price, setPrice] = useState('')
+
 
 
   const newDate = new Date(date)
   const timestamp = newDate.getTime()
+
+
+
+  // modal
+
+
+  const [modalActiveLike, setModalActiveLike] = useState(false)
+  const [modalActiveDislike, setModaActiveDislike] = useState(false)
+
+
+
+  console.log(sale)
+
+
 
 
 
@@ -105,7 +133,6 @@ const App = () => {
       }
 
 
-
       // получаем пользователей
 
       const fetchUser = async () => {
@@ -135,16 +162,16 @@ const App = () => {
 
       }
 
-      useEffect(() => {getList()}, [])
+      // useEffect(() => {getList()}, [])
 
 
 
     // message
 
 
-  const messageYG = `ФИО АВТОРА ${fio} ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ ${selectedOption.label} ПЕРЕДАЧА ПРОДАНА?\n ${sale} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
+  const messageYG = `ФИО АВТОРА ${fio} ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ ${selectedOption.label} ПЕРЕДАЧА ПРОДАНА?\n ${sale.label} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
 
-  const messageTG = `ФИО АВТОРА \n ${fio} \n ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ \n ${selectedOption.label} \n ПЕРЕДАЧА ПРОДАНА?\n ${sale}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
+  const messageTG = `ФИО АВТОРА \n ${fio} \n ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ \n ${selectedOption.label} \n ПЕРЕДАЧА ПРОДАНА?\n ${sale.label}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
 
 
     //
@@ -181,7 +208,7 @@ const App = () => {
 const sendCard = () => {
   const userKey = localStorage.getItem('key')
 
-  if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '') {
+  if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
 
     fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
@@ -210,50 +237,99 @@ const sendCard = () => {
     setDate('')
     setDestanation('')
 
-    alert('Вы создали карточку')
+    setModalActiveLike(true)
 
   } else {
-    return alert('Заполните форму целиком')
+
+    setModaActiveDislike(true)
+
   }
 
-
 }
-
-
-console.log(selectedOption)
 
 
 
 
   return(
 
-    <Container fluid>
+    <Container fluid='md'>
       <Row>
-        <Col xl={12} md={12} sm={12} xs={12}>
+        <Col sm={12} xs={12}>
             <div className='form-container'>
-            <img className='logo' src={logoUTV} alt="logoUTV" />
+                  <img className='logo' src={logoUTV} alt="logoUTV" />
+                  <div className="logo-subtitle">СЕРВИС ЗАЯВОК ВИДЕО-МОНТАЖА</div>
 
-            <MyInput title={'Ваше Имя'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-            <MyInput title={'Название передачи, ролика и тд.:'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
-            <MyInput title={'Передача продана?'} value={sale} onChange={(e) => {setSale(e.target.value)}}></MyInput>
-            <MyInput title={'Как упоминаем клиента, есть ли согласование?'} value={coordination} onChange={(e) => {setCoordination(e.target.value)}}></MyInput>
-            <MyInput title={'Кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}}></MyInput>
-            <MyInput title={'Краткое описание формата (интервью, документальный фильм, игоровой и тд.):'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyInput>
-            <MyInput title={'Ссылки на файлы, которые нужно приложить, архив:'} value={link} onChange={(e) => {setLink(e.target.value)}}></MyInput>
-            <MyInput title={'Хронометраж:'} value={time} onChange={(e) => {setTime(e.target.value)}}></MyInput>
-            <MyInput title={'Сценарный план + закадровый текст(ссылку на файл):'} value={info} onChange={(e) => {setInfo(e.target.value)}}></MyInput>
-            <MyInput title={'Пожелания, референсы (динамика, подача, ритм, музыка):'} value={referense} onChange={(e) => {setReferense(e.target.value)}}></MyInput>
+                  <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
 
-            <div className='form-horizontal-box'>
-                <MySelect select={'Выберите исполнителя'} placeholder={'Выберите монтажера'} onChange={setSelectionOption}></MySelect>
-                <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+                  <Row className='mt-3 d-flex justify-content-between'>
+
+                    <Col md={6} xs={12}>
+                        <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
+                    </Col>
+
+                    <Col md={6} xs={12}>
+                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 275 + 'px', marginTop: 2 + 'px', marginLeft: 10 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+                    </Col>
+
+                  </Row>
+
+
+                  <MyInput title={'Кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+                  <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 214 + 'px'}}></MyTextArea>
+
+                  <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+                  <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+                  <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+
+                  <Row className='mt-3'>
+                    <Col md={6} xs={12}>
+                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 275 + 'px'}} placeholder={'хронометраж'}></MyInput>
+                    </Col>
+
+
+                    <Col md={6} xs={12}>
+                        <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} placeholder={'проект'}></MySelect>
+                    </Col>
+                  </Row>
+
+
+
+                  <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+                  <Row>
+                    <Col md={6} xs={12} className='mt-3 d-flex justify-content-center align-items-center align-self-center'>
+                      <MySelect styles={{control: (styles) => {return {...styles, height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
+                    </Col>
+
+                    <Col md={6} xs={12} className='mt-3 d-flex justify-content-center align-items-center'>
+                      <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+                    </Col>
+
+
+                  </Row>
+
+
+                  <MyButton style={{marginTop: 20 + 'px', maxWidth: 100 + '%' , width: 575 + 'px', height: 60 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
             </div>
 
-            <MyInput title={'Площадка размещения ролика(эфир, ютуб *инстаграм (для коротких роликов автор пишет таймкоды)):'} value={destanation} onChange={(e) => {setDestanation(e.target.value)}}></MyInput>
 
-            <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
-            </div>
+            <Footer></Footer>
+
+
+            <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА НА ПРОЕКТ ВИДЕО-МОНТАЖА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
+
+            <ModalPageDislike dislike={{modalActiveDislike, setModaActiveDislike}} modalDislikeImg={dislike} modalDislikeTitle={'заполните все поля'} modalBtnTitle={'Продолжить'}></ModalPageDislike>
+
+
+
+
+
         </Col>
       </Row>
     </Container>

@@ -1,8 +1,26 @@
 .btn {
-  min-width: 150px;
-  min-height: 40px;
+
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+
+  flex-shrink: 0;
   border-radius: 10px;
-  background-color: #00b0e1;
+
+  /* color */
+
+  background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
   color: white;
-  text-transform: uppercase;
+
+
+}
+
+
+.btn:hover {
+  color: white;
+}
+
+.btn:active {
+  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
