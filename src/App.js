@@ -62,6 +62,7 @@ const App = () => {
 
 
 
+
   const newDate = new Date(date)
   const timestamp = newDate.getTime()
 
@@ -72,11 +73,6 @@ const App = () => {
 
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
-
-
-
-  console.log(sale)
-
 
 
 
@@ -162,53 +158,52 @@ const App = () => {
 
       }
 
-      useEffect(() => {getList()}, [])
+      // useEffect(() => {getList()}, [])
 
 
 
     // message
 
 
-  const messageYG = `ФИО АВТОРА ${fio} ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ ${selectedOption.label} ПЕРЕДАЧА ПРОДАНА?\n ${sale.label} КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ? ${coordination} КТО ЦА ПРОЕКТА?\n ${audience} КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.): ${description} ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ: ${link} ХРОНОМЕТРАЖ: ${time} СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ): ${info} ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА): ${referense} СРОК СДАЧИ ПРОЕКТА ${date}`
+  const messageYG = `ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} СТАВКА ПРОЕКТА: ${price.label} ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
-  const messageTG = `ФИО АВТОРА \n ${fio} \n ВЫБРАННЫЙ ИСПОЛНИТЕЛЬ \n ${selectedOption.label} \n ПЕРЕДАЧА ПРОДАНА?\n ${sale.label}\n КАК УПОМИНАЕМ КЛИЕНТА, ЕСТЬ ЛИ СОГЛАСОВАНИЕ?\n ${coordination}\n КТО ЦА ПРОЕКТА?\n ${audience}\n КРАТКОЕ ОПИСАНИЕ ФОРМАТА (ИНТЕРВЬЮ, ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ, ИГОРОВОЙ И ТД.):\n ${description}\n ССЫЛКИ НА ФАЙЛЫ, КОТОРЫЕ НУЖНО ПРИЛОЖИТЬ, АРХИВ:\n ${link}\n ХРОНОМЕТРАЖ:\n ${time}\n СЦЕНАРНЫЙ ПЛАН + ЗАКАДРОВЫЙ ТЕКСТ(ССЫЛКУ НА ФАЙЛ):\n ${info}\n ПОЖЕЛАНИЯ, РЕФЕРЕНСЫ (ДИНАМИКА, ПОДАЧА, РИТМ, МУЗЫКА):\n ${referense}\n СРОК СДАЧИ ПРОЕКТА\n ${date}`
+
+
+
+  const messageTG = `ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+
+
 
 
     //
 
     const sendToTelegram = () => {
 
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const CHAT_ID = '-1002013845900'
-      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const CHAT_ID = '-1002013845900'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
-      fetch(URL_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+    fetch(URL_API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
 
 
 
-      }).then(responce => responce.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error, 'ERROR'))
+    }).then(responce => responce.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error, 'ERROR'))
     }
 
 
 
+    const sendCard = () => {
+    const userKey = localStorage.getItem('key')
 
-
-
-
-
-
-const sendCard = () => {
-  const userKey = localStorage.getItem('key')
-
-  if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
+    if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
 
     fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
@@ -239,13 +234,13 @@ const sendCard = () => {
 
     setModalActiveLike(true)
 
-  } else {
+    } else {
 
     setModaActiveDislike(true)
 
-  }
+    }
 
-}
+    }
 
 
 
@@ -253,11 +248,23 @@ const sendCard = () => {
   return(
 
     <Container fluid='md'>
-      <Row>
+      <Row className='d-flex justify-content-center'>
         <Col sm={12} xs={12}>
             <div className='form-container'>
-                  <img className='logo' src={logoUTV} alt="logoUTV" />
-                  <div className="logo-subtitle">СЕРВИС ЗАЯВОК ВИДЕО-МОНТАЖА</div>
+
+                  <div className="logo-container">
+
+                    <img className='logo' src={logoUTV} alt="logoUTV" />
+
+                  </div>
+
+                  <div className="logo-subtitle-box">
+
+                    <div className="logo-subtitle">СЕРВИС ЗАЯВОК ВИДЕО-МОНТАЖА</div>
+
+                  </div>
+
+
 
                   <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
                   <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
@@ -270,7 +277,7 @@ const sendCard = () => {
                     </Col>
 
                     <Col md={6} xs={12}>
-                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 275 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 254 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
                     </Col>
 
                   </Row>
@@ -287,14 +294,14 @@ const sendCard = () => {
                   <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
 
-                  <Row className='mt-3'>
+                  <Row className='mt-3 d-flex justify-content-between'>
                     <Col md={6} xs={12}>
-                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 275 + 'px'}} placeholder={'хронометраж'}></MyInput>
+                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 262 + 'px'}} placeholder={'хронометраж'}></MyInput>
                     </Col>
 
 
                     <Col md={6} xs={12}>
-                        <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} placeholder={'проект'}></MySelect>
+                        <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
                     </Col>
                   </Row>
 
@@ -302,13 +309,13 @@ const sendCard = () => {
 
                   <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
-                  <Row>
-                    <Col md={6} xs={12} className='mt-3 d-flex justify-content-center align-items-center align-self-center'>
+                  <Row className='mt-3 d-flex justify-content-between'>
+                    <Col md={6} xs={12}>
                       <MySelect styles={{control: (styles) => {return {...styles, height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
                     </Col>
 
-                    <Col md={6} xs={12} className='mt-3 d-flex justify-content-center align-items-center'>
-                      <MyDate date={'Выберите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+                    <Col md={6} xs={12}>
+                      <MyDate date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
                     </Col>
 
 

@@ -5,11 +5,7 @@ import MyButton from "../MyButton"
 
 const ModalPageLike = ({like, ...props}) => {
 
-  console.log(like)
-
   const {modalActiveLike, setModalActiveLike} = like
-
-  console.log(modalActiveLike)
 
   return(
     <Container>
