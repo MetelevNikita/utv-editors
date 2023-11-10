@@ -122,7 +122,6 @@ const App = () => {
         })
 
         const data = await res.json()
-        console.log('3')
         console.log(data)
         return setColums(data)
 
@@ -158,7 +157,7 @@ const App = () => {
 
       }
 
-      // useEffect(() => {getList()}, [])
+      useEffect(() => {getList()}, [])
 
 
 
@@ -171,6 +170,8 @@ const App = () => {
 
 
   const messageTG = `ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+
+
 
 
 
@@ -196,6 +197,21 @@ const App = () => {
     }).then(responce => responce.json())
     .then(data => console.log(data))
     .catch(error => console.log(error, 'ERROR'))
+
+
+
+    fetch(URL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({chat_id: 85252645, text: messageTG})
+
+
+
+      }).then(responce => responce.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error, 'ERROR'))
     }
 
 
@@ -221,8 +237,9 @@ const App = () => {
 
     setFio('')
     setTitle('')
-    setSale('')
+    setSale('тип проекта')
     setCoordination('')
+    setSelectionOption('выберите исполнителя')
     setAudience('')
     setDescription('')
     setLink('')
@@ -270,14 +287,14 @@ const App = () => {
                   <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
 
-                  <Row className='mt-3 d-flex justify-content-between'>
+                  <Row className='form-box mt-3 d-flex justify-content-around'>
 
                     <Col md={6} xs={12}>
                         <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
                     </Col>
 
                     <Col md={6} xs={12}>
-                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 254 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 252 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
                     </Col>
 
                   </Row>
@@ -294,9 +311,9 @@ const App = () => {
                   <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
 
-                  <Row className='mt-3 d-flex justify-content-between'>
+                  <Row className='mt-3 form-box d-flex justify-content-between'>
                     <Col md={6} xs={12}>
-                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 262 + 'px'}} placeholder={'хронометраж'}></MyInput>
+                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
                     </Col>
 
 
@@ -309,9 +326,9 @@ const App = () => {
 
                   <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
 
-                  <Row className='mt-3 d-flex justify-content-between'>
+                  <Row className='mt-3 form-box d-flex justify-content-between'>
                     <Col md={6} xs={12}>
-                      <MySelect styles={{control: (styles) => {return {...styles, height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
+                      <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
                     </Col>
 
                     <Col md={6} xs={12}>
