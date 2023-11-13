@@ -67,6 +67,9 @@ const App = () => {
   const timestamp = newDate.getTime()
 
 
+  console.log(selectedOption.tgId)
+
+
 
   // modal
 
@@ -161,15 +164,15 @@ const App = () => {
 
 
 
-    // message
+      // message
 
 
-  const messageYG = `ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} СТАВКА ПРОЕКТА: ${price.label} ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+      const messageYG = ` ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} СТАВКА ПРОЕКТА: ${price.label} ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
 
 
 
-  const messageTG = `ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+      const messageTG = ` ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
 
 
 
@@ -190,7 +193,7 @@ const App = () => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+    body: JSON.stringify({chat_id: CHAT_ID ,text: messageTG})
 
 
 
@@ -199,19 +202,23 @@ const App = () => {
     .catch(error => console.log(error, 'ERROR'))
 
 
+    if (selectedOption.tgId === "") {
+      return
+    } else {
+      fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chat_id: selectedOption.tgId, text: messageTG})
 
-    fetch(URL_API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({chat_id: 85252645, text: messageTG})
 
 
+        }).then(responce => responce.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error, 'ERROR'))
+    }
 
-      }).then(responce => responce.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error, 'ERROR'))
     }
 
 
