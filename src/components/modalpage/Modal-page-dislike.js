@@ -1,7 +1,7 @@
 
 import './Modal-page-dislike.css'
 import { Col, Container } from "react-bootstrap"
-import MyButton from "../MyButton"
+import MyButton from "../UI/MyButton"
 
 const ModalPageDislike = ({dislike, ...props}) => {
 

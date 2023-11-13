@@ -7,6 +7,7 @@
 
 
 .logo-container {
+  margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +22,6 @@
 .logo {
 
   animation: logo-inner 1500ms ease forwards;
-
-
 
 }
 
@@ -46,31 +45,6 @@
 
   animation: subtitle-inner 1500ms ease;
 
-}
-
-.form-container {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-
-.form-horizontal-box {
-  max-width: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between
-}
-
-.form-box {
-  max-width: 600px;
-}
-
-
-.react-select-container {
-  width: 550px;
 }
 
 
