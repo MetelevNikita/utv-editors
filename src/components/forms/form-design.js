@@ -2,8 +2,8 @@ const FormDesign = () => {
 
 
   return(
-    <div className="form-container-design">
-      
-    </div>
+    <div>ДИЗАЙНЕРЫ</div>
   )
 }
+
+export default FormDesign

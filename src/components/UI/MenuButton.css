@@ -1,39 +1,51 @@
-.menu-button-container {
+.menu-button {
   width: 275px;
   height: 167px;
-
-  border-radius: 10px;
-  background: linear-gradient(173deg, #FA8F2F -1.4%, #F35D21 159.63%);
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
   margin-bottom: 45px;
-}
-
-.menu-button-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-}
-
-.menu-button-img {
-  width: 50px;
 
 
-}
+  /* text */
 
-.menu-button-title {
+
   margin-top: 10px;
-  width: 202px;
   color:  rgb(255, 255, 255);
   text-align: center;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
+
+
+
 }
 
+
+
+.menu-button-img {
+  width: 50px;
+
+}
+
+.menu-button:hover {
+
+  border-radius: 10px;
+  background: linear-gradient(173deg, #FA8F2F -1.4%, #F35D21 159.63%);
+
+}
+
+
+.logo-color {
+  color: black;
+}
+
+
+
+
+.menu-button:active {
+  transform: scale(1.10);
+  transition: all 0.03s ease;
+}

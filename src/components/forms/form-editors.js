@@ -147,9 +147,6 @@ const timestamp = newDate.getTime()
 
       const messageYG = ` ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} СТАВКА ПРОЕКТА: ${price.label} ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
-
-
-
       const messageTG = ` ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
 
 
@@ -199,48 +196,52 @@ const timestamp = newDate.getTime()
 
 
 
-      const sendCard = () => {
-      const userKey = localStorage.getItem('key')
+        const sendCard = () => {
+        const userKey = localStorage.getItem('key')
 
-      if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
+        if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
 
-      fetch('https://yougile.com/api-v2/tasks', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${userKey}`
-        },
-        body: JSON.stringify({title: title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(messageYG)})
-      }).then(responce => responce.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error, 'ERROR'))
+        fetch('https://yougile.com/api-v2/tasks', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${userKey}`
+          },
+          body: JSON.stringify({title: title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(messageYG)})
+        }).then(responce => responce.json())
+          .then(data => console.log(data))
+          .catch(error => console.log(error, 'ERROR'))
 
 
-      sendToTelegram()
+        sendToTelegram()
 
-      setFio('')
-      setTitle('')
-      setSale('тип проекта')
-      setCoordination('')
-      setSelectionOption('выберите исполнителя')
-      setAudience('')
-      setDescription('')
-      setLink('')
-      setTime('')
-      setInfo('')
-      setReferense('')
-      setDate('')
-      setDestanation('')
+        setFio('')
+        setTitle('')
+        setSale('тип проекта')
+        setCoordination('')
+        setSelectionOption('выберите исполнителя')
+        setAudience('')
+        setDescription('')
+        setLink('')
+        setTime('')
+        setInfo('')
+        setReferense('')
+        setDate('')
+        setDestanation('')
 
-      setModalActiveLike(true)
+        setModalActiveLike(true)
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
 
-      } else {
+        } else {
 
-      setModaActiveDislike(true)
+        setModaActiveDislike(true)
+
+        }
 
       }
-
-    }
 
 
 

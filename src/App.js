@@ -30,6 +30,7 @@ import ModalPageDislike from './components/modalpage/Modal-page-dislike'
 //
 
 import { useState, useEffect } from 'react'
+import { Routes, Route, Link } from 'react-router-dom'
 
 
 
@@ -38,6 +39,18 @@ import { useState, useEffect } from 'react'
 
 import MenuButon from './components/UI/MenuButton'
 import FormEditors from './components/forms/form-editors'
+import FormDesign from './components/forms/form-design'
+import FormTech from './components/forms/form-tech'
+import FormOperator from './components/forms/form-operator'
+
+// svg
+
+import UiCameraSvg from './components/UI/menu_image/uiCameraSvg'
+import UiTechSvg from './components/UI/menu_image/uiTechSvg'
+import UiEditingSvg from './components/UI/menu_image/uiEditingSvg'
+import UiDesignSvg from './components/UI/menu_image/uiDesignSvg'
+
+
 
 
 
@@ -51,6 +64,24 @@ const App = () => {
 
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
+
+  const [menuTitle, setMenuTitle] = useState('operator')
+
+  console.log(menuTitle)
+
+
+
+  const submitMenu = (e) => {
+
+    setMenuTitle(e.target.value)
+
+    window.scrollTo({
+      top: 950,
+      behavior: "smooth",
+    });
+
+
+  }
 
 
   return(
@@ -77,32 +108,54 @@ const App = () => {
 
         </div>
 
-        <Row className='mt-5'>
+        <Row className='mt-5 mb-5'>
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <MenuButon menuButtonImg={ui_camera} menuButtonTitle={'операторский отдел'}></MenuButon>
+              <Link to={`/operator`}><MenuButon className="menu-button" value={'операторский отдел'} img={ui_camera} onClick={submitMenu} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>} {'операторский отдел'}</MenuButon></Link>
 
-              <MenuButon menuButtonImg={ui_design} menuButtonTitle={'отдел дизайна'}></MenuButon>
+              <Link to={`/design`}><MenuButon className="menu-button" value={'отдел дизайна'} img={ui_design} onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>} {'отдел дизайна'}</MenuButon></Link>
 
           </Col>
 
 
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <MenuButon menuButtonImg={ui_editor} menuButtonTitle={'отдел видеомонтажа'}></MenuButon>
+              <Link to={`/editing`}><MenuButon className="menu-button" value={'отдел видеомонтажа'}  img={ui_editor} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
 
-              <MenuButon menuButtonImg={ui_tech} menuButtonTitle={'технический отдел'}></MenuButon>
+              <Link to={`/technical`}><MenuButon className="menu-button" value={'технический отдел'} img={ui_tech} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
 
           </Col>
 
-
-
-
-          <Col></Col>
         </Row>
 
 
-        <FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>
+        <Row className='mt-5'>
+          <Col>
+
+          <div className="form-theme-title">{menuTitle}</div>
+
+          <Routes>
+
+
+                <Route path={`/editing`} element={<FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>}></Route>
+
+                <Route path={`/operator`} element={<FormOperator></FormOperator>}></Route>
+
+                <Route path={`/technical`} element={<FormTech></FormTech>}></Route>
+
+                <Route path={`/design`} element={<FormDesign></FormDesign>}></Route>
+
+
+          </Routes>
+
+
+
+
+          </Col>
+        </Row>
+
+
+
 
 
         <Footer></Footer>
