@@ -65,7 +65,7 @@ const App = () => {
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
 
-  const [menuTitle, setMenuTitle] = useState('operator')
+  const [menuTitle, setMenuTitle] = useState('ВЫБЕРИТЕ КОТЕГОРИЮ')
 
   console.log(menuTitle)
 
@@ -111,18 +111,18 @@ const App = () => {
         <Row className='mt-5 mb-5'>
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`/operator`}><MenuButon className="menu-button" value={'операторский отдел'} img={ui_camera} onClick={submitMenu} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>} {'операторский отдел'}</MenuButon></Link>
+              <Link to={`/operator`}><MenuButon className="menu-button" value={'операторский отдел'} onClick={submitMenu} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
 
-              <Link to={`/design`}><MenuButon className="menu-button" value={'отдел дизайна'} img={ui_design} onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>} {'отдел дизайна'}</MenuButon></Link>
+              <Link to={`/design`}><MenuButon className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
 
           </Col>
 
 
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`/editing`}><MenuButon className="menu-button" value={'отдел видеомонтажа'}  img={ui_editor} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
+              <Link to={`/editing`}><MenuButon className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
 
-              <Link to={`/technical`}><MenuButon className="menu-button" value={'технический отдел'} img={ui_tech} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
+              <Link to={`/technical`}><MenuButon className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
 
           </Col>
 

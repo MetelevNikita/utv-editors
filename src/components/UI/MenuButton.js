@@ -10,8 +10,9 @@ const MenuButon = ({children,...props}) => {
 
   return(
 
-  <button {...props}>
+  <button className='menu-button' {...props}>
     {children}
+    <div className='menu-title'>{props.title}</div>
     </button>
 
   )
