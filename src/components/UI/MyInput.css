@@ -8,6 +8,7 @@
 
 
 .form-input {
+  width: 100%;
   height: 61px;
   padding: 8px 24px;
   align-items: center;

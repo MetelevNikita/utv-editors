@@ -22,3 +22,14 @@
 .react-select-container {
   width: 550px;
 }
+
+.form-tech-info {
+  margin-top: 35px;
+  max-width: 574px;
+  color: #000;
+  text-align: center;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal
+}

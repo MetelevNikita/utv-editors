@@ -1,4 +1,4 @@
-import './form-editors.css'
+import './form.css'
 import { Container, Col, Row } from "react-bootstrap"
 
 
@@ -249,8 +249,9 @@ const timestamp = newDate.getTime()
 
   return (
     <div className='form-container'>
-                  <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
-                  <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  
+                  <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px'}}></MyInput>
+                  <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
 
 
                   <Row className='form-box mt-3 d-flex justify-content-around'>
@@ -266,15 +267,15 @@ const timestamp = newDate.getTime()
                   </Row>
 
 
-                  <MyInput title={'Кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput title={'Кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
 
-                  <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 214 + 'px'}}></MyTextArea>
+                  <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
 
-                  <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
 
-                  <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px',width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
 
-                  <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px'}}></MyInput>
 
 
                   <Row className='mt-3 form-box d-flex justify-content-between'>
@@ -305,7 +306,7 @@ const timestamp = newDate.getTime()
                   </Row>
 
 
-                  <MyButton style={{marginTop: 20 + 'px', maxWidth: 100 + '%' , width: 575 + 'px', height: 60 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
+                  <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
             </div>
   )
 }

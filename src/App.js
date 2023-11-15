@@ -141,7 +141,7 @@ const App = () => {
 
                 <Route path={`/operator`} element={<FormOperator></FormOperator>}></Route>
 
-                <Route path={`/technical`} element={<FormTech></FormTech>}></Route>
+                <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
                 <Route path={`/design`} element={<FormDesign></FormDesign>}></Route>
 

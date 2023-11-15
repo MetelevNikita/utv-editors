@@ -14,7 +14,7 @@ const MyInput = (props) => {
         <Row>
 
         <div className="form-question-box">
-          <input className='form-input' type="text" name="input" id="input" value={props.insertText} {...props}/>
+          <input className='form-input' name="input" id="input" value={props.insertText} {...props}/>
         </div>
 
         </Row>
