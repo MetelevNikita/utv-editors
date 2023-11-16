@@ -14,9 +14,9 @@ import MyDate from "../UI/MyDate"
 // server
 
 
-import userPrice from "../../userPrice"
-import usersList from "../../usersList"
-import programType from "../../programType"
+import userPrice from "../../server/userPrice"
+import usersList from "../../server/usersList"
+import programType from "../../server/programType"
 
 
 //
@@ -249,7 +249,7 @@ const timestamp = newDate.getTime()
 
   return (
     <div className='form-container'>
-                  
+
                   <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px'}}></MyInput>
                   <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
 

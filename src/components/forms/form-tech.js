@@ -82,7 +82,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
     }).then(responce => responce.json())
       .then(data => {
         console.log(data.content)
-        setColumnId(data.content[0].id)
+        setColumnId(data.content[2].id)
       })
   }
 
@@ -107,6 +107,29 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
+  // send to TG
+
+
+  const sendToTelegram = () => {
+
+
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const CHAT_ID = '-1002046063150'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+    fetch(URL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+    }).then(responce => responce.json())
+      .then(data => console.log(data))
+
+  }
+
+
+
 
 
   const sendMessage = () => {
@@ -115,6 +138,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
     console.log('отправлено')
     fetchAddTask()
+    sendToTelegram()
 
 
     setFio('')
