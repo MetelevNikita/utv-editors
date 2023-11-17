@@ -17,9 +17,6 @@
 
 
 .footer-title {
-  font-family: 'Montserrat', sans-serif;
-
-
 
   color: #959595;
   font-size: 15px;
@@ -30,5 +27,17 @@
   text-align: center;
 }
 
+
+.footer-subtitle {
+  margin-top: 10px;
+  color: #959595;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  text-align: center;
+
+}
 
 

@@ -19,6 +19,8 @@ const CardFilming = (props) => {
 
           <div className='card-filming-time'>{props.time}</div>
 
+          <hr></hr>
+
           <div className="card-filming-user">{props.user}</div>
 
 

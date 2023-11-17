@@ -10,6 +10,10 @@
 }
 
 
+.card-list {
+  padding-left: 0px;
+}
+
 
 
 
@@ -66,7 +70,7 @@
 
 .card-filming-title {
   width: 100%;
-  height: 30px;
+  height: max-content;
   color: #434343;
   font-family: Montserrat;
   font-size: 20px;
@@ -74,13 +78,14 @@
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.7px;
+  margin-bottom: 20px;
 
 
 }
 
 .card-filming-author {
   width: 100%;
-  height: 30px;
+  height: max-content;
   color: #434343;
   font-family: Montserrat;
   font-size: 14px;
@@ -88,16 +93,18 @@
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.7px;
+  margin-bottom: 10px;
 }
 
 .card-filming-place {
   width: 100%;
-  height: 30px;
+  height: max-content;
 }
 
 .card-filming-conditions {
   margin-top: 20px;
   width: 100%;
+  font-size: 14px;
   height: max-content;
 }
 

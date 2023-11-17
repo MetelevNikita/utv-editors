@@ -32,7 +32,7 @@ const oepratorList = [
 
   {
     label: 'Яковлев Игорь',
-    value: ''
+    value: '486408353'
   },
 
   {

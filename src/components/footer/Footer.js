@@ -13,6 +13,7 @@ const Footer = () => {
             <div className="footer-box">
 
                 <div className="footer-title">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА: 8 989 951 90 63</div>
+                <div className="footer-subtitle">Производство "Марка Цукерберга" - шутка </div>
 
             </div>
           </div>

@@ -7,6 +7,7 @@ import './filming.css'
 import { useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useId } from 'react'
+import { Link } from 'react-router-dom'
 
 // components
 
@@ -23,7 +24,12 @@ import oepratorList from '../../../server/operatorList'
 
 
 
-const CreateFilming = () => {
+const CreateFilming = ({modalOperLike, modalOperDislike}) => {
+
+  const {modalActiveLike, setModalActiveLike} = modalOperLike
+  const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
+
+
 
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
@@ -37,6 +43,31 @@ const CreateFilming = () => {
 
   const id = useId()
   const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
+  const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
+
+
+  const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions}`
+
+
+  const selectedIdUserSend = () => {
+    return (user.length < 1) ? ['не определен'] : user.map((item) => {
+
+
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+      return fetch(URL_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({chat_id: item.value, text: messageTG})
+            }).then(responce => responce.json())
+              .then(data => console.log(data))
+
+          })
+  }
 
 
 
@@ -48,7 +79,7 @@ const CreateFilming = () => {
         id: id,
         name: fio,
         title: title,
-        user: user.label,
+        user: selectedUser().join(' '),
         date: new Date(date).toDateString(),
         timeStart: timeStart,
         timeEnd: timeEnd,
@@ -68,8 +99,7 @@ const CreateFilming = () => {
           .then(data => console.log(data))
           .catch(error => console.log(error, 'ERROR'))
 
-
-
+          selectedIdUserSend()
 
           setFio('')
           setTitle('')
@@ -81,13 +111,14 @@ const CreateFilming = () => {
           setConditions('')
           setContacts('')
 
+          setModalActiveLike(true)
+
     } else {
 
-      alert('Заполни все поля')
-
-
+          setModaActiveDislike(true)
     }
   }
+
 
 
 
@@ -96,7 +127,7 @@ const CreateFilming = () => {
 
       <MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
       <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
-      <MySelect placeholder={'Выберите оператора'} styles={{control: (baseStyles) => ({...baseStyles, width: 612 + 'px', paddingLeft: 10 + 'px' , height: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+      <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, width: 612 + 'px', paddingLeft: 10 + 'px' , height: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
 
       <MyDate style={{width: 612 + 'px', marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
 
@@ -121,22 +152,17 @@ const CreateFilming = () => {
 
       <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
 
-      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCardFilming()}}>Создать</MyButton>
 
 
+      <Row className='mt-4'>
+        <Col md={6} sm={6} xs={12}>
+          <MyButton onClick={() => {sendCardFilming()}}>Создать</MyButton>
+        </Col>
 
-
-
-
-
-
-
-
-
-
-
-
-
+        <Col md={6} sm={6} xs={12}>
+            <Link to={'/operator'}><MyButton>Назад</MyButton></Link>
+        </Col>
+      </Row>
 
     </div>
   )
