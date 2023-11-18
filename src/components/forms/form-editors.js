@@ -1,5 +1,6 @@
 import './form.css'
 import { Container, Col, Row } from "react-bootstrap"
+import app from '../../firebaseApp'
 
 
 // components
@@ -138,7 +139,7 @@ const timestamp = newDate.getTime()
 
       }
 
-      // useEffect(() => {getList()}, [])
+      useEffect(() => {getList()}, [])
 
 
 

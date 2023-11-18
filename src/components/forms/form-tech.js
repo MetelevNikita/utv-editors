@@ -69,10 +69,11 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
   }
 
-  const keyTech = localStorage.getItem('keyTech')
+
 
 
   const fetchDesk = () => {
+    const keyTech = localStorage.getItem('keyTech')
     fetch('https://yougile.com/api-v2/columns', {
       method: 'GET',
       headers: {
@@ -94,6 +95,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
   const fetchAddTask = () => {
+    const keyTech = localStorage.getItem('keyTech')
     fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
       headers: {
@@ -169,7 +171,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
     setTimeout(() => {
       fetchDesk()
-    }, 3000)
+    }, 5000)
   }, [])
 
 

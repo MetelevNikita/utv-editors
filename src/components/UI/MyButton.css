@@ -1,4 +1,4 @@
-.btn {
+.my-button {
 
   border-radius: 10px;
   width: 100%;
@@ -7,9 +7,22 @@
   /* color */
 
   background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
-  color: white;
+  color: rgb(255, 255, 255);
+
+  text-align: center;
+  font-size: 15px;
+  line-height: normal;
+  font-weight: 700;
+  text-transform: uppercase;
 
 
+
+}
+
+
+.my-button:active {
+  transform: scale(1.05);
+  transition: all 0.05s ease;
 }
 
 

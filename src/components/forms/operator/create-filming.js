@@ -127,19 +127,35 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
       <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
-      <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, width: 612 + 'px', paddingLeft: 10 + 'px' , height: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
-
-      <MyDate style={{width: 612 + 'px', marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
 
       <Row className='d-flex justify-content-md-center'>
 
-          <Col className='mt-4 mb-5 d-flex justify-content-center' md={6} sm={12} xs={12}>
+            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
+
+                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , height: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+
+            </Col>
+
+
+
+            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
+
+                  <MyDate style={{marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+
+            </Col>
+
+      </Row>
+
+
+      <Row className='d-flex justify-content-md-center'>
+
+          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
 
               <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
 
           </Col>
 
-          <Col className='mt-4 mb-5 d-flex justify-content-center' md={6} sm={12} xs={12}>
+          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
 
               <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime>
 
