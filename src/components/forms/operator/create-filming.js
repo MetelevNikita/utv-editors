@@ -34,6 +34,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
   const [user, setUser] = useState('')
+  const [userColor, setUserColor]= useState('')
   const [date, setDate] = useState('')
   const [timeStart, setTimeStart] = useState('')
   const [timeEnd, setTimeEnd] = useState('')
@@ -44,7 +45,10 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const id = useId()
   const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
+  const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
+
+  console.log(user)
 
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions}`
 
@@ -69,8 +73,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
           })
   }
 
-
-
   const sendCardFilming = () => {
 
     if(fio !== '' && title !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && place !== '' && contacts !== '' && conditions !== '') {
@@ -80,6 +82,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         name: fio,
         title: title,
         user: selectedUser().join(' '),
+        userColor: selectedUserColor().join(),
         date: new Date(date).toDateString(),
         timeStart: timeStart,
         timeEnd: timeEnd,
@@ -120,8 +123,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   }
 
 
-
-
   return(
     <div className="filming-container">
 
@@ -130,9 +131,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Row className='d-flex justify-content-md-center'>
 
-            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
+            <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
 
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , height: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
 
             </Col>
 
@@ -176,7 +177,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         </Col>
 
         <Col md={6} sm={6} xs={12}>
-            <Link to={'/operator'}><MyButton>Назад</MyButton></Link>
+            <Link to={'main/operator'}><MyButton>Назад</MyButton></Link>
         </Col>
       </Row>
 

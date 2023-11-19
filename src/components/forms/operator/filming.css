@@ -4,9 +4,20 @@
 .schelude-container {
 
   margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+}
+
+.shelude-calendar {
+  border-radius: 10px;
+}
+
+
+.schelude-info {
+  width: 100%;
+  height: 283px;
+  border-radius: 10px;
+  border: 1px solid #a0a096;
+
 }
 
 
@@ -117,13 +128,98 @@
   width: 100%;
   height: 30px;
   color: #434343;
-  font-family: Montserrat;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.7px;
 }
+
+
+
+/* list-filming */
+
+
+
+.list-filming-container {
+  width: 100%;
+
+}
+
+.list-filming-top {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 50px;
+
+  /*  */
+
+  border-radius: 10px;
+  background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
+
+
+}
+
+.list-filming-title {
+
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+.list-filming-btn {
+}
+
+
+
+
+.list-filming-bottom {
+
+}
+
+.list-filming-row {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
+
+.filming-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.filming-time {
+  font-size: 12px;
+
+}
+
+.filming-title {
+  font-size: 12px;
+
+}
+
+.filming-name {
+  font-size: 12px;
+  margin-left: 50px;
+  margin-right: 20px;
+
+}
+
+
+
+
 
 
 /*  */

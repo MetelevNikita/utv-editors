@@ -2,47 +2,57 @@ const oepratorList = [
 
   {
     label: 'не определен',
-    value: ''
+    value: '',
+    colorId: '#099806'
   },
 
   {
     label: 'Каюмов Ильдар',
-    value: '245168122'
+    value: '245168122',
+    colorId: "#0838E0"
   },
 
   {
     label: 'Нугуманов Роман',
-    value: '208476624'
+    value: '208476624',
+    colorId: "#FCC605"
   },
 
   {
     label: 'Федотов Виталий',
-    value: '186546719'
+    value: '186546719',
+    colorId: "#FC05E3"
   },
 
   {
     label: 'Никишина Анастасия',
-    value: '244643690'
+    value: '244643690',
+    colorId: "#05FCED"
   },
 
   {
     label: 'Габидуллин Руслан',
-    value: '901944117'
+    value: '901944117',
+    colorId: "#FC7C05"
   },
 
   {
     label: 'Яковлев Игорь',
-    value: '486408353'
+    value: '486408353',
+    colorId: "#FC7C05"
   },
 
   {
     label: 'Шуняев Андрей',
-    value: '172933695'
+    value: '172933695',
+    colorId: "#BCFC05"
   },
 
   {
     label: 'Газимуллин Нургизар',
-    value: '705189721'
+    value: '705189721',
+    colorId: "#05FCFC"
+
   },
 ]
 

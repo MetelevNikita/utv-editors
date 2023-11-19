@@ -2,7 +2,9 @@
 import './filming.css'
 import 'react-calendar/dist/Calendar.css';
 
-//
+// img
+
+import crossOpen from './../../../asset/cross-open.svg'
 
 
 import Calendar from "react-calendar"
@@ -15,6 +17,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import MySelect from '../../UI/MySelect';
 import CardFilming from './card-filming';
 import MyButton from '../../UI/MyButton';
+import ListFilming from './list-filming';
 
 // server
 
@@ -24,6 +27,7 @@ import oepratorList from '../../../server/operatorList';
 const ScheludeFilming = () => {
 
   const [calendarDate, setCalendarDate] = useState(new Date())
+  const [montHDate, setMontHDate] = useState()
   const [cardList, setCardList] = useState([])
   const [user, setUser] = useState('не определен')
 
@@ -74,19 +78,23 @@ const searchFilterCard = filterDateCard.filter((item) => (user === 'не опр�
 
 //
 
+let weekArr = []
 
- const onClickMonth = (value, e) => {
-  (value === undefined) ? <div className='empty-card-list'>Список пуст</div> : newArr.filter((item) => {
+   const onClickMonth = (value, event) => {
 
-    console.log(value.getMonth())
-    console.log(new Date(item.date).getMonth())
+    console.log()
+
+    weekArr = newArr.filter((item) => {
+      return new Date(item.date).getMonth() === new Date(value).getMonth()
+    })
+
+    console.log(weekArr)
+  }
 
 
-    console.log(newArr)
 
-  })
 
- }
+
 
 
 
@@ -99,8 +107,37 @@ const searchFilterCard = filterDateCard.filter((item) => (user === 'не опр�
 
     <div className="schelude-container">
 
-      <Calendar onClickMonth={onClickMonth}  onChange={(date) => {setCalendarDate(date)}} value={calendarDate}></Calendar>
-      <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 350 + 'px', height: 61 + 'px' , marginTop: 20 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+      <Row className='d-flex'>
+        <Col md={6}>
+            <Calendar className={'shelude-calendar'} onClickMonth={onClickMonth}  onChange={(date) => {setCalendarDate(date)}} value={calendarDate}></Calendar>
+            <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 310 + 'px', height: 61 + 'px' , marginTop: 20 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+        </Col>
+
+        <Col md={6}>
+
+            <div className='schelude-info'>
+
+              <div className="shelude-title"></div>
+              <div className='shelude-subtittle'></div>
+
+            </div>
+
+            <Row className='d-flex justify-content-center align-items-center  mt-4'>
+
+
+            <Col md={6}>
+            <MyButton>Неделя</MyButton>
+            </Col>
+
+            <Col md={6}>
+            <MyButton>Месяц</MyButton>
+            </Col>
+
+            </Row>
+        </Col>
+      </Row>
+
+
 
     </div>
 
@@ -109,18 +146,25 @@ const searchFilterCard = filterDateCard.filter((item) => (user === 'не опр�
       <Col className='d-flex justify-content-center'>
       <ul className='card-list'>
 
+      <div className="list-filming-container">
+
+        <div className="list-filming-top">
+          <div className="list-filming-title">Пятница - 17 ноября 2023 </div>
+          <button className='list-filming-btn'><img src={crossOpen} alt="cross-open" /></button>
+
+        </div>
 
 
-            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item) => {
-              return <CardFilming date={`Дата: ${item.date.toString()}`} author={`Автор: ${item.name}`} title={`Название ${item.title}`} place={`Место съёмки: ${item.place}`} conditions={`Описание ${item.conditions}`} time={`Время: ${item.timeStart} - ${item.timeEnd}`} user={`Исполнитель: ${item.user}`}></CardFilming>
-            })}
+            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item) => {return <ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`}></ListFilming>})}
+
+          </div>
       </ul>
       </Col>
     </Row>
 
 
 
-    <Link to={'/operator'}><MyButton>Назад</MyButton></Link>
+    <Link to={'main/operator'}><MyButton>Назад</MyButton></Link>
 
 
 

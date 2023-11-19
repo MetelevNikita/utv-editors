@@ -12,8 +12,6 @@ const App = () => {
 
   const [auth, setAuth] = useState(false)
 
-
-
   return(
     <Routes>
 
