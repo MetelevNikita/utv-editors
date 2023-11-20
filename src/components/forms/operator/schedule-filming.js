@@ -2,10 +2,7 @@
 import './filming.css'
 import 'react-calendar/dist/Calendar.css';
 
-// img
-
-import crossOpen from './../../../asset/cross-open.svg'
-
+//
 
 import Calendar from "react-calendar"
 import { useEffect, useState } from "react"
@@ -18,6 +15,7 @@ import MySelect from '../../UI/MySelect';
 import CardFilming from './card-filming';
 import MyButton from '../../UI/MyButton';
 import ListFilming from './list-filming';
+import ListFilmingDate from './list-filming-date';
 
 // server
 
@@ -49,6 +47,7 @@ const ScheludeFilming = () => {
           return []
         } else {
           setCardList(Object.values(data))
+          localStorage.setItem('card-list', JSON.stringify(Object.values(data)))
         }
       })
   }
@@ -143,28 +142,21 @@ let weekArr = []
 
 
     <Row>
-      <Col className='d-flex justify-content-center'>
+      <Col className='d-flex flex-column  justify-content-center' md={12}>
+
+      <ListFilmingDate date={'asdasdasd'}></ListFilmingDate>
+
       <ul className='card-list'>
 
-      <div className="list-filming-container">
+            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item,index) => {return <Link to={`/main/operator/schedule/${index}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`}></ListFilming></Link>})}
 
-        <div className="list-filming-top">
-          <div className="list-filming-title">Пятница - 17 ноября 2023 </div>
-          <button className='list-filming-btn'><img src={crossOpen} alt="cross-open" /></button>
-
-        </div>
-
-
-            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item) => {return <ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`}></ListFilming>})}
-
-          </div>
       </ul>
       </Col>
     </Row>
 
 
 
-    <Link to={'main/operator'}><MyButton>Назад</MyButton></Link>
+    <Link to={'/main/operator'}><MyButton>Назад</MyButton></Link>
 
 
 

@@ -1,7 +1,23 @@
+// css
+
 import './filming.css'
+
+//
+
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+
 
 
 const CardFilming = (props) => {
+
+
+  const [cardList, setCardList] = useState('')
+
+  const params = useParams()
+  const id = params.id
+
+  console.log(id)
 
 
   return(

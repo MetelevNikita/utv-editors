@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
+import uuid from 'react-uuid'
 
 // components
 
@@ -41,14 +42,14 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [place, setPlace] = useState('')
   const [contacts, setContacts] = useState('')
   const [conditions, setConditions] = useState('')
+  const [cloth, setCloth]= useState('')
+  const [project, setProject] = useState('')
 
-  const id = useId()
+  const id = uuid()
   const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-
-  console.log(user)
 
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions}`
 
@@ -169,6 +170,15 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
 
+      <Row>
+        <Col>
+          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={[{label: 'Платный', value: ''}, {label: 'Бюджетный', value: ''}]} value={project} onChange={setProject}></MySelect>
+        </Col>
+
+        <Col>
+        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={[{label: 'форма UTV', value: ''}, {label: 'Классическая', value: ''}, {label: 'Свободная', value: ''}]} value={cloth} onChange={setCloth}></MySelect>
+        </Col>
+      </Row>
 
 
       <Row className='mt-4'>
@@ -177,7 +187,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         </Col>
 
         <Col md={6} sm={6} xs={12}>
-            <Link to={'main/operator'}><MyButton>Назад</MyButton></Link>
+            <Link to={'/main/operator'}><MyButton>Назад</MyButton></Link>
         </Col>
       </Row>
 

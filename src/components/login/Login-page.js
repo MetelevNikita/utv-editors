@@ -30,15 +30,8 @@ const LoginPage = ({isAuth}) => {
   const {auth, setAuth} = isAuth
   const navigate = useNavigate('')
 
-  console.log(auth)
-
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-
-
-
 
   const submitLoginIn = () => {
     const auth = getAuth()

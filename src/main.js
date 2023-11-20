@@ -60,6 +60,7 @@ import UiCameraSvg from './components/UI/menu_image/uiCameraSvg'
 import UiTechSvg from './components/UI/menu_image/uiTechSvg'
 import UiEditingSvg from './components/UI/menu_image/uiEditingSvg'
 import UiDesignSvg from './components/UI/menu_image/uiDesignSvg'
+import CardFilming from './components/forms/operator/card-filming'
 
 
 
@@ -164,13 +165,14 @@ const Main = ({isAuth}) => {
 
                 <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
-                <Route path={`/design`} element={<FormDesign></FormDesign>}></Route>
+                <Route path={`/design`} element={<FormDesign modalDesLike={{modalActiveLike, setModalActiveLike}} modalDesDislike={{modalActiveDislike, setModaActiveDislike}}></FormDesign>}></Route>
 
 
                 {/* operator routing */}
 
                 <Route path={`operator/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
                 <Route path={`operator/schedule`} element={<ScheludeFilming></ScheludeFilming>}></Route>
+                <Route path={`operator/schedule/:id`} element={<CardFilming></CardFilming>}></Route>
 
 
           </Routes>
