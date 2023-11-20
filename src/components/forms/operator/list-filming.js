@@ -1,16 +1,22 @@
 import './filming.css'
 import { Container, Col, Row } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+
 
 // img
 
-
 import crossOpen from './../../../asset/cross-open.svg'
 
-
-
+//
 
 
 const ListFilming = (props) => {
+
+  const [cardList, setCardList] = useState([])
+  const [loading, setLoading] = useState(true)
+
+
+
 
   return(
 

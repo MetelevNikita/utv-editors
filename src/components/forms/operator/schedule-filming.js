@@ -146,11 +146,10 @@ let weekArr = []
 
       <ListFilmingDate date={'asdasdasd'}></ListFilmingDate>
 
-      <ul className='card-list'>
+          <ul className='card-list'>
+              {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})}
+          </ul>
 
-            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item,index) => {return <Link to={`/main/operator/schedule/${index}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`}></ListFilming></Link>})}
-
-      </ul>
       </Col>
     </Row>
 

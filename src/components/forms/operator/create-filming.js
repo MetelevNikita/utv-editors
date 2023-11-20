@@ -100,7 +100,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
           },
           body: JSON.stringify({cardFilming})
         }).then(responce => responce.json())
-          .then(data => console.log(data))
+          .then(data => cardFilming.id = data.name)
           .catch(error => console.log(error, 'ERROR'))
 
           selectedIdUserSend()
