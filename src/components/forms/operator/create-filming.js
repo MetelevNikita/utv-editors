@@ -8,6 +8,8 @@ import { useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { getDatabase, ref, set } from "firebase/database";
 import uuid from 'react-uuid'
 
 // components
@@ -26,6 +28,8 @@ import oepratorList from '../../../server/operatorList'
 
 
 const CreateFilming = ({modalOperLike, modalOperDislike}) => {
+
+  const navigate = useNavigate()
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
@@ -47,12 +51,60 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const id = uuid()
   const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
+
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
 
-  const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions}`
+  const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions} \n Проект \n ${project} \n Форма одежды \n ${cloth}`
 
+
+
+  const createCard = () => {
+
+    if(fio !== '' && title !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && place !== '' && contacts !== '' && conditions !== '') {
+
+    const db = getDatabase()
+      set(ref(db, 'cardsFilming/' + id), {
+
+        id: id,
+        name: fio,
+        title: title,
+        user: selectedUser().join(' '),
+        userColor: selectedUserColor().join(),
+        date: new Date(date).toDateString(),
+        timeStart: timeStart,
+        timeEnd: timeEnd,
+        place: place,
+        contacts: contacts,
+        conditions: conditions,
+        projectPay: project.label,
+        cloth: cloth.label
+
+      })
+
+    selectedIdUserSend()
+
+    setFio('')
+    setTitle('')
+    setUser('')
+    setDate('')
+    setTimeStart('')
+    setTimeEnd('')
+    setPlace('')
+    setConditions('')
+    setContacts('')
+
+    setModalActiveLike(true)
+    navigate('/main/operator/schedule')
+
+  } else {
+
+    setModaActiveDislike(true)
+
+  }
+
+}
 
   const selectedIdUserSend = () => {
     return (user.length < 1) ? ['не определен'] : user.map((item) => {
@@ -72,56 +124,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
               .then(data => console.log(data))
 
           })
-  }
-
-  const sendCardFilming = () => {
-
-    if(fio !== '' && title !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && place !== '' && contacts !== '' && conditions !== '') {
-
-      const cardFilming = {
-        id: id,
-        name: fio,
-        title: title,
-        user: selectedUser().join(' '),
-        userColor: selectedUserColor().join(),
-        date: new Date(date).toDateString(),
-        timeStart: timeStart,
-        timeEnd: timeEnd,
-        place: place,
-        contacts: contacts,
-        conditions: conditions
-      }
-        console.log(cardFilming)
-
-        fetch(URL_FIREBASE, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({cardFilming})
-        }).then(responce => responce.json())
-          .then(data => cardFilming.id = data.name)
-          .catch(error => console.log(error, 'ERROR'))
-
-          selectedIdUserSend()
-
-          setFio('')
-          setTitle('')
-          setUser('')
-          setDate('')
-          setTimeStart('')
-          setTimeEnd('')
-          setPlace('')
-          setConditions('')
-          setContacts('')
-
-          setModalActiveLike(true)
-
-    } else {
-
-          setModaActiveDislike(true)
     }
-  }
+
+
+
+
 
 
   return(
@@ -183,7 +190,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Row className='mt-4'>
         <Col md={6} sm={6} xs={12}>
-          <MyButton onClick={() => {sendCardFilming()}}>Создать</MyButton>
+          <MyButton onClick={() => {createCard()}}>Создать</MyButton>
         </Col>
 
         <Col md={6} sm={6} xs={12}>

@@ -14,11 +14,35 @@
 
 .schelude-info {
   width: 100%;
-  height: 283px;
+  height: 281px;
   border-radius: 10px;
   border: 1px solid #a0a096;
 
 }
+
+.shelude-title {
+  margin-top: 50px;
+  color: #434343;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.7px;
+
+}
+
+.shelude-subtittle {
+  margin-top: 50px;
+  color: #434343;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+
+}
+
 
 
 .card-list {
@@ -196,6 +220,11 @@
 
 }
 
+
+.filming-date {
+  font-size: 11px;
+}
+
 .filming-color {
   width: 20px;
   height: 20px;
@@ -227,7 +256,14 @@
 
 .card-filming-loading {
   margin-top: 50px;
+  color: #434343;
   text-align: center;
+  font-family: Montserrat;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.7px;
 }
 
 

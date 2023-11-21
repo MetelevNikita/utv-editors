@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { getDatabase, ref, onValue, remove } from "firebase/database";
+import { useNavigate } from 'react-router-dom'
 
 
 // components
@@ -22,44 +24,47 @@ const CardFilming = (props) => {
   const [cardList, setCardList] = useState([])
   const [loading, setLoading] = useState(true)
 
+
+  const navigate = useNavigate()
   const params = useParams()
   const id = params.id
 
 
-
-  const getCard = () => {
-
-    const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
-
-    fetch(URL_FIREBASE, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(responce => responce.json())
-      .then(data => {
-        setCardList(Object.values(data))
-        setLoading(false)
-      })
-      .catch((error) => {console.log(error, 'ERROR')})
+const getCard = () => {
+    const db = getDatabase()
+    const cardList = ref(db, 'cardsFilming/')
+    onValue(cardList, (data) => {
+      setCardList(Object.values(data.val()))
+      setLoading(false)
+    })
   }
 
+
+
+const delCard = () => {
+  const db = getDatabase()
+  remove(ref(db, `cardsFilming/${singleArr[0].id}`))
+  navigate('/main/operator/schedule')
+}
+
+
+
+
   useEffect(() => {
-    getCard()
+      getCard()
   }, [])
+
+
 
 
   if(loading) {
     return <h1 className='card-filming-loading'>LOADING</h1>
   }
 
-  const newArr = cardList.map((card) => {return card.cardFilming})
-  const singleArr = newArr.filter((item) => {
+
+  const singleArr = cardList.filter((item) => {
     return item.id === id
   })
-
-
-  console.log(singleArr)
 
 
 
@@ -85,6 +90,10 @@ const CardFilming = (props) => {
       <Row className='mt-4'>
         <Col>
             <Link to={'/main/operator/schedule'}><MyButton>Назад</MyButton></Link>
+        </Col>
+
+        <Col>
+            <MyButton onClick={() => {delCard()}}>Удалить</MyButton>
         </Col>
       </Row>
     </>

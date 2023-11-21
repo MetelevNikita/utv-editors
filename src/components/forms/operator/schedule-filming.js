@@ -8,6 +8,8 @@ import Calendar from "react-calendar"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom';
 import { Container, Col, Row } from 'react-bootstrap';
+import app from '../../../firebaseApp';
+import { getDatabase, ref, onValue } from "firebase/database";
 
 // components
 
@@ -25,36 +27,27 @@ import oepratorList from '../../../server/operatorList';
 const ScheludeFilming = () => {
 
   const [calendarDate, setCalendarDate] = useState(new Date())
-  const [montHDate, setMontHDate] = useState()
+  const [month, setMonth] = useState()
+
+  const [triggerDate, setTriggerDate] = useState(false)
+
+
   const [cardList, setCardList] = useState([])
   const [user, setUser] = useState('не определен')
 
 
+  const getCard = () => {
 
+    const db = getDatabase()
+    const cardList = ref(db, 'cardsFilming/')
+    onValue(cardList, (data) => {
+      setCardList(Object.values(data.val()))
+    })
 
-  const getCardList = () => {
-
-    const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
-
-    return fetch(URL_FIREBASE, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'apllication/json'
-      }
-    }).then(responce => responce.json())
-      .then(data => {
-        if(data === null) {
-          return []
-        } else {
-          setCardList(Object.values(data))
-          localStorage.setItem('card-list', JSON.stringify(Object.values(data)))
-        }
-      })
   }
 
-
   useEffect(() => {
-      getCardList()
+      getCard()
   }, [])
 
 
@@ -63,40 +56,54 @@ const ScheludeFilming = () => {
 // filter
 
 
-const newArr = []
 
-const ArrayNameCard = () => {cardList.map((card) => {
-    return newArr.push(card.cardFilming)
-  })}
-
-ArrayNameCard()
-
-const filterDateCard = newArr.filter((item) => {return item.date.includes(calendarDate.toDateString())})
-const searchFilterCard = filterDateCard.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
 
 //
 
-let weekArr = []
+const onClickMonth = (value, event) => {
+  setMonth(value)
+  setTriggerDate(true)
 
-   const onClickMonth = (value, event) => {
-
-    console.log()
-
-    weekArr = newArr.filter((item) => {
-      return new Date(item.date).getMonth() === new Date(value).getMonth()
-    })
-
-    console.log(weekArr)
-  }
+}
 
 
+const onClickDay = (date) => {
+  setCalendarDate(date)
+  setTriggerDate(false)
+}
+
+console.log(calendarDate)
+
+
+const weekArr = cardList.filter((item) => {return new Date(item.date).getMonth() === new Date(month).getMonth()})
+const searchMonthCard = weekArr.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
+
+console.log(searchMonthCard)
+
+
+const filterDayCard = cardList.filter((item) => {return item.date.includes(calendarDate.toDateString())})
+const searchFilterCard = filterDayCard.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
+
+const filterDate = () => {
+
+
+    if (triggerDate === true) {
+
+      return searchMonthCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+
+
+    } else {
+
+      return searchFilterCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+
+    }
 
 
 
 
 
-
+}
 
 
 
@@ -108,7 +115,7 @@ let weekArr = []
 
       <Row className='d-flex'>
         <Col md={6}>
-            <Calendar className={'shelude-calendar'} onClickMonth={onClickMonth}  onChange={(date) => {setCalendarDate(date)}} value={calendarDate}></Calendar>
+            <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate}></Calendar>
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 310 + 'px', height: 61 + 'px' , marginTop: 20 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
@@ -116,23 +123,17 @@ let weekArr = []
 
             <div className='schelude-info'>
 
-              <div className="shelude-title"></div>
-              <div className='shelude-subtittle'></div>
+              <div className="shelude-title">Выберите месяц</div>
+              <div className='shelude-subtittle'>это необходимо для получения списка всех съёмок за выбранный период</div>
 
             </div>
 
-            <Row className='d-flex justify-content-center align-items-center  mt-4'>
+
+        <Row>
+          <Col className='mt-4'><Link to={'/main/operator/create'}><MyButton>запланировать съёмку</MyButton></Link></Col>
+        </Row>
 
 
-            <Col md={6}>
-            <MyButton>Неделя</MyButton>
-            </Col>
-
-            <Col md={6}>
-            <MyButton>Месяц</MyButton>
-            </Col>
-
-            </Row>
         </Col>
       </Row>
 
@@ -144,10 +145,14 @@ let weekArr = []
     <Row>
       <Col className='d-flex flex-column  justify-content-center' md={12}>
 
-      <ListFilmingDate date={'asdasdasd'}></ListFilmingDate>
+
+        {(triggerDate === true) ? <ListFilmingDate date={`${calendarDate.getUTCMonth()} месяц`}></ListFilmingDate> : <ListFilmingDate date={calendarDate.toDateString()}></ListFilmingDate>}
+
 
           <ul className='card-list'>
-              {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : searchFilterCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})}
+
+            {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : filterDate()}
+
           </ul>
 
       </Col>

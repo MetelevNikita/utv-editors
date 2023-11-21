@@ -30,7 +30,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
   const [columnId, setColumnId] = useState('')
   const [customerSticker, setCustomerSticker] = useState([])
-  const [typeSticker, setTypeSticker] = useState([])
+  const [prioritySticker, setPrioritySticker] = useState([])
 
 
 
@@ -39,6 +39,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [title, setTitle] = useState('')
   const [type, setType] = useState('')
   const [customer, setСustomer] = useState('')
+  const [priority, setPriority] = useState('')
   const [requirements, setRequirements] = useState('')
   const [description, setDescription] = useState('')
   const [link, setLink] = useState('')
@@ -48,8 +49,10 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-  const typeStickerId = "0cd3d40a-b560-4aa2-b3b3-92728bfaeb08"
-  const customerStickerId = "b1c37760-05cd-4b04-8e62-858e68003b50"
+  const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
+  const customerStickerId = "0cd3d40a-b560-4aa2-b3b3-92728bfaeb08"
+
+  console.log(priority)
 
 
 
@@ -120,7 +123,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       }).then(responce => responce.json())
         .then(data => {
           console.log(data)
-          setTypeSticker(data.content[3].states.map((item) => {
+          setPrioritySticker(data.content[0].states.map((item) => {
             return {label: item.name, value: item.id, color: item.color}
           })
       )
@@ -133,10 +136,10 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-    const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Тип проекта: ${type.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${packageProject.label} Референсы: ${reference} Дата сдачи проекта: ${date}`
+    const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Важность проекта: ${priority.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${packageProject.label} Референсы: ${reference} Дата сдачи проекта: ${date}`
 
 
-    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Тип проекта \n ${type.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${packageProject.label} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
+    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${packageProject.label} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
 
 
 
@@ -179,7 +182,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
     const sendMessage = () => {
 
-      if (name !== '' && contacts !== '' && title !== '' && type !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
+      if (name !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
 
 
         console.log('отправлено')
@@ -244,7 +247,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
         <Col md={6} sm={12} xs={12}>
 
-        <MySelect placeholder={'Тип проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={typeSticker} value={type} onChange={setType}></MySelect>
+        <MySelect placeholder={'Важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
 
         </Col>
       </Row>
