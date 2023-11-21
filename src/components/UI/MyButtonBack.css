@@ -1,0 +1,39 @@
+
+
+.my-button-back {
+
+  width: 200px;
+  height: 61px;
+
+  /* color */
+
+  border-radius: 10px;
+  border: 1px solid black;
+  color: #000000;
+
+  text-transform: uppercase;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+
+}
+
+
+.my-button:active {
+  transform: scale(1.05);
+
+  transition: all 0.15s ease;
+}
+
+
+
+.my-button-back:hover {
+  border: 1px solid rgba(0, 0, 0, 0);
+  background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
+  color: #FFF;
+
+  transition: all 0.25s ease;
+}
+

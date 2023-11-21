@@ -16,6 +16,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import MySelect from '../../UI/MySelect';
 import CardFilming from './card-filming';
 import MyButton from '../../UI/MyButton';
+import MyButtonBack from '../../UI/MyButtonBack';
 import ListFilming from './list-filming';
 import ListFilmingDate from './list-filming-date';
 
@@ -78,24 +79,75 @@ console.log(calendarDate)
 
 const weekArr = cardList.filter((item) => {return new Date(item.date).getMonth() === new Date(month).getMonth()})
 const searchMonthCard = weekArr.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
-
 console.log(searchMonthCard)
 
 
 const filterDayCard = cardList.filter((item) => {return item.date.includes(calendarDate.toDateString())})
 const searchFilterCard = filterDayCard.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
+console.log(filterDayCard)
+
+const sortDay  = searchFilterCard.sort((a, b) => {
+  if(a.timeStart < b.timeStart) {
+    return -1
+  }
+
+  if(a.timeStart > b.timeStart) {
+    return 1
+  }
+
+  return 0
+})
+
+
+
+
+const sortMonthDate = searchMonthCard.sort((a, b) => {
+  const dateA = new Date(a.date).getDate()
+  const dateB = new Date(b.date).getDate()
+
+  if(dateA < dateB) {
+    return -1
+  }
+
+  if(dateA > dateB) {
+    return 1
+  }
+  return 0
+
+})
+
+
+
+
+
+const sortMonthTime = searchMonthCard.sort((a, b) => {
+
+  if(a.timeStart < b.timeStart)  {
+    return -1
+  }
+
+  if(a.timeStart > b.timeStart) {
+    return 1
+  }
+  return 0
+})
+
+
+
+
+
 const filterDate = () => {
 
 
     if (triggerDate === true) {
 
-      return searchMonthCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
 
 
     } else {
 
-      return searchFilterCard.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/operator/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
 
     }
 
@@ -116,7 +168,7 @@ const filterDate = () => {
       <Row className='d-flex'>
         <Col md={6}>
             <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate}></Calendar>
-            <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 310 + 'px', height: 61 + 'px' , marginTop: 20 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+            <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 310 + 'px', height: 61 + 'px' , marginTop: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
         <Col md={6}>
@@ -158,9 +210,17 @@ const filterDate = () => {
       </Col>
     </Row>
 
+    <Row >
+      <Col className='d-flex justify-content-center'>
 
 
-    <Link to={'/main/operator'}><MyButton>Назад</MyButton></Link>
+        <Link to={'/main/operator'}><MyButtonBack>НАЗАД</MyButtonBack></Link>
+
+      </Col>
+    </Row>
+
+
+
 
 
 

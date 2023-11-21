@@ -184,10 +184,10 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
     <div className="form-container">
-      <MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-      <MyInput placeholder={'НАЗВАНИЕ ПРОЕТА'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'ТЕЛЕФОН С КЕМ ДЕРЖАТЬ СВЗЯЬ'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'МЕСТО ПРОВЕДЕНИЯ'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'фио'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
+      <MyInput placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'контактная информация'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'место проведения'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
       <Row className='form-box mt-3 d-flex justify-content-around'>
 
@@ -205,7 +205,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
       </Row>
 
-      <MyTextArea placeholder={'ОПИШИТЕ ЗАДАЧУ'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+      <MyTextArea placeholder={'описание'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
 
 
       <div className="form-tech-info"> ПОСЛЕ ПОЛУЧЕНИЯ ИНФОРМАЦИИ С ВАМИ СВЯЖЕТСЯ РУКОВОДИТЕЛЬ НАПРАВЛЕНИЯ ДЛЯ УТОЧНЕНИЯ ИНОФРМАЦИИ</div>

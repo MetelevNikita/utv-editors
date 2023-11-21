@@ -194,7 +194,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         </Col>
 
         <Col md={6} sm={6} xs={12}>
-            <Link to={'/main/operator'}><MyButton>Назад</MyButton></Link>
+            <Link to={'/main/operator/schedule'}><MyButton>Назад</MyButton></Link>
         </Col>
       </Row>
 

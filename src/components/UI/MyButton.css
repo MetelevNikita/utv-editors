@@ -7,13 +7,13 @@
   /* color */
 
   background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
-  color: rgb(255, 255, 255);
+  color: #FFF;
 
-  text-align: center;
-  font-size: 15px;
-  line-height: normal;
-  font-weight: 700;
   text-transform: uppercase;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 
 
 

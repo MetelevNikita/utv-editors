@@ -176,7 +176,7 @@
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 20px;
   margin-top: 50px;
 
@@ -190,12 +190,11 @@
 
 .list-filming-title {
 
-  color: #FFF;
+  color: white;
   font-size: 16px;
-  font-weight: 700;
+  font-style: normal;
+  font-weight: 500;
   line-height: normal;
-  padding-left: 20px;
-  padding-right: 20px;
 
 }
 

@@ -1,9 +1,5 @@
 import './filming.css'
 
-//
-
-import crossOpen from './../../../asset/cross-open.svg'
-
 
 const ListFilmingDate = (props) => {
 
@@ -12,7 +8,6 @@ const ListFilmingDate = (props) => {
     <div className="list-filming-top" {...props}>
 
     <div className="list-filming-title">{props.date}</div>
-    <button className='list-filming-btn'><img src={crossOpen} alt="cross-open" /></button>
 
     </div>
 

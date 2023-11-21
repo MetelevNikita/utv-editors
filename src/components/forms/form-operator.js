@@ -26,14 +26,14 @@ const FormOperator = () => {
     <div className="operator-container">
 
 
-      <Row className='mt-5'>
-        <Col md={6} sm={12} xs={12}>
+      <Row className='mt-2'>
+        <Col md={6} sm={12} xs={12} className='mt-3'>
 
           <Link to={'create'}><MyButton>создать съёмку</MyButton></Link>
 
         </Col>
 
-        <Col md={6} sm={12} xs={12}>
+        <Col md={6} sm={12} xs={12} className='mt-3'>
 
           <Link to={'schedule'}><MyButton>посмотреть съёмки</MyButton></Link>
 
