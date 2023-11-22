@@ -20,10 +20,13 @@ import MyTextArea from '../../UI/MyTextArea'
 import MySelect from '../../UI/MySelect'
 import MyTime from '../../UI/MyTime'
 import MyButton from '../../UI/MyButton'
+import MyButtonBack from '../../UI/MyButtonBack'
 
 // server
 
 import oepratorList from '../../../server/operatorList'
+import operatorProject from '../../../server/operatorProject'
+import operatorCloth from '../../../server/operatorCloth'
 
 
 
@@ -55,8 +58,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-
-  const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n АДРЕС \n ${place} \n КОНТАКТЫ \n ${contacts} \n ОПИСАНИЕ \n ${conditions} \n Проект \n ${project} \n Форма одежды \n ${cloth}`
+  const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
 
 
 
@@ -122,13 +124,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
               body: JSON.stringify({chat_id: item.value, text: messageTG})
             }).then(responce => responce.json())
               .then(data => console.log(data))
-
+              .catch(error => console.log(error, 'ERROR'))
           })
     }
 
 
 
-
+    console.log(project)
 
 
   return(
@@ -179,22 +181,22 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Row>
         <Col>
-          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={[{label: 'Платный', value: ''}, {label: 'Бюджетный', value: ''}]} value={project} onChange={setProject}></MySelect>
+          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorProject} value={project} onChange={setProject}></MySelect>
         </Col>
 
         <Col>
-        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={[{label: 'форма UTV', value: ''}, {label: 'Классическая', value: ''}, {label: 'Свободная', value: ''}]} value={cloth} onChange={setCloth}></MySelect>
+        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
         </Col>
       </Row>
 
 
       <Row className='mt-4'>
-        <Col md={6} sm={6} xs={12}>
+        <Col md={6} sm={6} xs={12} className='mb-4'>
           <MyButton onClick={() => {createCard()}}>Создать</MyButton>
         </Col>
 
-        <Col md={6} sm={6} xs={12}>
-            <Link to={'/main/operator/schedule'}><MyButton>Назад</MyButton></Link>
+        <Col md={6} sm={6} xs={12} className='mb-4'>
+            <Link to={'/main/main/schedule'}><MyButtonBack>НАЗАД</MyButtonBack></Link>
         </Col>
       </Row>
 

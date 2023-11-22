@@ -35,13 +35,12 @@ const LoginPage = ({isAuth}) => {
 
   const submitLoginIn = () => {
     const auth = getAuth()
-    console.log(email, password)
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentioal) => {
-
         const user = userCredentioal.user
-        console.log(user)
+        console.log(user.email)
+        sessionStorage.setItem('userEmail', user.email)
         setAuth(true)
         navigate('/main')
 

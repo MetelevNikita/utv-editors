@@ -34,3 +34,17 @@
   font-weight: 300;
   line-height: normal
 }
+
+.form-deadline {
+
+  margin-top: 25px;
+  max-width: 574px;
+  color: #000;
+  text-transform: lowercase;
+  text-align: center;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal
+
+}

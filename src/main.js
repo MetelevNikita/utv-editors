@@ -45,11 +45,10 @@ import MenuButon from './components/UI/MenuButton'
 import FormEditors from './components/forms/form-editors'
 import FormDesign from './components/forms/form-design'
 import FormTech from './components/forms/form-tech'
-import FormOperator from './components/forms/form-operator'
 
 
 // operator
-
+import PlanFilming from './components/forms/operator/plan-filming'
 import CreateFilming from './components/forms/operator/create-filming'
 import ScheludeFilming from './components/forms/operator/schedule-filming'
 
@@ -77,7 +76,7 @@ const Main = ({isAuth}) => {
 
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
-  const [menuTitle, setMenuTitle] = useState('ВЫБЕРИТЕ КОТЕГОРИЮ')
+  const [menuTitle, setMenuTitle] = useState('КАТЕГОРИЯ')
 
   const {auth, setAuth} = isAuth
   const navigate = useNavigate()
@@ -133,7 +132,7 @@ const Main = ({isAuth}) => {
         <Row className='mt-5 mb-5'>
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`operator`} value={'операторский отдел'} onClick={submitMenu}><MenuButon className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
+              <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
 
               <Link to={`design`} value={'операторский отдел'}><MenuButon className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
 
@@ -161,7 +160,7 @@ const Main = ({isAuth}) => {
 
                 <Route path={`/editing`} element={<FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>}></Route>
 
-                <Route path={`/operator`} element={<FormOperator></FormOperator>}></Route>
+                <Route path={`/schedule`} element={<ScheludeFilming></ScheludeFilming>}></Route>
 
                 <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
@@ -169,10 +168,9 @@ const Main = ({isAuth}) => {
 
 
                 {/* operator routing */}
-
-                <Route path={`operator/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
-                <Route path={`operator/schedule`} element={<ScheludeFilming></ScheludeFilming>}></Route>
-                <Route path={`operator/schedule/:id`} element={<CardFilming></CardFilming>}></Route>
+                <Route path={'schedule/plan'} element={<PlanFilming></PlanFilming>}></Route>
+                <Route path={`schedule/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
+                <Route path={`schedule/:id`} element={<CardFilming></CardFilming>}></Route>
 
 
           </Routes>
@@ -190,7 +188,7 @@ const Main = ({isAuth}) => {
         <Footer></Footer>
 
 
-            <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА НА ПРОЕКТ ВИДЕО-МОНТАЖА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
+            <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
 
             <ModalPageDislike dislike={{modalActiveDislike, setModaActiveDislike}} modalDislikeImg={dislike} modalDislikeTitle={'заполните все поля'} modalBtnTitle={'Продолжить'}></ModalPageDislike>
 

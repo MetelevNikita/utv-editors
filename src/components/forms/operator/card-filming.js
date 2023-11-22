@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom'
 import MyButton from '../../UI/MyButton'
 
 
-
 const CardFilming = (props) => {
 
 
@@ -66,6 +65,8 @@ const delCard = () => {
     return item.id === id
   })
 
+  console.log(singleArr)
+
 
 
 
@@ -76,20 +77,22 @@ const delCard = () => {
         <div className="card-filming-box">
 
           <div className="card-filming-title">{singleArr[0].title}</div>
-          <div className="card-filming-author">{singleArr[0].author}</div>
+          <div className="card-filming-author">{`Контактное лицо: ${singleArr[0].contacts}`}</div>
           <div className="card-filming-place">{singleArr[0].place}</div>
           <div className="card-filming-conditions">{singleArr[0].conditions}</div>
-          <div className='card-filming-time'>{singleArr[0].time}</div>
+          <div className='card-filming-time'>{`Время: ${singleArr[0].timeStart} - ${singleArr[0].timeEnd}`}</div>
+          <div className='card-filming-cloth'>{`Форма одежды: ${singleArr[0].cloth}`}</div>
+          <div className='card-filming-project'>{`Проект: ${singleArr[0].projectPay}`}</div>
 
           <hr></hr>
 
-          <div className="card-filming-user">{singleArr[0].user}</div>
+          <div className="card-filming-user">{`Оператор: ${singleArr[0].user}`}</div>
         </div>
     </li>
 
       <Row className='mt-4'>
         <Col>
-            <Link to={'/main/operator/schedule'}><MyButton>Назад</MyButton></Link>
+            <Link to={'/main/schedule'}><MyButton>Назад</MyButton></Link>
         </Col>
 
         <Col>

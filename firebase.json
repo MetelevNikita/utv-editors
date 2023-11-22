@@ -1,7 +1,13 @@
 {
   "hosting": {
     "site": "utv-media",
-    "public": "build",
+    "public": "./build",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",

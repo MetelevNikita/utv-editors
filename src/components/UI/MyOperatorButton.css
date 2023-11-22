@@ -1,0 +1,28 @@
+.my-operator-button {
+  width: 100%;
+  height: 61px;
+
+  /* color */
+
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
+  color: #FFF;
+
+  text-transform: uppercase;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+
+
+.my-operator-button:active {
+  transform: scale(1.05);
+  transition: all 0.15s ease;
+}
+
+
+
+

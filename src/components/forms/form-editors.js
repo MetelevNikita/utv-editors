@@ -73,7 +73,6 @@ const timestamp = newDate.getTime()
           body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
         }).then(responce => responce.json())
           .then(data => {
-            console.log(data)
             return fetch('https://yougile.com/api-v2/auth/keys/get', {
               method: 'POST',
               headers: {
@@ -82,7 +81,6 @@ const timestamp = newDate.getTime()
               body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[1].id})
             }).then(responce => responce.json())
               .then(data => {
-                console.log(data)
                 return localStorage.setItem('key', data[0].key)})
           })
 
@@ -104,7 +102,6 @@ const timestamp = newDate.getTime()
         })
 
         const data = await res.json()
-        console.log(data)
         return setColums(data)
 
       }
@@ -123,7 +120,6 @@ const timestamp = newDate.getTime()
         })
 
         const data = await res.json()
-        console.log(data)
         return setUser(data)
       }
 
@@ -146,9 +142,9 @@ const timestamp = newDate.getTime()
       // message
 
 
-      const messageYG = ` ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} СТАВКА ПРОЕКТА: ${price.label} ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+      const messageYG = ` ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.value} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
-      const messageTG = ` ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} СТАВКА ПРОЕКТА \n ${price.label} ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+      const messageTG = ` ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} НАПРАВЛЕНИЕ \n ${price.value} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
 
 
 
@@ -268,7 +264,7 @@ const timestamp = newDate.getTime()
                   </Row>
 
 
-                  <MyInput title={'Кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
+                  <MyInput title={'кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
 
                   <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
 
@@ -293,20 +289,11 @@ const timestamp = newDate.getTime()
 
 
                   <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+                  <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
 
-                  <Row className='mt-3 form-box d-flex justify-content-between'>
-                    <Col md={6} xs={12}>
-                      <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
-                    </Col>
+                  <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
 
-                    <Col md={6} xs={12}>
-                      <MyDate date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-                    </Col>
-
-
-                  </Row>
-
-
+                  <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
                   <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
             </div>
   )

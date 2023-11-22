@@ -2,13 +2,14 @@
 
 
 .schelude-container {
-
   margin-top: 50px;
+
 
 }
 
 .shelude-calendar {
   border-radius: 10px;
+
 }
 
 
@@ -27,7 +28,7 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
+
   letter-spacing: 0.7px;
 
 }
@@ -38,7 +39,7 @@
   text-align: center;
   font-size: 14px;
   font-style: normal;
-  line-height: normal;
+
   letter-spacing: 0.7px;
 
 }
@@ -161,6 +162,21 @@
   letter-spacing: 0.7px;
 }
 
+.card-filming-cloth {
+  margin-top: 20px;
+}
+
+
+
+
+.card-filming-project {
+  margin-top: 20px;
+}
+
+
+
+
+
 
 
 /* list-filming */
@@ -183,7 +199,7 @@
   /*  */
 
   border-radius: 10px;
-  background: linear-gradient(173deg, #FC9B32 -1.4%, #E81D0E 159.63%);
+  border: 1px solid #434343;
 
 
 }
@@ -195,6 +211,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  color: #434343;
+
 
 }
 
@@ -205,6 +223,7 @@
 
 
 .list-filming-bottom {
+  color: #434343;
 
 }
 

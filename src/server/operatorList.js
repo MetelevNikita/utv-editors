@@ -3,8 +3,15 @@ const oepratorList = [
   {
     label: 'не определен',
     value: '',
-    colorId: '#099806'
+    colorId: "#FC05E3"
   },
+
+  {
+    label: 'СТУДИЯ',
+    value: '',
+    colorId: "#ff0000"
+  },
+
 
   {
     label: 'Каюмов Ильдар',
@@ -21,7 +28,7 @@ const oepratorList = [
   {
     label: 'Федотов Виталий',
     value: '186546719',
-    colorId: "#FC05E3"
+    colorId: '#099806'
   },
 
   {

@@ -23,8 +23,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   const {modalActiveLike, setModalActiveLike} = modalTechLike
   const {modalActiveDislike, setModaActiveDislike} = modalTechDislike
 
-
-
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
   const [phone, setPhone] = useState('')
@@ -53,7 +51,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
     }).then(responce => responce.json())
       .then(data => {
-        console.log(data.content)
         return fetch('https://yougile.com/api-v2/auth/keys/get', {
             method: 'POST',
             headers: {
@@ -63,7 +60,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
           })
         }).then(responce => responce.json())
           .then(data => {
-            console.log(data)
             return localStorage.setItem('keyTech', data[0].key)
           })
 
@@ -82,7 +78,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       }
     }).then(responce => responce.json())
       .then(data => {
-        console.log(data.content)
         setColumnId(data.content[2].id)
       })
   }
@@ -104,6 +99,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
     }).then(responce => responce.json())
       .then(data => console.log(data))
+      .catch(error => console.log(error, 'ERROR'))
   }
 
 
@@ -126,6 +122,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
     }).then(responce => responce.json())
       .then(data => console.log(data))
+      .catch(error => console.log(error, 'ERROR'))
 
   }
 
@@ -134,20 +131,16 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
   const sendMessage = () => {
-
     if (fio !== '' && title !== '' && phone !== '' && place !== '' && description !== '') {
 
-    console.log('отправлено')
     fetchAddTask()
     sendToTelegram()
-
 
     setFio('')
     setTitle('')
     setPhone('')
     setPlace('')
     setDescription('')
-
 
     setModalActiveLike(true)
     window.scrollTo({
@@ -166,54 +159,32 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   useEffect(() => {
 
     fetchIdKey()
-
-
     setTimeout(() => {
       fetchDesk()
     }, 5000)
+
   }, [])
 
 
 
-
-
-
-
-
   return(
-
-
     <div className="form-container">
       <MyInput placeholder={'фио'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
       <MyInput placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
       <MyInput placeholder={'контактная информация'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'} style={{marginTop: 20 + 'px'}}></MyInput>
       <MyInput placeholder={'место проведения'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
-      <Row className='form-box mt-3 d-flex justify-content-around'>
 
-
-      <Col md={6} xs={12}>
-        <MySelect options={streamType} onChange={setType} styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} placeholder={'тип проекта'}></MySelect>
-      </Col>
-
-
-      <Col md={6} xs={12}>
-        <MyDate  placeholder={'дата проведения'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-      </Col>
-
-
-
-      </Row>
+      <MySelect options={streamType} onChange={setType} styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 300 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} placeholder={'тип проекта'}></MySelect>
 
       <MyTextArea placeholder={'описание'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
 
+      <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+
+      <MyDate  placeholder={'дата проведения'} value={date} onChange={(e) => {setDate(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyDate>
 
       <div className="form-tech-info"> ПОСЛЕ ПОЛУЧЕНИЯ ИНФОРМАЦИИ С ВАМИ СВЯЖЕТСЯ РУКОВОДИТЕЛЬ НАПРАВЛЕНИЯ ДЛЯ УТОЧНЕНИЯ ИНОФРМАЦИИ</div>
-
       <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendMessage()}}>Создать</MyButton>
-
-
-
     </div>
 
   )

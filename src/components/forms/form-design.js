@@ -51,8 +51,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
   const customerStickerId = "0cd3d40a-b560-4aa2-b3b3-92728bfaeb08"
+  console.log(customer)
 
-  console.log(priority)
 
 
 
@@ -132,12 +132,12 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
           })
       )
         })
+        .catch(error => console.log(error, "ERROR"))
     }
 
 
 
     const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Важность проекта: ${priority.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${packageProject.label} Референсы: ${reference} Дата сдачи проекта: ${date}`
-
 
     const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${packageProject.label} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
 
@@ -154,10 +154,14 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${keyDes}`
           },
-          body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
-
+          body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
       })
+      .catch(error => console.log(error, 'ERROR'))
     }
+
+
+
+
 
     // send to Telegram
 
@@ -176,6 +180,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
       }).then(responce => responce.json())
         .then(data => console.log(data))
+        .catch(error => console.log(error, 'ERROR'))
 
     }
 
@@ -234,32 +239,35 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   return(
     <div className="form-container">
 
-      <MyInput placeholder={'Фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput>
-      <MyInput placeholder={'Контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'Название проекта'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput>
+      <MyInput placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'название проекта'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
 
       <Row>
         <Col md={6} sm={12} xs={12}>
-        <MySelect placeholder={'Заказчик'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={customerSticker} value={customer} onChange={setСustomer}></MySelect>
+        <MySelect placeholder={'заказчик'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={customerSticker} value={customer} onChange={setСustomer}></MySelect>
         </Col>
 
 
         <Col md={6} sm={12} xs={12}>
 
-        <MySelect placeholder={'Важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
+        <MySelect placeholder={'важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
 
         </Col>
       </Row>
 
 
-      <MyInput placeholder={'Технические требования (формат, разрешеение и т.д.)'} value={requirements} onChange={(e) => {setRequirements(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyTextArea placeholder={'Краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
-      <MyInput placeholder={'Ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyInput placeholder={'технические требования (формат, разрешеение и т.д.)'} value={requirements} onChange={(e) => {setRequirements(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+      <MyInput placeholder={'ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
-      <MySelect placeholder={'Из чего состоит проект'} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}}  options={designParts}></MySelect>
+      <MySelect placeholder={'из чего состоит проект'} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}}  options={designParts}></MySelect>
 
       <MyInput placeholder={'пожелания референсы'} value={reference} onChange={(e) => {setReference(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+
+      <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+
       <MyDate placeholder={'дата сдачи проекта'} value={date} onChange={(e) => {setDate(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyDate>
 
       <Row className='mt-4 d-flex justify-content-center align-items-center'>
