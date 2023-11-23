@@ -302,3 +302,47 @@
   line-height: normal;
   letter-spacing: 0.7px;
 }
+
+
+.filming-deadline {
+
+  margin-top: 15px;
+  max-width: 100%;
+  color: #000;
+  text-transform: lowercase;
+  text-align: center;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal
+
+}
+
+/* plan */
+
+.plan-card-title {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  max-width: 100%;
+  color: #000;
+  text-transform: lowercase;
+  text-align: center;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal
+}
+
+.plan-card-subtitle {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 15px;
+  max-width: 100%;
+  color: #000;
+  text-transform: lowercase;
+  text-align: center;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal
+}
