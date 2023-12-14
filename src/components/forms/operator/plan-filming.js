@@ -101,7 +101,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
         <Col className='mt-3 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
 
-        <MyTime title={'время окончания съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
+        <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
 
         </Col>
 
