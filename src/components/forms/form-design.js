@@ -7,6 +7,7 @@ import './form.css'
 import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import Select from 'react-select'
 
 // components
 
@@ -47,11 +48,20 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [reference, setReference] = useState('')
   const [date, setDate] = useState('')
 
+  const [test, setTest] = useState('')
+
+  console.log(test)
+
 
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
   const customerStickerId = "0cd3d40a-b560-4aa2-b3b3-92728bfaeb08"
   console.log(customer)
+
+  const selectedPackageProject = () => (packageProject.length < 1) ? ['не выбрано'] : packageProject.map((item) => {return item.label})
+  console.log(selectedPackageProject().join(', '))
+
+  console.log(packageProject)
 
 
 
@@ -137,9 +147,9 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-    const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Важность проекта: ${priority.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${packageProject.label} Референсы: ${reference} Дата сдачи проекта: ${date}`
+    const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Важность проекта: ${priority.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${selectedPackageProject().join(', ')} Референсы: ${reference} Дата сдачи проекта: ${date}`
 
-    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${packageProject.label} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
+    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
 
 
 
@@ -169,7 +179,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const CHAT_ID = '-4067115794'
+      const CHAT_ID = '-1002092523389'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       fetch(URL_API, {
@@ -223,15 +233,15 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-  useEffect(() => {
-    fetchIdKey()
+    useEffect(() => {
+      fetchIdKey()
 
-    setTimeout(() => {
-      fetchDesk()
-      fetchGetStickers()
-    }, 5000)
+      setTimeout(() => {
+        fetchDesk()
+        fetchGetStickers()
+      }, 5000)
 
-  }, [])
+    }, [])
 
 
 
@@ -252,6 +262,9 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
         <Col md={6} sm={12} xs={12}>
 
+
+
+
         <MySelect placeholder={'важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
 
         </Col>
@@ -262,7 +275,9 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
       <MyInput placeholder={'ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
-      <MySelect placeholder={'из чего состоит проект'} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}}  options={designParts}></MySelect>
+
+
+      <MySelect placeholder={'из чего состоит проект'} isMulti closeMenuOnSelect={false} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}}  options={designParts}></MySelect>
 
       <MyInput placeholder={'пожелания референсы'} value={reference} onChange={(e) => {setReference(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 

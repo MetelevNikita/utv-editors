@@ -1,31 +1,59 @@
 const designParts = [
   {
     label: 'Оформление передачи',
-    value: '123'
+    value: '1'
   },
 
   {
-    label: 'Заставка',
-    value: '123'
+    label: 'заставка',
+    value: '2'
   },
 
   {
-    label: 'Пек Шот',
-    value: '123'
+    label: 'плашка',
+    value: '3'
   },
 
   {
-    label: 'Инфографика',
-    value: '123'
+    label: 'титры',
+    value: '4'
   },
 
   {
-    label: 'Спец проект',
-    value: '123'
+    label: 'пекшот',
+    value: '5'
   },
 
+
+  {
+    label: 'новости карта',
+    value: '6'
+  },
+
+  {
+    label: 'новости цитата',
+    value: '7'
+  },
+
+  {
+    label: 'инфографика для новостей',
+    value: '8'
+  },
+
+  {
+    label: 'графика для новостей',
+    value: '9'
+  },
+
+  {
+    label: '3D',
+    value: '10'
+  },
 
 ]
 
 
 export default designParts
+
+
+

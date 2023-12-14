@@ -59,7 +59,12 @@ const oepratorList = [
     label: 'Газимуллин Нургизар',
     value: '705189721',
     colorId: "#05FCFC"
+  },
 
+  {
+    label: 'Емаев Сергей',
+    value: '1267512293',
+    colorId: "#05FCFC"
   },
 ]
 

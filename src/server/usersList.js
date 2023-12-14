@@ -35,7 +35,7 @@ const usersList = [
   },
 
   {
-    label: 'Денислам Ахметьянов',
+    label: 'Динислам Ахметьянов',
     value: "05f0949c-db6d-4403-858f-f0652f4d604c",
     tgId: 69157740
   },
@@ -55,7 +55,7 @@ const usersList = [
   {
     label: 'Максим Карпухин',
     value: "b373dad0-65de-459e-8ccb-be36db125710",
-    tgId: 465573856
+    tgId: 307412203
   },
 
   {

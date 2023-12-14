@@ -20,7 +20,10 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 
 
-const PlanFilming = () => {
+const PlanFilming = ({modalOperLike, modalOperDislike}) => {
+
+  const {modalActiveLike, setModalActiveLike} = modalOperLike
+  const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
 
   const [fio, setFio] = useState('')
   const [contacts, setContacts] = useState('')
@@ -36,7 +39,8 @@ const PlanFilming = () => {
   const messageTG = `ЗАЯВКА НА СЪЁМКУ \n \n  АВТОР \n ${fio} \n КОНТАКТЫ \n ${contacts} \n ПРОЕКТ \n ${title} \n ОПИСАНИЕ \n ${description} \n ДАТА \n ${date} (${timeStart} - ${timeEnd}) \n АДРЕС \n ${adress} \n \n После сооздания съёмки просьба связаться с автором для подтверждения.`
 
 
-  const sendMessage = () => {
+
+  const sendMessageTg = () => {
 
     const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
@@ -51,7 +55,32 @@ const PlanFilming = () => {
           }).then(responce => responce.json())
             .then(data => console.log(data))
             .catch(error => console.log(error, 'ERROR'))
-  }
+    }
+
+  const sendMessage = () => {
+
+    if( fio !== '' && contacts !== '' && title !== '' && description !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && adress !== '') {
+
+          sendMessageTg()
+          setModalActiveLike(true)
+
+
+          setFio('')
+          setAdress('')
+          setTitle('')
+          setAdress('')
+          setDate('')
+          setTimeEnd('')
+          setTimeStart('')
+          setDescription('')
+
+
+      } else {
+                setModaActiveDislike(true)
+      }
+
+
+    }
 
 
 

@@ -7,19 +7,21 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 //
 
 import { Row ,Col, Container } from "react-bootstrap"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
 // img
 
 import logoUtv from './../../asset/logoUTV.svg'
+import dislike from './../../asset/dislike.svg'
 
 // components
 
 
 import MyButton from '../UI/MyButton'
 import MyInput from '../UI/MyInput'
+import ModalPageAuth from '../modalpage/Modal-page-auth';
 
 
 
@@ -33,32 +35,48 @@ const LoginPage = ({isAuth}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const submitLoginIn = () => {
-    const auth = getAuth()
+  const [modalAuth, setModalAuth] = useState(true)
 
-    signInWithEmailAndPassword(auth, email, password)
+  const submitLoginIn = () => {
+    const userAuth = getAuth()
+    signInWithEmailAndPassword(userAuth, email, password)
       .then((userCredentioal) => {
-        const user = userCredentioal.user
-        console.log(user.email)
-        sessionStorage.setItem('userEmail', user.email)
-        setAuth(true)
-        navigate('/main')
+          const user = userCredentioal.user
+
+          console.log(userCredentioal)
+          sessionStorage.setItem('userEmail', user.email)
+          setAuth(true)
+          setModalAuth(true)
+          navigate('/main')
+
 
       })
       .catch((error) => {
-        console.log(error, "ERROR")
+        setModalAuth(false)
+        console.log(error.code, "ERROR")
       })
 
-
-    setEmail('')
-    setPassword('')
   }
+
+
+  console.log(modalAuth)
+
+
+
+
+
+
+
+
+
 
 
   return(
 
 
     <Container fluid>
+
+        {(modalAuth === true) ? <></> : <ModalPageAuth ModalPageAuth={{modalAuth, setModalAuth}} modalDislikeImg={dislike} modalDislikeTitle={'Неправильный логин или пароль'} modalBtnTitle={'заново'}></ModalPageAuth>}
 
         <Row md={12} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
           <Col className='d-flex flex-column justify-content-center align-items-center'>

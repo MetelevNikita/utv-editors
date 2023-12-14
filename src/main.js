@@ -168,7 +168,8 @@ const Main = ({isAuth}) => {
 
 
                 {/* operator routing */}
-                <Route path={'schedule/plan'} element={<PlanFilming></PlanFilming>}></Route>
+                
+                <Route path={'schedule/plan'} element={<PlanFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></PlanFilming>}></Route>
                 <Route path={`schedule/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
                 <Route path={`schedule/:id`} element={<CardFilming></CardFilming>}></Route>
 

@@ -78,7 +78,8 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       }
     }).then(responce => responce.json())
       .then(data => {
-        setColumnId(data.content[2].id)
+        console.log(data)
+        setColumnId(data.content[1].id)
       })
   }
 
