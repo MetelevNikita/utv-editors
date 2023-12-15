@@ -37,7 +37,6 @@ const ScheludeFilming = () => {
 
 
   const userEmail = sessionStorage.getItem('userEmail')
-  console.log(userEmail)
 
 
   const getCard = () => {

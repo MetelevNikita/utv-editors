@@ -15,6 +15,12 @@ import { useNavigate } from 'react-router-dom'
 // components
 
 import MyButton from '../../UI/MyButton'
+import MyButtonBack from '../../UI/MyButtonBack'
+
+//
+
+const userEmail = sessionStorage.getItem('userEmail')
+console.log(userEmail)
 
 
 const CardFilming = (props) => {
@@ -29,14 +35,16 @@ const CardFilming = (props) => {
   const id = params.id
 
 
-const getCard = () => {
-    const db = getDatabase()
-    const cardList = ref(db, 'cardsFilming/')
-    onValue(cardList, (data) => {
-      setCardList(Object.values(data.val()))
-      setLoading(false)
-    })
-  }
+
+
+  const getCard = () => {
+      const db = getDatabase()
+      const cardList = ref(db, 'cardsFilming/')
+      onValue(cardList, (data) => {
+        setCardList(Object.values(data.val()))
+        setLoading(false)
+      })
+    }
 
 
 
@@ -45,8 +53,6 @@ const delCard = () => {
   remove(ref(db, `cardsFilming/${singleArr[0].id}`))
   navigate('/main/operator/schedule')
 }
-
-
 
 
   useEffect(() => {
@@ -65,9 +71,11 @@ const delCard = () => {
     return item.id === id
   })
 
-  console.log(singleArr)
 
 
+  if(loading === true) {
+    <>LOADING</>
+  }
 
 
   return(
@@ -92,11 +100,18 @@ const delCard = () => {
 
       <Row className='mt-4'>
         <Col>
-            <Link to={'/main/schedule'}><MyButton>Назад</MyButton></Link>
+            <Link to={`/main/schedule/edit/${id}`}><MyButton onClick={() => {console.log('редактируй')}}>Редактировать</MyButton></Link>
         </Col>
 
+
+          {(userEmail === 'admin@gmail.com') ? <Col><MyButton onClick={() => {delCard()}}>Удалить</MyButton></Col> : <></>}
+
+      </Row>
+
+      <Row className='mt-4'>
         <Col>
-            <MyButton onClick={() => {delCard()}}>Удалить</MyButton>
+
+            <Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link>
         </Col>
       </Row>
     </>

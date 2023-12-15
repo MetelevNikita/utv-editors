@@ -13,7 +13,7 @@ const MySelect = (props) => {
 
       <div className="form-select-box">
       <div className='form-text'>{props.select}</div>
-      <Select className='select' {...props}></Select>
+      <Select defaultInputValue='' className='select' {...props}></Select>
       </div>
 
       </Row>

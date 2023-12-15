@@ -98,7 +98,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     setContacts('')
 
     setModalActiveLike(true)
-    navigate('/main/operator/schedule')
+    navigate('/main/operator/schedule/create')
 
   } else {
 

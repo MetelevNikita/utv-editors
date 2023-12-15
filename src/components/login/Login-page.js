@@ -59,17 +59,6 @@ const LoginPage = ({isAuth}) => {
   }
 
 
-  console.log(modalAuth)
-
-
-
-
-
-
-
-
-
-
 
   return(
 
