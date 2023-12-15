@@ -49,8 +49,8 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const [place, setPlace] = useState('')
   const [contacts, setContacts] = useState('')
   const [conditions, setConditions] = useState('')
-  const [cloth, setCloth]= useState('')
-  const [project, setProject] = useState('')
+  const [cloth, setCloth]= useState({label: 'не выбрано', value: ''})
+  const [project, setProject] = useState({label: 'не выбрано', value: ''})
 
 
   const [checkedCard, setCheckedCard] = useState([])
@@ -90,9 +90,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   }
 
-  console.log(checkedCard)
-
-
 
   useEffect(() => {
     getCard()
@@ -100,21 +97,8 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   }, [])
 
 
-  console.log(checkedCard)
 
-
-
-
-
-
-
-
-
-
-
-
-
-  // createCard
+  // updateCard
 
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
@@ -205,7 +189,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
     <div className="filming-container">
 
-      <div className='filming-edit-title'>Внесите изменения в карточку!</div>
+      <div className='filming-edit-title'>внесите изменения в съёмку</div>
 
       <MyInput  style={{marginTop: 20 + 'px'}} value={checkedCard.name} onChange={(e) => {setCheckedCard({...checkedCard, name: e.target.value})}}></MyInput>
       <MyInput  style={{marginTop: 20 + 'px'}} value={checkedCard.title} onChange={(e) => {setCheckedCard({...checkedCard, title: e.target.value})}}></MyInput>

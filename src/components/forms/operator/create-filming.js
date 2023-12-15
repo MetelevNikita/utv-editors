@@ -4,12 +4,12 @@ import './filming.css'
 
 //
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get, onValue } from "firebase/database";
 import uuid from 'react-uuid'
 
 // components
@@ -37,11 +37,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
 
+  const [cardList, setCardList] = useState([])
+
 
 
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState([])
   const [userColor, setUserColor]= useState('')
   const [date, setDate] = useState('')
   const [timeStart, setTimeStart] = useState('')
@@ -49,24 +51,83 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [place, setPlace] = useState('')
   const [contacts, setContacts] = useState('')
   const [conditions, setConditions] = useState('')
-  const [cloth, setCloth]= useState('')
-  const [project, setProject] = useState('')
+  const [cloth, setCloth]= useState({label: 'не выбрано', value: ''})
+  const [project, setProject] = useState({label: 'не выбрано', value: ''})
 
   const id = uuid()
-  const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
+
+  console.log(operatorProject)
+
+
+
+  // getCard
+
+
+  const getCard = () => {
+
+    const db = getDatabase()
+    const cardBase = ref(db, 'cardsFilming/')
+    onValue(cardBase, (snapshot) => {
+      const data = snapshot.val()
+      setCardList(Object.values(data))
+    })
+  }
+
+
+  const userArr = user.map((item) => {
+    return item.label
+  })
+
+
+  const filterCard = cardList.filter((userList) => {
+    return userList.user.includes(userArr)
+  })
+
+  const dateCardList = filterCard.filter((item) => {
+    return item.date === new Date(date).toDateString()
+  })
+
+  //
+
+  console.log(dateCardList)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    getCard()
+  }, [])
+
+
+
+  // createCard
+
 
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
 
-
-  console.log(user)
   const createCard = () => {
 
-    if(fio !== '' && title !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && place !== '' && contacts !== '' && conditions !== '') {
 
-    const db = getDatabase()
+    if(dateCardList.map((item) => {return item.timeStart}) === timeStart) {
+      alert('sdafsdas')
+    } else if (fio === '' && title === '' && date === '' && timeStart === '' && timeEnd === '' && place === '' && contacts === '' && conditions === '') {
+      setModaActiveDislike(true)
+    } else {
+
+      const db = getDatabase()
       set(ref(db, 'cardsFilming/' + id), {
 
         id: id,
@@ -80,33 +141,30 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         place: place,
         contacts: contacts,
         conditions: conditions,
-        projectPay: project.label,
-        cloth: cloth.label
+        cloth: cloth.label,
+        projectPay: project.label
 
       })
 
-    selectedIdUserSend()
+      // selectedIdUserSend()
 
-    setFio('')
-    setTitle('')
-    setUser('')
-    setDate('')
-    setTimeStart('')
-    setTimeEnd('')
-    setPlace('')
-    setConditions('')
-    setContacts('')
+      setFio('')
+      setTitle('')
+      setUser('')
+      setDate('')
+      setTimeStart('')
+      setTimeEnd('')
+      setPlace('')
+      setConditions('')
+      setContacts('')
 
-    setModalActiveLike(true)
-    navigate('/main/operator/schedule/create')
+      setModalActiveLike(true)
+      navigate('/main/operator/schedule/create')
 
-  } else {
 
-    setModaActiveDislike(true)
+      }
 
   }
-
-}
 
   const selectedIdUserSend = () => {
     return (user.length < 1) ? ['не определен'] : user.map((item) => {
@@ -126,11 +184,14 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
               .then(data => console.log(data))
               .catch(error => console.log(error, 'ERROR'))
           })
-    }
+  }
 
 
 
-    console.log(project)
+
+
+
+
 
 
   return(
@@ -181,11 +242,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Row>
         <Col>
-          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorProject} value={project} onChange={setProject}></MySelect>
+          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
         </Col>
 
         <Col>
-        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
+        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
         </Col>
       </Row>
 

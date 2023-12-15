@@ -346,3 +346,11 @@
   font-weight: 300;
   line-height: normal
 }
+
+
+/* EDIT FILMING */
+
+.filming-edit-title {
+  margin-top: 15px;
+  text-align:  center;
+}
