@@ -53,6 +53,8 @@ const ScheludeFilming = () => {
       getCard()
   }, [])
 
+  console.log(cardList)
+
 
 
 
