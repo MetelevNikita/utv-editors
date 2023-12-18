@@ -60,6 +60,7 @@ import UiTechSvg from './components/UI/menu_image/uiTechSvg'
 import UiEditingSvg from './components/UI/menu_image/uiEditingSvg'
 import UiDesignSvg from './components/UI/menu_image/uiDesignSvg'
 import CardFilming from './components/forms/operator/card-filming'
+import EditFilming from './components/forms/operator/edit-filming'
 
 
 
@@ -67,7 +68,7 @@ import CardFilming from './components/forms/operator/card-filming'
 
 
 
-const Main = ({isAuth}) => {
+const Main = ({isAuth, authEmailLog}) => {
 
 
 
@@ -79,6 +80,7 @@ const Main = ({isAuth}) => {
   const [menuTitle, setMenuTitle] = useState('КАТЕГОРИЯ')
 
   const {auth, setAuth} = isAuth
+  const {authEmail, setAuthEmail} = authEmailLog
   const navigate = useNavigate()
 
 
@@ -160,7 +162,7 @@ const Main = ({isAuth}) => {
 
                 <Route path={`/editing`} element={<FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>}></Route>
 
-                <Route path={`/schedule`} element={<ScheludeFilming></ScheludeFilming>}></Route>
+                <Route path={`/schedule`} element={<ScheludeFilming authEmailLog={{authEmail, setAuthEmail}}></ScheludeFilming>}></Route>
 
                 <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
@@ -168,10 +170,11 @@ const Main = ({isAuth}) => {
 
 
                 {/* operator routing */}
-                
+
                 <Route path={'schedule/plan'} element={<PlanFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></PlanFilming>}></Route>
                 <Route path={`schedule/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
-                <Route path={`schedule/:id`} element={<CardFilming></CardFilming>}></Route>
+                <Route path={`schedule/:id`} element={<CardFilming authEmailLog={{authEmail, setAuthEmail}}></CardFilming>}></Route>
+                <Route path={`schedule/edit/:id`} element={<EditFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></EditFilming>}></Route>
 
 
           </Routes>

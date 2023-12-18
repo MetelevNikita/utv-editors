@@ -256,6 +256,7 @@
 
 .filming-title {
   font-size: 12px;
+  text-align: center;
 
 }
 
@@ -345,4 +346,12 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal
+}
+
+
+/* EDIT FILMING */
+
+.filming-edit-title {
+  margin-top: 15px;
+  text-align:  center;
 }
