@@ -27,6 +27,7 @@ import MyButtonBack from '../../UI/MyButtonBack'
 import oepratorList from '../../../server/operatorList'
 import operatorProject from '../../../server/operatorProject'
 import operatorCloth from '../../../server/operatorCloth'
+import operatorType from '../../../server/operatorType'
 
 
 
@@ -53,11 +54,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [conditions, setConditions] = useState('')
   const [cloth, setCloth]= useState({label: 'не выбрано', value: ''})
   const [project, setProject] = useState({label: 'не выбрано', value: ''})
+  const [type, setType] = useState('')
 
   const id = uuid()
-
-  console.log(timeStart)
-
 
 
 
@@ -75,9 +74,10 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   }
 
 
-  const userArr = user.map((item) => {
-    return item.label
-  })
+  const userArr = (user.length < 1) ? ['не определен'] : user.map((item) => {return item.label})
+
+
+  console.log(userArr)
 
 
   const filterCard = cardList.filter((userList) => {
@@ -95,25 +95,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   console.log(filterTimeStart)
   console.log(filterTimeEnd)
-
-
-
-  const filter = () => {
-
-    return filterTimeStart >= '14:00'
-  }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -141,9 +122,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-  if (fio === '' || title === '' || date === '' || timeStart === '' || timeEnd === '' || place === '' || contacts === '' || conditions === '') {
-      return setModaActiveDislike(true)
-    }
+    if (fio === '' || date === '' ) {
+        return setModaActiveDislike(true)
+      }
 
 
     if(!filterTimeStart.includes(timeStart) && !filterTimeEnd.includes(timeEnd)) {
@@ -154,12 +135,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
         id: id,
         name: fio,
+        type: type.label,
         title: title,
         user: selectedUser().join(' '),
         userColor: selectedUserColor().join(),
         date: new Date(date).toDateString(),
-        timeStart: timeStart,
-        timeEnd: timeEnd,
+        timeStart: (timeStart === '') ? id : timeStart,
+        timeEnd: (timeEnd === '') ? id : timeEnd,
         place: place,
         contacts: contacts,
         conditions: conditions,
@@ -179,7 +161,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       setConditions('')
       setContacts('')
       setModalActiveLike(true)
-      navigate('/main/operator/schedule/create')
+      navigate('/main/schedule/create')
     } else {
 
       return alert('Данное время занято')
@@ -222,8 +204,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   return(
     <div className="filming-container">
 
-      <MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-      <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
+      <Row className='d-flex justify-content-center'>
+        <Col className='d-flex justify-content-center'><MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+
+        <Col className='d-flex justify-content-center'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 282 + 'px'})}} options={operatorType} value={type} onChange={setType}></MySelect></Col>
+      </Row>
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput> : <></>}
 
       <Row className='d-flex justify-content-md-center'>
 
@@ -247,36 +234,44 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       <Row className='d-flex justify-content-md-center'>
 
           <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-              <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
-
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime> : <></>}
           </Col>
 
           <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime> : <></>}
+          </Col>
+      </Row>
 
-              <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime>
 
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
+
+        <MyInput placeholder={'место съёмки'} style={{marginTop: 20 + 'px'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput>
+        <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput>
+        <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
+
+      </>  : <></>}
+
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
+
+        <Row className='mb-4'>
+          <Col>
+            <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
           </Col>
 
-      </Row>
+          <Col>
+          <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
+          </Col>
+        </Row>
 
-      <MyInput placeholder={'место съёмки'} style={{marginTop: 20 + 'px'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput>
-      <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput>
-
-      <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
-
-      <Row>
-        <Col>
-          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
-        </Col>
-
-        <Col>
-        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
-        </Col>
-      </Row>
+      </> : <></> }
 
 
-      <Row className='mt-4'>
+
+
+
+      <Row className='mt-2'>
         <Col md={6} sm={6} xs={12} className='mb-4'>
           <MyButton onClick={() => {createCard()}}>Создать</MyButton>
         </Col>

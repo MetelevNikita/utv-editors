@@ -50,6 +50,9 @@ const ScheludeFilming = ({authEmailLog}) => {
   }
 
 
+  console.log(cardList)
+
+
   useEffect(() => {
       getCard()
   }, [])
@@ -123,16 +126,48 @@ const sortMonthTime = searchMonthCard.sort((a, b) => {
 })
 
 
+
+const timeData = (label, item) => {
+
+  if(label === 'РЕЗЕРВ 8часовой') {
+
+    return `${8} часов`
+
+  } else if (label === 'РЕЗЕРВ 12часовой') {
+
+    return `${12} часов`
+
+  } else if (label === 'ДЕЖУРНЫЙ') {
+
+    return `${8} часов`
+
+  } else if (label === 'ОТПУСК') {
+
+    return `${8} часов`
+
+  } else if (label === 'ВЫХОДНОЙ') {
+
+    return `${8} часов`
+
+  } else {
+
+    return `${item.timeStart} - ${item.timeEnd}`
+  }
+
+}
+
+// time={(item.type === 'РЕЗЕРВ 8часовой') ? '9:00-18:00' : `${item.timeStart} - ${item.timeEnd}`}
+
 const filterDate = () => {
 
 
     if (triggerDate === true) {
 
-      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`} time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
 
     } else {
 
-      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`}  time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
     }
 }
 
@@ -181,14 +216,11 @@ const filterDate = () => {
     <Row>
       <Col className='d-flex flex-column  justify-content-center' md={12}>
 
-
         {(triggerDate === true) ? <ListFilmingDate date={`${calendarDate.getMonth()} месяц`}></ListFilmingDate> : <ListFilmingDate date={calendarDate.toDateString()}></ListFilmingDate>}
 
 
           <ul className='card-list'>
-
             {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : filterDate()}
-
           </ul>
 
       </Col>
@@ -196,7 +228,6 @@ const filterDate = () => {
 
     <Row >
       <Col className='d-flex justify-content-center'>
-
 
         <Link to={'/main'}><MyButtonBack style={{width: 250 + 'px'}}>НАЗАД</MyButtonBack></Link>
 
