@@ -27,9 +27,10 @@ import ModalPageAuth from '../modalpage/Modal-page-auth';
 
 
 
-const LoginPage = ({isAuth}) => {
+const LoginPage = ({isAuth, authEmailLog}) => {
 
   const {auth, setAuth} = isAuth
+  const {authEmail, setAuthEmail} = authEmailLog
   const navigate = useNavigate('')
 
   const [email, setEmail] = useState('')
@@ -43,8 +44,7 @@ const LoginPage = ({isAuth}) => {
       .then((userCredentioal) => {
           const user = userCredentioal.user
 
-          console.log(userCredentioal)
-          sessionStorage.setItem('userEmail', user.email)
+          setAuthEmail(user.email)
           setAuth(true)
           setModalAuth(true)
           navigate('/main')

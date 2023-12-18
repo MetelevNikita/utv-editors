@@ -27,7 +27,10 @@ import oepratorList from '../../../server/operatorList';
 import operatorProject from '../../../server/operatorProject';
 
 
-const ScheludeFilming = () => {
+const ScheludeFilming = ({authEmailLog}) => {
+
+
+  const {authEmail, setAuthEmail} = authEmailLog
 
   const [calendarDate, setCalendarDate] = useState(new Date())
   const [month, setMonth] = useState()
@@ -36,7 +39,6 @@ const ScheludeFilming = () => {
   const [user, setUser] = useState('не определен')
 
 
-  const userEmail = sessionStorage.getItem('userEmail')
 
 
   const getCard = () => {
@@ -161,7 +163,8 @@ const filterDate = () => {
 
         <Row>
 
-          {(userEmail === 'admin@gmail.com') ? <Col className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
+
+          {(authEmail === 'admin@gmail.com') ? <Col className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
 
           <Col className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
         </Row>

@@ -56,7 +56,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const id = uuid()
 
-  console.log(operatorProject)
+  console.log(timeStart)
+
 
 
 
@@ -89,7 +90,21 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   //
 
-  console.log(dateCardList)
+  const filterTimeStart = dateCardList.map((item) => {return item.timeStart})
+  const filterTimeEnd = dateCardList.map((item) => {return item.timeEnd})
+
+  console.log(filterTimeStart)
+  console.log(filterTimeEnd)
+
+
+
+  const filter = () => {
+
+    return filterTimeStart >= '14:00'
+  }
+
+
+
 
 
 
@@ -121,11 +136,18 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const createCard = () => {
 
 
-    if(dateCardList.map((item) => {return item.timeStart}) === timeStart) {
-      alert('sdafsdas')
-    } else if (fio === '' && title === '' && date === '' && timeStart === '' && timeEnd === '' && place === '' && contacts === '' && conditions === '') {
-      setModaActiveDislike(true)
-    } else {
+
+
+
+
+
+  if (fio === '' || title === '' || date === '' || timeStart === '' || timeEnd === '' || place === '' || contacts === '' || conditions === '') {
+      return setModaActiveDislike(true)
+    }
+
+
+    if(!filterTimeStart.includes(timeStart) && !filterTimeEnd.includes(timeEnd)) {
+
 
       const db = getDatabase()
       set(ref(db, 'cardsFilming/' + id), {
@@ -145,8 +167,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         projectPay: project.label
 
       })
-
-      // selectedIdUserSend()
+      selectedIdUserSend()
 
       setFio('')
       setTitle('')
@@ -157,14 +178,18 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       setPlace('')
       setConditions('')
       setContacts('')
-
       setModalActiveLike(true)
       navigate('/main/operator/schedule/create')
+    } else {
+
+      return alert('Данное время занято')
+    }
+
+   }
 
 
-      }
 
-  }
+
 
   const selectedIdUserSend = () => {
     return (user.length < 1) ? ['не определен'] : user.map((item) => {

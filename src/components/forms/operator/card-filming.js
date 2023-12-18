@@ -19,11 +19,14 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 //
 
-const userEmail = sessionStorage.getItem('userEmail')
-console.log(userEmail)
 
 
-const CardFilming = (props) => {
+const CardFilming = ({authEmailLog , ...props}) => {
+
+
+  const {authEmail, setAuthEmail} = authEmailLog
+
+  console.log(authEmail)
 
 
   const [cardList, setCardList] = useState([])
@@ -103,8 +106,8 @@ const delCard = () => {
             <Link to={`/main/schedule/edit/${id}`}><MyButton onClick={() => {console.log('редактируй')}}>Редактировать</MyButton></Link>
         </Col>
 
+        {(authEmail === 'admin@gmail.com') ? <Col><MyButton onClick={() => {delCard()}}>Удалить</MyButton></Col> : <></> }
 
-          {(userEmail === 'admin@gmail.com') ? <Col><MyButton onClick={() => {delCard()}}>Удалить</MyButton></Col> : <></>}
 
       </Row>
 

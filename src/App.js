@@ -11,12 +11,13 @@ import LoginPage from './components/login/Login-page'
 const App = () => {
 
   const [auth, setAuth] = useState(false)
+  const [authEmail, setAuthEmail] = useState('')
 
   return(
     <Routes>
 
-      <Route path={'/'} element={<LoginPage isAuth={{auth, setAuth}}></LoginPage>}></Route>
-      <Route path={'/main/*'} element={<Main isAuth={{auth, setAuth}}></Main>}></Route>
+      <Route path={'/'} element={<LoginPage authEmailLog={{authEmail, setAuthEmail}}  isAuth={{auth, setAuth}}></LoginPage>}></Route>
+      <Route path={'/main/*'} element={<Main authEmailLog={{authEmail, setAuthEmail}} isAuth={{auth, setAuth}}></Main>}></Route>
 
 
     </Routes>

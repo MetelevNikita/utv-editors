@@ -60,7 +60,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const params = useParams()
   const cardId = params.id
 
-  console.log(cardId)
   const id = uuid()
 
 
