@@ -127,7 +127,7 @@ const Main = ({isAuth, authEmailLog}) => {
 
         <div className="logo-description-box-box">
 
-          <div className="logo-description">При заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</div>
+          <div className="logo-description">при заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</div>
 
         </div>
 

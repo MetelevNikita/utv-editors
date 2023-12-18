@@ -194,7 +194,6 @@
   align-items: center;
   justify-content: space-around;
   margin-bottom: 20px;
-  margin-top: 50px;
 
   /*  */
 
@@ -222,48 +221,51 @@
 
 
 
-.list-filming-bottom {
-  color: #434343;
 
-}
-
-.list-filming-row {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-
-}
 
 
 .filming-date {
   font-size: 11px;
+  color: #434343;
 }
 
 .filming-color {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .filming-time {
   font-size: 12px;
+  text-transform: lowercase;
+  color: #434343;
+  margin-left: 10px;
 
 }
 
 .filming-title {
   font-size: 12px;
   text-align: center;
+  text-transform: lowercase;
+  color: #434343;
+  margin-left: 20px;
 
 }
 
 .filming-name {
   font-size: 12px;
+  text-transform: lowercase;
+  color: #434343;
   margin-left: 50px;
-  margin-right: 20px;
+
+}
+
+.filming-line {
 
 }
 

@@ -188,7 +188,7 @@ const filterDate = () => {
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
-        <Col md={6}>
+        <Col md={6} className='d-none d-sm-block'>
 
             <div className='schelude-info'>
 
@@ -215,7 +215,7 @@ const filterDate = () => {
     </div>
 
 
-    <Row>
+    <Row className='mt-2 mb-4'>
       <Col className='d-flex flex-column  justify-content-center' md={12}>
 
         {(triggerDate === true) ? <ListFilmingDate date={`${calendarDate.getMonth()} месяц`}></ListFilmingDate> : <ListFilmingDate date={calendarDate.toDateString()}></ListFilmingDate>}
