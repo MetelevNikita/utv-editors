@@ -1,4 +1,4 @@
-const operatorType = [
+const operatorCotegory = [
 
   {
     label: 'ПРОСТАЯ СЪЁМКА',
@@ -31,4 +31,4 @@ const operatorType = [
   }
 ]
 
-export default operatorType
+export default operatorCotegory

@@ -1,4 +1,4 @@
-const oepratorList = [
+const operatorList = [
 
   {
     label: 'не определен',
@@ -68,4 +68,4 @@ const oepratorList = [
   },
 ]
 
-export default oepratorList
+export default operatorList

@@ -77,6 +77,8 @@ const Main = ({isAuth, authEmailLog}) => {
 
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
+  const [calendarDate, setCalendarDate] = useState(new Date())
+
   const [menuTitle, setMenuTitle] = useState('КАТЕГОРИЯ')
 
   const {auth, setAuth} = isAuth
@@ -100,8 +102,6 @@ const Main = ({isAuth, authEmailLog}) => {
       top: 950,
       behavior: "smooth",
     });
-
-
   }
 
 
@@ -159,10 +159,9 @@ const Main = ({isAuth, authEmailLog}) => {
 
           <Routes>
 
-
                 <Route path={`/editing`} element={<FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>}></Route>
 
-                <Route path={`/schedule`} element={<ScheludeFilming authEmailLog={{authEmail, setAuthEmail}}></ScheludeFilming>}></Route>
+                <Route path={`/schedule`} element={<ScheludeFilming fixedCalendarDay={{calendarDate, setCalendarDate}} authEmailLog={{authEmail, setAuthEmail}}></ScheludeFilming>}></Route>
 
                 <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
@@ -176,11 +175,7 @@ const Main = ({isAuth, authEmailLog}) => {
                 <Route path={`schedule/:id`} element={<CardFilming authEmailLog={{authEmail, setAuthEmail}}></CardFilming>}></Route>
                 <Route path={`schedule/edit/:id`} element={<EditFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></EditFilming>}></Route>
 
-
           </Routes>
-
-
-
 
           </Col>
         </Row>
@@ -193,9 +188,7 @@ const Main = ({isAuth, authEmailLog}) => {
 
 
             <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
-
             <ModalPageDislike dislike={{modalActiveDislike, setModaActiveDislike}} modalDislikeImg={dislike} modalDislikeTitle={'заполните все поля'} modalBtnTitle={'Продолжить'}></ModalPageDislike>
-
 
         </Col>
       </Row>

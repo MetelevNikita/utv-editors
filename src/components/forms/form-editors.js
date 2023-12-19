@@ -18,6 +18,7 @@ import MyDate from "../UI/MyDate"
 import userPrice from "../../server/userPrice"
 import usersList from "../../server/usersList"
 import programType from "../../server/programType"
+import programCotegory from '../../server/programCotegory'
 
 
 //
@@ -54,6 +55,9 @@ const [referense, setReferense] = useState('')
 const [date, setDate] = useState('')
 const [destanation, setDestanation] = useState('')
 const [price, setPrice] = useState('')
+const [category, setCategory] = useState({label: 'не определен', value: 'не определен'})
+
+console.log(category)
 
 
 
@@ -125,17 +129,17 @@ const timestamp = newDate.getTime()
 
 
 
-      const getList = () => {
-        fetchIdKey()
+      // const getList = () => {
+      //   fetchIdKey()
 
-        setTimeout(() => {
-          fetchDesk()
-          fetchUser()
-        }, 5000)
+      //   setTimeout(() => {
+      //     fetchDesk()
+      //     fetchUser()
+      //   }, 5000)
 
-      }
+      // }
 
-      useEffect(() => {getList()}, [])
+      // useEffect(() => {getList()}, [])
 
 
 
@@ -196,7 +200,7 @@ const timestamp = newDate.getTime()
         const sendCard = () => {
         const userKey = localStorage.getItem('key')
 
-        if (fio !== '' && title !== '' && sale !== '' && coordination !== '' && audience !== '' && link !== '' && time !== '' && info !== '' && referense !== '' && date !== '' && destanation !== '' && description !== '') {
+        if (fio !== '' && title !== '' &&  link !== '' && time !== '' && info !== ''  && date !== ''  && description !== '') {
 
         fetch('https://yougile.com/api-v2/tasks', {
           method: 'POST',
@@ -242,7 +246,158 @@ const timestamp = newDate.getTime()
 
 
 
-      console.log(price)
+
+      const undefinedProject = () => {
+
+        return(
+
+          <Row>
+            <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
+            <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
+          </Row>
+        )
+      }
+
+
+      const newProject = () => {
+
+        return(
+          <>
+
+            <Row>
+                <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
+                <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} value={category} onChange={setCategory}></MySelect></Col>
+            </Row>
+
+            <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+            <Row className='form-box mt-3 d-flex justify-content-around'>
+
+              <Col md={6} xs={12}>
+                  <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
+              </Col>
+
+              <Col md={6} xs={12}>
+                  <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 100 + '%', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+              </Col>
+
+            </Row>
+
+
+            <MyInput title={'кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+
+
+            <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+
+            <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+            <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+
+            <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+
+            <Row className='mt-3 form-box d-flex justify-content-between'>
+              <Col md={6} xs={12}>
+                  <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
+              </Col>
+
+
+              <Col md={6} xs={12}>
+                  <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
+              </Col>
+            </Row>
+
+            <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
+
+            <Row>
+              <Col>
+              <div className='form-deadline'>выберите исполнителя</div>
+              <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 270 + 'px' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect>
+              </Col>
+
+
+              <Col>
+              <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+              <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+              </Col>
+            </Row>
+
+
+
+          </>
+        )
+      }
+
+
+
+      const typeProject = () => {
+
+        return(
+          <>
+
+            <Row>
+                <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
+                <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
+            </Row>
+
+            <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+            <Row className='form-box mt-3 d-flex justify-content-around'>
+
+              <Col md={6} xs={12}>
+                  <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
+              </Col>
+
+              <Col md={6} xs={12}>
+                  <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 100 + '%', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
+              </Col>
+
+            </Row>
+
+
+            <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+
+            <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+            <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
+
+
+
+
+            <Row className='mt-3 form-box d-flex justify-content-between'>
+              <Col md={6} xs={12}>
+                  <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
+              </Col>
+
+
+              <Col md={6} xs={12}>
+                  <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
+              </Col>
+            </Row>
+
+
+            <Row>
+              <Col>
+              <div className='form-deadline'>выберите исполнителя</div>
+              <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 270 + 'px' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect>
+              </Col>
+
+
+              <Col>
+              <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+              <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+              </Col>
+            </Row>
+
+
+          </>
+        )
+      }
+
+
+
 
 
 
@@ -250,55 +405,12 @@ const timestamp = newDate.getTime()
   return (
     <div className='form-container'>
 
-                  <MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{marginTop: 20 + 'px'}}></MyInput>
-                  <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
+      {(category.label === 'не определен') ? undefinedProject() : <></>}
+      {(category.label === 'типовой проект') ? typeProject() : <></>}
+      {(category.label === 'новый проект') ? newProject() : <></>}
 
-
-                  <Row className='form-box mt-3 d-flex justify-content-around'>
-
-                    <Col md={6} xs={12}>
-                        <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
-                    </Col>
-
-                    <Col md={6} xs={12}>
-                        <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 252 + 'px', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
-                    </Col>
-
-                  </Row>
-
-
-                  <MyInput title={'кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-                  <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
-
-                  <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-                  <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-                  <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-
-                  <Row className='mt-3 form-box d-flex justify-content-between'>
-                    <Col md={6} xs={12}>
-                        <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
-                    </Col>
-
-
-                    <Col md={6} xs={12}>
-                        <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
-                    </Col>
-                  </Row>
-
-
-
-                  <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
-                  <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'выберите исполнителя'} onChange={setSelectionOption}></MySelect>
-
-                  <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
-
-                  <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-                  <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
-            </div>
+      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
+  </div>
   )
 }
 

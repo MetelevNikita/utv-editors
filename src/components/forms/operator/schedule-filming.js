@@ -27,12 +27,15 @@ import oepratorList from '../../../server/operatorList';
 import operatorProject from '../../../server/operatorProject';
 
 
-const ScheludeFilming = ({authEmailLog}) => {
+const ScheludeFilming = ({authEmailLog, fixedCalendarDay}) => {
 
 
   const {authEmail, setAuthEmail} = authEmailLog
+  const {calendarDate, setCalendarDate} = fixedCalendarDay
 
-  const [calendarDate, setCalendarDate] = useState(new Date())
+  console.log(calendarDate)
+
+
   const [month, setMonth] = useState()
   const [triggerDate, setTriggerDate] = useState(false)
   const [cardList, setCardList] = useState([])
@@ -50,14 +53,11 @@ const ScheludeFilming = ({authEmailLog}) => {
   }
 
 
-  console.log(cardList)
-
 
   useEffect(() => {
       getCard()
   }, [])
 
-  console.log(cardList)
 
 
 
@@ -73,6 +73,7 @@ const onClickMonth = (value, event) => {
 }
 
 const onClickDay = (date) => {
+
   setCalendarDate(date)
   setTriggerDate(false)
 }
@@ -158,7 +159,6 @@ const timeData = (label, item) => {
 
 }
 
-// time={(item.type === 'РЕЗЕРВ 8часовой') ? '9:00-18:00' : `${item.timeStart} - ${item.timeEnd}`}
 
 const filterDate = () => {
 
@@ -184,7 +184,7 @@ const filterDate = () => {
 
       <Row className='d-flex'>
         <Col md={6} className='d-flex flex-column justify-content-center align-items-center'>
-            <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
+            <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth} activeStartDate={calendarDate}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 

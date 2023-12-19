@@ -24,10 +24,10 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 // server
 
-import oepratorList from '../../../server/operatorList'
+import operatorList from '../../../server/operatorList'
 import operatorProject from '../../../server/operatorProject'
 import operatorCloth from '../../../server/operatorCloth'
-import operatorType from '../../../server/operatorType'
+import operatorCotegory from '../../../server/operatorCotegory'
 
 
 
@@ -76,10 +76,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const userArr = (user.length < 1) ? ['не определен'] : user.map((item) => {return item.label})
 
-
-  console.log(userArr)
-
-
   const filterCard = cardList.filter((userList) => {
     return userList.user.includes(userArr)
   })
@@ -92,11 +88,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const filterTimeStart = dateCardList.map((item) => {return item.timeStart})
   const filterTimeEnd = dateCardList.map((item) => {return item.timeEnd})
-
-  console.log(filterTimeStart)
-  console.log(filterTimeEnd)
-
-
 
 
 
@@ -115,12 +106,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
 
   const createCard = () => {
-
-
-
-
-
-
 
     if (fio === '' || date === '' ) {
         return setModaActiveDislike(true)
@@ -207,7 +192,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       <Row className='d-flex justify-content-center'>
         <Col className='d-flex justify-content-center'><MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
 
-        <Col className='d-flex justify-content-center'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 282 + 'px'})}} options={operatorType} value={type} onChange={setType}></MySelect></Col>
+        <Col className='d-flex justify-content-center'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 282 + 'px'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
       </Row>
 
       {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput> : <></>}
@@ -216,7 +201,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
             <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
 
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect>
 
             </Col>
 

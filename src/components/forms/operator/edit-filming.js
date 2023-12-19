@@ -24,7 +24,7 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 // server
 
-import oepratorList from '../../../server/operatorList'
+import operatorList from '../../../server/operatorList'
 import operatorProject from '../../../server/operatorProject'
 import operatorCloth from '../../../server/operatorCloth'
 
@@ -197,7 +197,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
             <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
 
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
+                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect>
 
             </Col>
 

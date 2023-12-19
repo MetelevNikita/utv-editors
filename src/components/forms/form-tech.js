@@ -14,7 +14,7 @@ import MyButton from '../UI/MyButton'
 
 // server
 
-import streamType from '../streamType'
+import streamType from '../../server/streamType'
 
 
 const FormTech = ({modalTechLike, modalTechDislike}) => {
@@ -67,7 +67,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-
   const fetchDesk = () => {
     const keyTech = localStorage.getItem('keyTech')
     fetch('https://yougile.com/api-v2/columns', {
@@ -82,7 +81,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
         setColumnId(data.content[1].id)
       })
   }
-
 
 
   const messageYG = ` ФИО АВТОРА: ${fio} ТЕЛЕФОН ДЛЯ СВЯЗИ: ${phone} ТИП ПРОЕКТА: ${type.label} ОПИСАНИЕ: ${description} СРОКИ: ${date} ОПИСАНИЕ ${description}`
@@ -102,7 +100,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
   }
-
 
 
   // send to TG
@@ -157,14 +154,14 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetchIdKey()
-    setTimeout(() => {
-      fetchDesk()
-    }, 5000)
+  //   fetchIdKey()
+  //   setTimeout(() => {
+  //     fetchDesk()
+  //   }, 5000)
 
-  }, [])
+  // }, [])
 
 
 
