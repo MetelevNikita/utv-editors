@@ -23,6 +23,7 @@
   width: 100%;
   height: max-content;
   overflow: hidden;
+  text-transform: lowercase;
 }
 
 
@@ -68,6 +69,7 @@
 
   color: #434343;
   text-align: center;
+  text-transform: lowercase;
   font-family: Montserrat;
   font-size: 28px;
   font-style: normal;
