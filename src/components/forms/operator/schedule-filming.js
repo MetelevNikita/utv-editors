@@ -138,7 +138,7 @@ const timeData = (label, item) => {
 
   } else if (label === 'РЕЗЕРВ 12часовой') {
 
-    return `${12} часов`
+    return `${11} часов`
 
   } else if (label === 'ДЕЖУРНЫЙ') {
 
@@ -146,11 +146,11 @@ const timeData = (label, item) => {
 
   } else if (label === 'ОТПУСК') {
 
-    return `${8} часов`
+    return ``
 
   } else if (label === 'ВЫХОДНОЙ') {
 
-    return `${8} часов`
+    return ``
 
   } else {
 

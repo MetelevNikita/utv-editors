@@ -56,6 +56,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [project, setProject] = useState({label: 'не выбрано', value: ''})
   const [type, setType] = useState('')
 
+  console.log(type)
+
   const id = uuid()
 
 
@@ -103,7 +105,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-  const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
+  // const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
+
+  const messageTG = (title === '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект \n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ: \n ${selectedUser().join(' ')}` : `${new Date(date).toDateString()} \n${title} \nОПЕРАТОРЫ: \n ${selectedUser().join(' ')}`
 
   const createCard = () => {
 

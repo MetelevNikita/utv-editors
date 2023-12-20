@@ -22,7 +22,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-align: center;
   margin-bottom: 10px;
 
@@ -36,7 +36,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-align: center;
 }
 
@@ -48,7 +48,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-align: center;
 
 }

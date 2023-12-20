@@ -16,7 +16,7 @@ const operatorCotegory = [
   },
 
   {
-    label: 'РЕЗЕРВ 12часовой',
+    label: 'РЕЗЕРВ 11часовой',
     value: '9:00 - 21:00'
   },
 
