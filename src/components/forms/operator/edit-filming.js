@@ -102,8 +102,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-  const messageTG = `ВНЕСЕНЫ ИЗМЕНЕНИЯ В КАРТОЧКУ ${title} \n \n ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
-
+  const messageTG =`ВНЕСЕНЫ ИЗМЕНЕНИЯ В КАРТОЧКУ ${checkedCard.title} \n \n${new Date(date).toDateString()}\n${checkedCard.timeStart} - ${checkedCard.timeEnd}\n${checkedCard.title} \nКонтакт: ${checkedCard.contacts} \nАдрес: ${checkedCard.place} \n \nОписание: ${checkedCard.conditions}\n \nПроект\n ${project.label}\nФорма одежды\n ${cloth.label}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}`
 
 
     const updateCard = () => {

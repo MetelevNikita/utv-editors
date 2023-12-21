@@ -7,17 +7,17 @@ const operatorCotegory = [
 
   {
     label: 'ДЕЖУРНЫЙ',
-    value: 'дежурный'
+    value: '8 часов'
   },
 
   {
     label: 'РЕЗЕРВ 8часовой',
-    value: '9:00 - 18:00'
+    value: '8 часов'
   },
 
   {
     label: 'РЕЗЕРВ 11часовой',
-    value: '9:00 - 21:00'
+    value: '11 часов'
   },
 
   {

@@ -74,6 +74,8 @@ const delCard = () => {
     return item.id === id
   })
 
+  console.log(singleArr)
+
 
 
   if(loading === true) {
@@ -87,11 +89,11 @@ const delCard = () => {
       <div className="card-filming-date">{singleArr[0].date}</div>
         <div className="card-filming-box">
 
-          <div className="card-filming-title">{singleArr[0].title}</div>
+          <div className="card-filming-title">{(singleArr[0].title === '') ? singleArr[0].type : singleArr[0].title}</div>
           <div className="card-filming-author">{`Контактное лицо: ${singleArr[0].contacts}`}</div>
           <div className="card-filming-place">{singleArr[0].place}</div>
           <div className="card-filming-conditions">{singleArr[0].conditions}</div>
-          <div className='card-filming-time'>{`Время: ${singleArr[0].timeStart} - ${singleArr[0].timeEnd}`}</div>
+          <div className='card-filming-time'>{(singleArr[0].title === '') ? `Время: ${singleArr[0].type}` : `Время:  ${singleArr[0].timeStart} - ${singleArr[0].timeEnd}`}</div>
           <div className='card-filming-cloth'>{`Форма одежды: ${singleArr[0].cloth}`}</div>
           <div className='card-filming-project'>{`Проект: ${singleArr[0].projectPay}`}</div>
 

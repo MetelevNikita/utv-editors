@@ -58,6 +58,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   console.log(type)
 
+
+  console.log(title)
+
+  console.log(timeStart)
+
   const id = uuid()
 
 
@@ -88,8 +93,21 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   //
 
-  const filterTimeStart = dateCardList.map((item) => {return item.timeStart})
-  const filterTimeEnd = dateCardList.map((item) => {return item.timeEnd})
+  const filterTimeStart = dateCardList.map((item) => {
+      return item.timeStart
+  })
+  const filterTimeEnd = dateCardList.map((item) => {
+    if(item.timeEnd === '') {
+      return Math.random()
+    } else {
+      return item.timeEnd
+    }
+  })
+
+  console.log(filterTimeStart)
+  console.log(filterTimeEnd)
+
+
 
 
 
@@ -107,7 +125,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   // const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
 
-  const messageTG = (title === '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект \n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ: \n ${selectedUser().join(' ')}` : `${new Date(date).toDateString()} \n${title} \nОПЕРАТОРЫ: \n ${selectedUser().join(' ')}`
+  const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
 
   const createCard = () => {
 
@@ -129,8 +147,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         user: selectedUser().join(' '),
         userColor: selectedUserColor().join(),
         date: new Date(date).toDateString(),
-        timeStart: (timeStart === '') ? id : timeStart,
-        timeEnd: (timeEnd === '') ? id : timeEnd,
+        timeStart: (timeStart === '') ? type.value : timeStart,
+        timeEnd: (timeEnd === '') ? type.value : timeEnd,
         place: place,
         contacts: contacts,
         conditions: conditions,

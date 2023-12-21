@@ -129,26 +129,26 @@ const timestamp = newDate.getTime()
 
 
 
-      // const getList = () => {
-      //   fetchIdKey()
+      const getList = () => {
+        fetchIdKey()
 
-      //   setTimeout(() => {
-      //     fetchDesk()
-      //     fetchUser()
-      //   }, 5000)
+        setTimeout(() => {
+          fetchDesk()
+          fetchUser()
+        }, 5000)
 
-      // }
+      }
 
-      // useEffect(() => {getList()}, [])
+      useEffect(() => {getList()}, [])
 
 
 
       // message
 
 
-      const messageYG = ` ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+      const messageYG = ` ТИП ПРОЕКТА: ${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
-      const messageTG = ` ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} НАПРАВЛЕНИЕ \n ${price.label} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+      const messageTG = ` ТИП ПРОЕКТА: \n ${category.label} \n ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} НАПРАВЛЕНИЕ \n ${price.label} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
 
 
 
