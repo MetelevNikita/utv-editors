@@ -188,26 +188,33 @@ const filterDate = () => {
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
-        <Col md={6} className='d-none d-sm-block'>
 
-            <div className='schelude-info'>
+        <Col md={6}>
 
-              <div className="shelude-title">Выберите месяц</div>
-              <div className='shelude-subtittle'>это необходимо для получения списка всех съёмок за выбранный период</div>
-
-            </div>
+          <Col className='d-none d-sm-block'>
 
 
-        <Row>
+          <div className='schelude-info'>
+
+                <div className="shelude-title">Выберите месяц</div>
+                <div className='shelude-subtittle'>это необходимо для получения списка всех съёмок за выбранный период</div>
+
+          </div>
+
+          </Col>
 
 
-          {(authEmail === 'admin@gmail.com') ? <Col className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
+          <Col md={12} className='d-flex justify-content-around mb-2'>
 
-          <Col className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
-        </Row>
+              {(authEmail === 'admin@gmail.com') ? <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
 
+              <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
+
+          </Col>
 
         </Col>
+
+
       </Row>
 
 
