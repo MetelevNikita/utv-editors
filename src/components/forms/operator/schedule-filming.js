@@ -184,7 +184,7 @@ const filterDate = () => {
 
       <Row className='d-flex'>
         <Col md={6} className='d-flex flex-column justify-content-center align-items-center'>
-            <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth} activeStartDate={calendarDate}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
+            <Calendar className={'shelude-calendar'} defaultActiveStartDate={calendarDate} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
