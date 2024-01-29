@@ -39,9 +39,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
 
   const [cardList, setCardList] = useState([])
-
-
-
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
   const [user, setUser] = useState([])
@@ -56,14 +53,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [project, setProject] = useState({label: 'не выбрано', value: ''})
   const [type, setType] = useState('')
 
-  console.log(type)
 
-
-  console.log(title)
-
-  console.log(timeStart)
 
   const id = uuid()
+  const userEmail = sessionStorage.getItem('email')
+  console.log(userEmail)
 
 
 
@@ -104,8 +98,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     }
   })
 
-  console.log(filterTimeStart)
-  console.log(filterTimeEnd)
+
 
 
 
@@ -127,14 +120,30 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
 
+
+
+  const checkTimeCreateCard = () => {
+
+    if(filterTimeStart.includes(timeStart) && filterTimeEnd.includes(timeEnd)) {
+      return alert('Данное время занято')
+    }
+
+    createCard()
+
+  }
+
+
+
+
+
+
+
   const createCard = () => {
 
     if (fio === '' || date === '' ) {
         return setModaActiveDislike(true)
       }
 
-
-    if(!filterTimeStart.includes(timeStart) && !filterTimeEnd.includes(timeEnd)) {
 
 
       const db = getDatabase()
@@ -169,10 +178,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       setContacts('')
       setModalActiveLike(true)
       navigate('/main/schedule/create')
-    } else {
 
-      return alert('Данное время занято')
-    }
 
    }
 
@@ -280,7 +286,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Row className='mt-2'>
         <Col md={6} sm={6} xs={12} className='mb-4'>
-          <MyButton onClick={() => {createCard()}}>Создать</MyButton>
+          <MyButton onClick={() => {(userEmail === 'admin@gmail.com') ? createCard() : checkTimeCreateCard()}}>Создать</MyButton>
         </Col>
 
         <Col md={6} sm={6} xs={12} className='mb-4'>

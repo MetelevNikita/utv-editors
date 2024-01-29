@@ -45,6 +45,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
           const user = userCredentioal.user
 
           setAuthEmail(user.email)
+          sessionStorage.setItem('email', user.email)
           setAuth(true)
           setModalAuth(true)
           navigate('/main')
