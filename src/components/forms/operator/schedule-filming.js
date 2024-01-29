@@ -206,7 +206,7 @@ const filterDate = () => {
 
           <Col md={12} className='d-flex justify-content-around mb-2'>
 
-              {(authEmail === 'admin@gmail.com') ? <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
+              {(authEmail === 'admin@gmail.com' || authEmail === "news@gmail.com") ? <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
 
               <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
 
