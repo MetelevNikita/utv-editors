@@ -50,20 +50,10 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
   const [test, setTest] = useState('')
 
-  console.log(test)
-
-
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
   const customerStickerId = "0cd3d40a-b560-4aa2-b3b3-92728bfaeb08"
-  console.log(customer)
-
   const selectedPackageProject = () => (packageProject.length < 1) ? ['не выбрано'] : packageProject.map((item) => {return item.label})
-  console.log(selectedPackageProject().join(', '))
-
-  console.log(packageProject)
-
-
 
 
   // timestamp
@@ -86,7 +76,6 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
     }).then(responce => responce.json())
       .then(data => {
-        console.log(data)
         return fetch('https://yougile.com/api-v2/auth/keys/get', {
           method: 'POST',
           headers: {
@@ -114,7 +103,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         }
       }).then(responce => responce.json())
         .then(data => {
-          setColumnId(data.content[6].id)
+          setColumnId(data.content[5].id)
         })
     }
 
@@ -132,7 +121,6 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         }
       }).then(responce => responce.json())
         .then(data => {
-          console.log(data)
           setPrioritySticker(data.content[0].states.map((item) => {
             return {label: item.name, value: item.id, color: item.color}
           })
