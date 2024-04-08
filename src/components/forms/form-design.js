@@ -103,7 +103,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         }
       }).then(responce => responce.json())
         .then(data => {
-          setColumnId(data.content[5].id)
+          console.log(data)
+          setColumnId(data.content[6].id)
         })
     }
 
