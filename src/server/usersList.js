@@ -15,9 +15,9 @@ const usersList = [
 
 
   {
-    label: 'Живи Активно',
+    label: 'Александр Борисов',
     value: "f29cc9d9-a6fe-4ade-8607-925c403bbbb0",
-    tgId: ''
+    tgId: 6378089936
   },
 
   {

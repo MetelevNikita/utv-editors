@@ -57,7 +57,6 @@ const [destanation, setDestanation] = useState('')
 const [price, setPrice] = useState('')
 const [category, setCategory] = useState({label: 'не определен', value: 'не определен'})
 
-console.log(category)
 
 
 
