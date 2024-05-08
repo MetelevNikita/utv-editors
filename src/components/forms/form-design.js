@@ -222,15 +222,15 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-    // useEffect(() => {
-    //   fetchIdKey()
+    useEffect(() => {
+      fetchIdKey()
 
-    //   setTimeout(() => {
-    //     fetchDesk()
-    //     fetchGetStickers()
-    //   }, 5000)
+      setTimeout(() => {
+        fetchDesk()
+        fetchGetStickers()
+      }, 5000)
 
-    // }, [])
+    }, [])
 
 
 

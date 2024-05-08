@@ -14,18 +14,13 @@ const App = () => {
   const [authEmail, setAuthEmail] = useState('')
 
 
-  console.log(authEmail)
-
   return(
     <Routes>
 
       <Route path={'/'} element={<LoginPage authEmailLog={{authEmail, setAuthEmail}}  isAuth={{auth, setAuth}}></LoginPage>}></Route>
       <Route path={'/main/*'} element={<Main authEmailLog={{authEmail, setAuthEmail}} isAuth={{auth, setAuth}}></Main>}></Route>
 
-
     </Routes>
-
-
 
   )
 }

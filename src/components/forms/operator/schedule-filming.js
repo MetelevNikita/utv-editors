@@ -53,7 +53,6 @@ const ScheludeFilming = ({fixedCalendarDay}) => {
   }
 
 
-
   useEffect(() => {
       getCard()
   }, [])

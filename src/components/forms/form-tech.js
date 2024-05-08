@@ -152,14 +152,14 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   fetchIdKey()
-  //   setTimeout(() => {
-  //     fetchDesk()
-  //   }, 5000)
+    fetchIdKey()
+    setTimeout(() => {
+      fetchDesk()
+    }, 5000)
 
-  // }, [])
+  }, [])
 
 
 
