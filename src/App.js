@@ -13,6 +13,9 @@ const App = () => {
   const [auth, setAuth] = useState(false)
   const [authEmail, setAuthEmail] = useState('')
 
+
+  console.log(authEmail)
+
   return(
     <Routes>
 

@@ -1,27 +1,3 @@
-.form-container {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-
-.form-horizontal-box {
-  max-width: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between
-}
-
-.form-box {
-  max-width: 600px;
-}
-
-
-.react-select-container {
-  width: 550px;
-}
 
 .form-tech-info {
   margin-top: 35px;
@@ -37,7 +13,6 @@
 
 .form-deadline {
 
-  margin-top: 25px;
   max-width: 574px;
   color: #000;
   text-transform: lowercase;

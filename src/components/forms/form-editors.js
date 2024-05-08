@@ -19,6 +19,7 @@ import userPrice from "../../server/userPrice"
 import usersList from "../../server/usersList"
 import programType from "../../server/programType"
 import programCotegory from '../../server/programCotegory'
+import sampleProject from '../../server/sampleProject'
 
 
 //
@@ -39,6 +40,7 @@ const [user, setUser] = useState('')
 const [colums, setColums] = useState('')
 const [selectedOption, setSelectionOption] = useState('')
 
+
 //
 
 
@@ -56,6 +58,12 @@ const [date, setDate] = useState('')
 const [destanation, setDestanation] = useState('')
 const [price, setPrice] = useState('')
 const [category, setCategory] = useState({label: 'не определен', value: 'не определен'})
+const [sample, setSample] = useState('')
+
+
+
+
+
 
 
 
@@ -138,16 +146,21 @@ const timestamp = newDate.getTime()
 
       }
 
-      useEffect(() => {getList()}, [])
+      // useEffect(() => {getList()}, [])
 
 
 
       // message
 
 
-      const messageYG = ` ТИП ПРОЕКТА: ${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+      const messageYG = `ТИП ПРОЕКТА: ${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
       const messageTG = ` ТИП ПРОЕКТА: \n ${category.label} \n ФИО АВТОРА \n ${fio} \n НАЗВАНИЕ ПРОЕКТА \n ${title} \n ТИП ПРОЕКТА \n ${sale.label} \n СОГЛАСОВАТЕЛЬ \n ${coordination} \n ЦЕЛЕВАЯ АУДИТОРИЯ ${audience} ОПИСАНИЕ \n ${description} \n ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ \n ${link} \n МАТЕРИАЛЫ К ПРОЕКТУ \n ${info} \n ССЫЛКИ НА ПРИМЕР \n ${referense} \n ХРОНОМЕТРАЖ \n ${time} НАПРАВЛЕНИЕ \n ${price.label} \n ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ \n ${destanation} \n  ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ \n ${selectedOption.label} \n СРОКИ \n ${date}`
+
+
+
+      const sampleMessageYG = `ТИП ПРОЕКТА: ${category.label} ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ОПИСАНИЕ: ${description}`
+      const sampleMessageTG = `ТИП ПРОЕКТА: \n${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nОПИСАНИЕ:\n${description}`
 
 
 
@@ -166,7 +179,7 @@ const timestamp = newDate.getTime()
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({chat_id: CHAT_ID ,text: messageTG})
+      body: JSON.stringify({chat_id: CHAT_ID ,text: sendCardTgMessage()})
 
 
 
@@ -195,11 +208,16 @@ const timestamp = newDate.getTime()
       }
 
 
-
         const sendCard = () => {
         const userKey = localStorage.getItem('key')
 
-        if (fio !== '' && title !== '' &&  link !== '' && time !== '' && info !== ''  && date !== ''  && description !== '') {
+        if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
+
+            setModaActiveDislike(true)
+            return
+
+            }
+
 
         fetch('https://yougile.com/api-v2/tasks', {
           method: 'POST',
@@ -207,7 +225,7 @@ const timestamp = newDate.getTime()
             "Content-Type": "application/json",
             "Authorization": `Bearer ${userKey}`
           },
-          body: JSON.stringify({title: title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(messageYG)})
+          body: JSON.stringify({title: title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(sendCardYGMessage())})
         }).then(responce => responce.json())
           .then(data => console.log(data))
           .catch(error => console.log(error, 'ERROR'))
@@ -228,6 +246,7 @@ const timestamp = newDate.getTime()
         setReferense('')
         setDate('')
         setDestanation('')
+        setSample('проект')
 
         setModalActiveLike(true)
         window.scrollTo({
@@ -235,25 +254,26 @@ const timestamp = newDate.getTime()
           behavior: "smooth",
         });
 
-        } else {
 
-        setModaActiveDislike(true)
-
-        }
 
       }
 
 
+      //
 
 
       const undefinedProject = () => {
 
         return(
 
-          <Row>
-            <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
-            <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
-          </Row>
+          <Col className='d-flex justify-content-md-between justify-content-center align-items-center mt-3 flex-md-row flex-column'>
+
+            <Col md={6} sm={12} xs={12}><MyInput style={{width: '98%'}} value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'}></MyInput></Col>
+            <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
+
+          </Col>
+
+
         )
       }
 
@@ -261,71 +281,81 @@ const timestamp = newDate.getTime()
       const newProject = () => {
 
         return(
-          <>
+          <Col className='d-flex justify-content-center align-items-center mt-3 flex-column'>
 
-            <Row>
-                <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
-                <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} value={category} onChange={setCategory}></MySelect></Col>
-            </Row>
+          <Col md={12} sm={12} xs={12} className='mt-3 d-flex flex-md-row flex-column'>
 
-            <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
+              <Col md={6} sm={12} xs={12}><MyInput onChange={(e) => {setFio(e.target.value)}} value={fio} placeholder={'фио'} style={{width: '98%'}}></MyInput></Col>
 
-            <Row className='form-box mt-3 d-flex justify-content-around'>
+              <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} value={category} onChange={setCategory}></MySelect></Col>
 
-              <Col md={6} xs={12}>
-                  <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
-              </Col>
-
-              <Col md={6} xs={12}>
-                  <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 100 + '%', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
-              </Col>
-
-            </Row>
+          </Col>
 
 
-            <MyInput title={'кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{marginTop: 20 + 'px'}}></MyInput>
+            <Col className='mt-2' md={12} sm={12} xs={12}><MyInput style={{width: '100%'}} value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'}></MyInput></Col>
 
 
+            <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-            <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+                <Col className='mt-2' md={6} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect></Col>
 
-            <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
+                <Col className='mt-2' md={6} xs={12}><MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: '98%'}} placeholder={'кем согласован проект'}></MyInput></Col>
 
-            <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-
-            <MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{marginTop: 20 + 'px'}}></MyInput>
+            </Col>
 
 
-            <Row className='mt-3 form-box d-flex justify-content-between'>
-              <Col md={6} xs={12}>
-                  <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
-              </Col>
+            <Col className='mt-2' md={12} sm={12} xs={12}><MyInput title={'кто ЦА проекта?'} value={audience} onChange={(e) => {setAudience(e.target.value)}} placeholder={'целевая аудитория'} style={{width: '100%'}}></MyInput></Col>
 
+            <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
-              <Col md={6} xs={12}>
-                  <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
-              </Col>
-            </Row>
-
-            <MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{marginTop: 20 + 'px', width: 575 + 'px', height: 61 + 'px'}}></MyInput>
-
-            <Row>
-              <Col>
-              <div className='form-deadline'>выберите исполнителя</div>
-              <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 270 + 'px' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect>
-              </Col>
-
-
-              <Col>
-              <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
-              <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-              </Col>
-            </Row>
+            <Col className='mt-2' md={12} sm={12} xs={12} ><MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{width: '100%'}}></MyInput></Col>
 
 
 
-          </>
+            <Col md={12} sm={12} xs={12} className='d-flex justify-content-between align-items-center mt-2 flex-md-row flex-column'>
+
+              <Col className='mt-2' md={6} sm={12} xs={12}><MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{width: '98%'}}></MyInput></Col>
+
+              <Col className='mt-2' md={6} sm={12} xs={12}><MyInput value={referense} onChange={(e) => {setReferense(e.target.value)}} placeholder={'пожелания, референсы (динамика, подача, ритм, музыка)'} style={{width: '98%'}}></MyInput></Col>
+
+            </Col>
+
+
+
+
+            <Col md={12} sm={12} xs={12} className='d-flex justify-content-between align-items-center mt-2 flex-md-row flex-column'>
+
+                <Col className='mt-2' md={6} sm={12} xs={12}><MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{width: '98%'}} placeholder={'хронометраж'}></MyInput></Col>
+
+                <Col className='mt-2' md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect></Col>
+
+            </Col>
+
+
+            <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{width: '100%'}}></MyInput></Col>
+
+
+            <Col md={12} sm={12} xs={12} className='d-flex justify-content-between align-items-center mt-2 flex-md-row flex-column'>
+
+                <Col md={6} sm={12} xs={12} className='mt-2'>
+                  <div className='form-deadline'>выберите исполнителя</div>
+                  <Col md={12} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '100%' ,height: 61 + 'px', borderRadius: 10 + 'px',  paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect></Col>
+
+                  </Col>
+
+
+                  <Col md={6} sm={12} xs={12} className='mt-2'>
+                  <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+                  <Col><MyDate style={{width: '98%'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+                  </Col>
+
+            </Col>
+
+
+
+
+
+            </Col>
         )
       }
 
@@ -334,66 +364,154 @@ const timestamp = newDate.getTime()
       const typeProject = () => {
 
         return(
-          <>
+          <Col>
 
-            <Row>
-                <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: 280 + 'px'}}></MyInput></Col>
-                <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
-            </Row>
+            <Col className='d-flex justify-content-md-between justify-content-center align-items-center mt-3 flex-md-row flex-column'>
+                <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '98%'}}></MyInput></Col>
+                <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
+            </Col>
 
-            <MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{marginTop: 20 + 'px'}}></MyInput>
+            <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{width: '100%'}}></MyInput></Col>
 
-            <Row className='form-box mt-3 d-flex justify-content-around'>
+            <Col className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-              <Col md={6} xs={12}>
-                  <MySelect styles={{control: (styles) => {return {...styles, width: 274 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
-              </Col>
+                <Col md={6} sm={12} xs={12} className='mt-2'>
+                    <MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px', paddingLeft: 10 + 'px', marginBottom: 1 + 'px'}}}} options={programType} placeholder={'тип проекта'} onChange={setSale}></MySelect>
+                </Col>
 
-              <Col md={6} xs={12}>
-                  <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: 100 + '%', marginTop: 2 + 'px'}} placeholder={'кем согласован проект'}></MyInput>
-              </Col>
+                <Col md={6} sm={12} xs={12} className='mt-2'>
+                    <MyInput value={coordination} onChange={(e) => {setCoordination(e.target.value)}} style={{width: '98%'}} placeholder={'кем согласован проект'}></MyInput>
+                </Col>
 
-            </Row>
-
-
-            <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
-
-            <MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-            <MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{marginTop: 20 + 'px'}}></MyInput>
-
-
-
-
-            <Row className='mt-3 form-box d-flex justify-content-between'>
-              <Col md={6} xs={12}>
-                  <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: 252 + 'px'}} placeholder={'хронометраж'}></MyInput>
               </Col>
 
 
-              <Col md={6} xs={12}>
-                  <MySelect styles={{control: (styles) => {return {...styles, width: 275 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect>
+            <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
+
+            <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{width: '100%'}}></MyInput></Col>
+
+            <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{width: '100%'}}></MyInput></Col>
+
+
+
+
+            <Col className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+              <Col md={6} sm={12} xs={12} className='mt-2'>
+                  <MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{marginTop: 2 + 'px', width: '98%'}} placeholder={'хронометраж'}></MyInput>
               </Col>
-            </Row>
 
 
-            <Row>
-              <Col>
+              <Col md={6} sm={12} xs={12} className='mt-2'>
+                  <MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} onChange={setPrice} placeholder={'проект'}></MySelect>
+              </Col>
+            </Col>
+
+
+            <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+              <Col md={6} sm={12} xs={12} className='mt-3'>
               <div className='form-deadline'>выберите исполнителя</div>
-              <MySelect styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 270 + 'px' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect>
+              <Col><MySelect styles={{control: (styles) => {return {...styles, width: '100%' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect></Col>
               </Col>
 
 
-              <Col>
+              <Col md={6} sm={12} xs={12} className='mt-3'>
               <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
-              <MyDate style={{marginTop: 20 + 'px'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+              <Col><MyDate style={{width: '100%'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
               </Col>
-            </Row>
+
+            </Col>
 
 
-          </>
+            </Col>
         )
       }
+
+
+
+      const masterProject = () => {
+
+        return (
+          <Col>
+
+                <Col className='d-flex justify-content-md-between justify-content-center align-items-center mt-3 flex-md-row flex-column'>
+
+                    <Col md={6} sm={12} xs={12}><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '98%'}}></MyInput></Col>
+                    <Col md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={programCotegory} placeholder={'категория'} onChange={setCategory}></MySelect></Col>
+
+                </Col>
+
+                <Col md={12} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={sampleProject} placeholder={'проект'} onChange={setSample}></MySelect></Col>
+
+                <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
+
+
+                <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+                  <Col md={6} sm={12} xs={12} className='mt-3'>
+                  <div className='form-deadline'>выберите исполнителя</div>
+                  <Col><MySelect styles={{control: (styles) => {return {...styles, width: '100%' ,height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={usersList} placeholder={'исполнитель'} onChange={setSelectionOption}></MySelect></Col>
+                  </Col>
+
+
+                  <Col md={6} sm={12} xs={12} className='mt-3'>
+                  <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
+                  <Col><MyDate style={{width: '100%'}} date={'Выберите дату'} placeholder={'введите дату'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
+                  </Col>
+
+                </Col>
+
+          </Col>
+
+        )
+
+      }
+
+
+
+
+      const sendCardYGMessage = () => {
+
+        if(category.value === 'типовой проект') {
+
+          return `${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+
+        } else if (category.value === 'новый проект') {
+
+          return `${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+
+        } else if (category.value === 'шаблонный проект') {
+
+          return `${category.label} ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ОПИСАНИЕ: ${description} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+
+        }
+      }
+
+
+
+      const sendCardTgMessage = () => {
+
+        if(category.value === 'типовой проект') {
+
+          return `${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+
+        } else if (category.value === 'новый проект') {
+
+          return `${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
+
+        } else if (category.value === 'шаблонный проект') {
+
+          return `ТИП ПРОЕКТА:\n${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\nСРОКИ: ${date}`
+
+        }
+
+      }
+
+
+
+
 
 
 
@@ -407,6 +525,7 @@ const timestamp = newDate.getTime()
       {(category.label === 'не определен') ? undefinedProject() : <></>}
       {(category.label === 'типовой проект') ? typeProject() : <></>}
       {(category.label === 'новый проект') ? newProject() : <></>}
+      {(category.label === 'шаблонный проект') ? masterProject() : <></>}
 
       <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
   </div>

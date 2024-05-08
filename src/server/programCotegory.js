@@ -10,6 +10,15 @@ const programCotegory = [
     value: 'новый проект',
   },
 
+
+  {
+    label: 'шаблонный проект',
+    value: 'шаблонный проект',
+  },
+
+
+
+
 ]
 
 export default programCotegory

@@ -222,57 +222,59 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-    useEffect(() => {
-      fetchIdKey()
+    // useEffect(() => {
+    //   fetchIdKey()
 
-      setTimeout(() => {
-        fetchDesk()
-        fetchGetStickers()
-      }, 5000)
+    //   setTimeout(() => {
+    //     fetchDesk()
+    //     fetchGetStickers()
+    //   }, 5000)
 
-    }, [])
+    // }, [])
 
 
 
 
   return(
-    <div className="form-container">
 
-      <MyInput placeholder={'фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput>
-      <MyInput placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'название проекта'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+    <Col>
+
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}}  placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
 
 
-      <Row>
-        <Col md={6} sm={12} xs={12}>
-        <MySelect placeholder={'заказчик'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={customerSticker} value={customer} onChange={setСustomer}></MySelect>
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+        <Col md={6} sm={12} xs={12} className='mt-3'>
+        <MySelect placeholder={'заказчик'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , borderRadius: 10 + 'px', width: '98%'})}} options={customerSticker} value={customer} onChange={setСustomer}></MySelect>
         </Col>
 
 
-        <Col md={6} sm={12} xs={12}>
-
-
-
-
-        <MySelect placeholder={'важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 300 + 'px'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
-
+        <Col md={6} sm={12} xs={12} className='mt-3'>
+        <MySelect placeholder={'важность проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , borderRadius: 10 + 'px', width: '98%'})}} options={prioritySticker} value={priority} onChange={setPriority}></MySelect>
         </Col>
-      </Row>
+
+      </Col>
 
 
-      <MyInput placeholder={'технические требования (формат, разрешеение и т.д.)'} value={requirements} onChange={(e) => {setRequirements(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
-      <MyInput placeholder={'ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'технические требования (формат, разрешеение и т.д.)'} value={requirements} onChange={(e) => {setRequirements(e.target.value)}}></MyInput></Col>
+
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} ></MyInput></Col>
 
 
 
-      <MySelect placeholder={'из чего состоит проект'} isMulti closeMenuOnSelect={false} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}}  options={designParts}></MySelect>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MySelect placeholder={'из чего состоит проект'} isMulti closeMenuOnSelect={false} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , borderRadius: 10 + 'px'})}}  options={designParts}></MySelect></Col>
 
-      <MyInput placeholder={'пожелания референсы'} value={reference} onChange={(e) => {setReference(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'пожелания референсы'} value={reference} onChange={(e) => {setReference(e.target.value)}}></MyInput></Col>
 
-      <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
 
-      <MyDate placeholder={'дата сдачи проекта'} value={date} onChange={(e) => {setDate(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyDate>
+      <Col md={12} sm={12} xs={12} className='mt-3'>
+        <div style={{width: '100%', textAlign: 'center'}}>рекомендуемая дата сдачи проекта</div>
+        <Col className='mt-2'><MyDate style={{width: '100%'}} placeholder={'дата сдачи проекта'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+      </Col>
+
 
       <Row className='mt-4 d-flex justify-content-center align-items-center'>
         <Col md={6} sm={12} xs={12} className='d-flex justify-content-center align-items-center mt-2'>
@@ -286,7 +288,9 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       </Row>
 
 
-    </div>
+
+    </Col>
+
   )
 }
 

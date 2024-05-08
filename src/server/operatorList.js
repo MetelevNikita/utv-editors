@@ -56,8 +56,8 @@ const operatorList = [
   },
 
   {
-    label: 'Газимуллин Нургизар',
-    value: '705189721',
+    label: 'Роман Седов',
+    value: '942533767',
     colorId: "#05FCFC"
   },
 

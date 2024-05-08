@@ -27,10 +27,10 @@ import oepratorList from '../../../server/operatorList';
 import operatorProject from '../../../server/operatorProject';
 
 
-const ScheludeFilming = ({authEmailLog, fixedCalendarDay}) => {
+const ScheludeFilming = ({fixedCalendarDay}) => {
 
 
-  const {authEmail, setAuthEmail} = authEmailLog
+
   const {calendarDate, setCalendarDate} = fixedCalendarDay
 
   console.log(calendarDate)
@@ -59,7 +59,7 @@ const ScheludeFilming = ({authEmailLog, fixedCalendarDay}) => {
   }, [])
 
 
-
+  const authEmail = sessionStorage.getItem('email')
 
 
 // filter

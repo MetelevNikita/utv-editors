@@ -86,8 +86,11 @@ const Main = ({isAuth, authEmailLog}) => {
   const navigate = useNavigate()
 
 
+  const authLogin = sessionStorage.getItem('email')
+
+
   useEffect(() => {
-    if (auth === false) {
+    if (authLogin === null) {
       return navigate('/')
     }
   }, [])
@@ -134,25 +137,25 @@ const Main = ({isAuth, authEmailLog}) => {
         <Row className='mt-5 mb-5'>
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
+              <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon style={{width: '300px'}} className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
 
-              <Link to={`design`} value={'операторский отдел'}><MenuButon className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
+              <Link to={`design`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
 
           </Col>
 
 
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`editing`} value={'операторский отдел'}><MenuButon className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
+              <Link to={`editing`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
 
-              <Link to={`technical`} value={'операторский отдел'}><MenuButon className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
+              <Link to={`technical`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
 
           </Col>
 
         </Row>
 
 
-        <Row className='mt-5'>
+        <Row className='mt-5' style={{paddingRight: '0px', paddingLeft: '0px'}}>
           <Col>
 
           <div className="form-theme-title">{menuTitle}</div>

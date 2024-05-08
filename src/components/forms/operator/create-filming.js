@@ -215,66 +215,63 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
   return(
-    <div className="filming-container">
-
-      <Row className='d-flex justify-content-center'>
-        <Col className='d-flex justify-content-center'><MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
-
-        <Col className='d-flex justify-content-center'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 282 + 'px'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
-      </Row>
-
-      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput> : <></>}
-
-      <Row className='d-flex justify-content-md-center'>
-
-            <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
-
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect>
-
-            </Col>
 
 
+    <Col>
 
-            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
+        <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-                  <MyDate style={{marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+        <Col md={6} sm={12} xs={12} className='mt-3'><MyInput style={{width: '98%', marginTop: '4px'}} placeholder={'ФИО'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+        <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
 
-            </Col>
-
-      </Row>
+        </Col>
 
 
-      <Row className='d-flex justify-content-md-center'>
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'Название съёмки'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col> : <></>}
 
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime> : <></>}
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'><MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
+      </Col>
+
+
+
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime style={{width: '98%'}} title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime> : <></>}
           </Col>
 
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime> : <></>}
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime style={{width: '98%'}} title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime> : <></>}
           </Col>
-      </Row>
+
+      </Col>
 
 
 
       {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
 
-        <MyInput placeholder={'место съёмки'} style={{marginTop: 20 + 'px'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput>
-        <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput>
-        <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'место съёмки'} style={{width: '100%'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput></Col>
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'контакты'} style={{width: '100%'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
+
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyTextArea placeholder={'условия съёмки'} style={{width: '100%'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea></Col>
 
       </>  : <></>}
 
 
       {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
 
-        <Row className='mb-4'>
-          <Col>
-            <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
+        <Row md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+            <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
           </Col>
 
-          <Col>
-          <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
           </Col>
         </Row>
 
@@ -282,9 +279,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-
-
-      <Row className='mt-2'>
+      <Row className='mt-3'>
         <Col md={6} sm={6} xs={12} className='mb-4'>
           <MyButton onClick={() => {(userEmail === 'admin@gmail.com') ? createCard() : checkTimeCreateCard()}}>Создать</MyButton>
         </Col>
@@ -294,7 +289,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         </Col>
       </Row>
 
-    </div>
+    </Col>
   )
 }
 
