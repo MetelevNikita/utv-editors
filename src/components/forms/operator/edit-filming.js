@@ -12,6 +12,11 @@ import { useNavigate } from 'react-router-dom'
 import { getDatabase, ref, set, get, update, onValue } from "firebase/database";
 import uuid from 'react-uuid'
 
+
+// redux
+
+import { useSelector } from'react-redux'
+
 // components
 
 import MyInput from '../../UI/MyInput'
@@ -33,9 +38,21 @@ import operatorCloth from '../../../server/operatorCloth'
 const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const navigate = useNavigate()
+  const users = useSelector(state => state.users.users)
+
+
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
+
+
+  const userSelect = (!users) ? [{value: 'не выбрано', label: 'не выбрано'}] : users.map((item) => {
+    return {
+      value: item.tgId,
+      label: item.name
+    }
+  })
+
 
 
 
@@ -56,10 +73,12 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const [checkedCard, setCheckedCard] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const [selectUser, setSelectUser] = useState('')
+  console.log(selectUser)
+
 
   const params = useParams()
   const cardId = params.id
-
   const id = uuid()
 
 
@@ -104,6 +123,8 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const messageTG =`ВНЕСЕНЫ ИЗМЕНЕНИЯ В КАРТОЧКУ ${checkedCard.title} \n \n${new Date(date).toDateString()}\n${checkedCard.timeStart} - ${checkedCard.timeEnd}\n${checkedCard.title} \nКонтакт: ${checkedCard.contacts} \nАдрес: ${checkedCard.place} \n \nОписание: ${checkedCard.conditions}\n \nПроект\n ${project.label}\nФорма одежды\n ${cloth.label}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}`
 
+  const messageAuthorTG =`ВНЕСЕНЫ ИЗМЕНЕНИЯ В КАРТОЧКУ ${checkedCard.title} \n \n${new Date(date).toDateString()}\n${checkedCard.timeStart} - ${checkedCard.timeEnd}\n${checkedCard.title} \nАдрес: ${checkedCard.place} \n \nОписание: ${checkedCard.conditions}\n \nПроект\n ${project.label}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}`
+
 
     const updateCard = () => {
 
@@ -129,6 +150,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
         })
 
       selectedIdUserSend()
+      (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
 
       setFio('')
       setTitle('')
@@ -170,6 +192,26 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
                 .catch(error => console.log(error, 'ERROR'))
             })
   }
+
+
+  const selectedAuthorSend = () => {
+
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+    return fetch(URL_API, {
+      method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({chat_id: selectUser.value, text: messageAuthorTG})
+
+    }).then(responce => responce.json())
+      .then(data => data)
+      .catch(error => console.log(error, 'ERROR'))
+  }
+
 
 
 
@@ -241,6 +283,12 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
         <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorCloth} onChange={setCloth}></MySelect>
         </Col>
       </Row>
+
+
+        <Col md={12} sm={12} xs={12} className='mt-3' style={{fontSize: '12px'}}>Выберите автора для обратного сообщения о просталенной съёмке</Col>
+        <Col md={12} sm={12} xs={12} className='mt-1'><MySelect placeholder={'автор'} options={userSelect} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px', minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} onChange={setSelectUser}></MySelect></Col>
+
+
 
 
       <Row className='mt-4'>

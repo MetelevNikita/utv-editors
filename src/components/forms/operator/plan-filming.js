@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useState } from 'react'
 
+// redux
+
+
+import { useSelector } from 'react-redux'
+
 // components
 
 import MyInput from '../../UI/MyInput'
@@ -21,6 +26,12 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 
 const PlanFilming = ({modalOperLike, modalOperDislike}) => {
+
+  const users = useSelector(state => state.users.users)
+  console.log(users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter((user) => user.email === email)[0]
+  console.log(singleUser)
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
@@ -94,7 +105,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
       {/*  */}
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'фио'} style={{width: '100%'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} placeholder={'фио'} style={{width: '100%'}} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'фио'} style={{width: '100%'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>}
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'контакты'} style={{width: '100%'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
 

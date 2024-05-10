@@ -7,15 +7,12 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from "react-calendar"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom';
-import { Container, Col, Row } from 'react-bootstrap';
-import app from '../../../firebaseApp';
+import { Col, Row } from 'react-bootstrap';
 import { getDatabase, ref, onValue } from "firebase/database";
 
 // components
 
 import MySelect from '../../UI/MySelect';
-import CardFilming from './card-filming';
-import MyButton from '../../UI/MyButton';
 import MyButtonBack from '../../UI/MyButtonBack';
 import MyOperatorButton from '../../UI/MyOperatorButton';
 import ListFilming from './list-filming';
@@ -24,16 +21,12 @@ import ListFilmingDate from './list-filming-date';
 // server
 
 import oepratorList from '../../../server/operatorList';
-import operatorProject from '../../../server/operatorProject';
 
 
 const ScheludeFilming = ({fixedCalendarDay}) => {
 
-
-
   const {calendarDate, setCalendarDate} = fixedCalendarDay
 
-  console.log(calendarDate)
 
 
   const [month, setMonth] = useState()
@@ -183,7 +176,7 @@ const filterDate = () => {
 
       <Row className='d-flex'>
         <Col md={6} className='d-flex flex-column justify-content-center align-items-center'>
-            <Calendar className={'shelude-calendar'} defaultActiveStartDate={calendarDate} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
+            <Calendar className={'shelude-calendar'} defaultActiveStartDate={calendarDate} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex'}}></Calendar>
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 

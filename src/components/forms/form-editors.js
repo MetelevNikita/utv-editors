@@ -3,6 +3,12 @@ import { Container, Col, Row } from "react-bootstrap"
 import app from '../../firebaseApp'
 
 
+// redux
+
+
+import { useSelector } from 'react-redux'
+
+
 // components
 
 import MyInput from "../UI/MyInput"
@@ -29,6 +35,15 @@ import { useState, useEffect } from "react"
 
 const FormEditors = ({modalLike, modalDisLike}) => {
 
+
+
+const users = useSelector(state => state.users.users)
+const email = sessionStorage.getItem('email')
+
+
+
+const singleUser = users.filter(user => user.email === email)[0]
+console.log(singleUser)
 
 const {modalActiveLike, setModalActiveLike} = modalLike
 const {modalActiveDislike, setModaActiveDislike} = modalDisLike
@@ -153,42 +168,56 @@ const getList = () => {
 
   const sendNewMessageCard = () => {
 
+
+    let messageTG = ''
+    let messageYG = ''
+
     if(category.value === 'типовой проект') {
 
-      setNewMessageYG(`${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`)
+      messageYG = `${category.label} ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
 
+      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
 
-      setNewMessageTg(`${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination}\nЦЕЛЕВАЯ АУДИТОРИЯ:\n${audience}\nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nССЫЛКИ НА ПРИМЕР:\n${referense}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:\n${destanation}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ: ${date}`)
+      return sendCard(messageTG, messageYG)
 
 
     } else if (category.value === 'новый проект') {
 
-      setNewMessageYG(`${category.label}  ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`)
+      messageYG = `${category.label}  ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
 
-      setNewMessageTg(`${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`)
+      messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+
+      return sendCard(messageTG, messageYG)
+
 
     } else if (category.value === 'шаблонный проект') {
 
-      setNewMessageYG(`${category.label} ФИО АВТОРА: ${fio} НАЗВАНИЕ ПРОЕКТА: ${sample.label} ПУТЬ К СЫРЬЮ: ${sample.path} ОПИСАНИЕ: ${description} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`)
+      messageYG = `${category.label} ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${sample.label} ПУТЬ К СЫРЬЮ: ${sample.path} ОПИСАНИЕ: ${description} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
 
-      setNewMessageTg(`${category.label}\nФИО АВТОРА:\n${fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\nСРОКИ: ${date}`)
+      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\nСРОКИ: ${date}`
+
+      return sendCard(messageTG, messageYG)
 
     }
   }
 
+//
 
 
-    //
 
 
 
-const sendToTelegram = () => {
+
+
+
+
+const sendToTelegram = (newMessageTG) => {
 
 const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
 const CHAT_ID = '-1002013845900'
 const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
-console.log(newMessageTG)
+
 
 fetch(URL_API, {
 method: 'POST',
@@ -224,7 +253,7 @@ if (selectedOption.tgId === "") {
 }
 
 
-  const sendCard = () => {
+const sendCard = (newMessageTG, newMessageYG) => {
   const userKey = localStorage.getItem('key')
 
   if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
@@ -247,7 +276,7 @@ if (selectedOption.tgId === "") {
     .catch(error => console.log(error, 'ERROR'))
 
 
-  sendToTelegram()
+  sendToTelegram(newMessageTG)
 
   setFio('')
   setTitle('')
@@ -289,16 +318,16 @@ const undefinedProject = () => {
 }
 
 
-const newProject = ({category, setCategory}) => {
+const newProject = () => {
 
 
-  console.log(category)
+
 
   return(
     <Col className='d-flex justify-content-center align-items-center mt-3 flex-column'>
 
 
-      <Col md={12} sm={12} xs={12}><MyInput onChange={(e) => {setFio(e.target.value)}} value={fio} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
       <Col className='mt-2' md={12} sm={12} xs={12}><MyInput style={{width: '100%'}} value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'}></MyInput></Col>
 
@@ -364,15 +393,15 @@ const newProject = ({category, setCategory}) => {
 }
 
 
-const typeProject = ({category, setCategory}) => {
+const typeProject = () => {
 
-  console.log(category)
+
 
   return(
     <Col>
 
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{width: '100%'}}></MyInput></Col>
 
@@ -432,14 +461,14 @@ const typeProject = ({category, setCategory}) => {
 }
 
 
-const masterProject = ({category, setCategory}) => {
-  console.log(category)
+const masterProject = () => {
+
 
   return (
     <Col>
 
 
-          <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
+          {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
           <Col md={12} sm={12} xs={12} className='mt-3'><MySelect styles={{control: (styles) => {return {...styles, width: '100%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={sampleProject} placeholder={'проект'} onChange={setSample}></MySelect></Col>
 
@@ -482,7 +511,7 @@ const masterProject = ({category, setCategory}) => {
       {(category.label === 'новый проект') ? newProject({category, setCategory}) : <></>}
       {(category.label === 'шаблонный проект') ? masterProject({category, setCategory}) : <></>}
 
-      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendCard()}}>Создать</MyButton>
+      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
   </div>
   )
 }

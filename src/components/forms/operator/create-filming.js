@@ -12,6 +12,14 @@ import { useNavigate } from 'react-router-dom'
 import { getDatabase, ref, set, get, onValue } from "firebase/database";
 import uuid from 'react-uuid'
 
+
+// redux
+
+
+import { useSelector } from 'react-redux'
+
+
+
 // components
 
 import MyInput from '../../UI/MyInput'
@@ -34,6 +42,12 @@ import operatorCotegory from '../../../server/operatorCotegory'
 const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const navigate = useNavigate()
+  const users = useSelector(state => state.users.users)
+
+
+
+
+
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
@@ -54,10 +68,23 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [type, setType] = useState('')
 
 
+  const [selectUser, setSelectUser] = useState('')
+  console.log(selectUser)
+
+
 
   const id = uuid()
   const userEmail = sessionStorage.getItem('email')
-  console.log(userEmail)
+
+  // getUsers
+
+
+  const userSelect = (!users) ? [{value: 'не выбрано', label: 'не выбрано'}] : users.map((item) => {
+    return {
+      value: item.tgId,
+      label: item.name
+    }
+  })
 
 
 
@@ -116,9 +143,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-  // const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
 
   const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
+
+
+  const messageAuthorTG = (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title}\nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \n\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
 
 
 
@@ -131,11 +160,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     createCard()
 
   }
-
-
-
-
-
 
 
   const createCard = () => {
@@ -167,6 +191,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       })
       selectedIdUserSend()
 
+      (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
+
       setFio('')
       setTitle('')
       setUser('')
@@ -181,9 +207,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
    }
-
-
-
 
 
   const selectedIdUserSend = () => {
@@ -204,7 +227,26 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
               .then(data => console.log(data))
               .catch(error => console.log(error, 'ERROR'))
           })
-  }
+    }
+
+
+    const selectedAuthorSend = () => {
+
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+      return fetch(URL_API, {
+        method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({chat_id: selectUser.value, text: messageAuthorTG})
+
+      }).then(responce => responce.json())
+        .then(data => data)
+        .catch(error => console.log(error, 'ERROR'))
+    }
 
 
 
@@ -222,16 +264,16 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
         <Col md={6} sm={12} xs={12} className='mt-3'><MyInput style={{width: '98%', marginTop: '4px'}} placeholder={'ФИО'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
-        <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'Выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
+        <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
 
         </Col>
 
 
-      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'Название съёмки'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col> : <></>}
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название съёмки'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col> : <></>}
 
       <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-          <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
+          <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
 
           <Col md={6} sm={12} xs={12} className='mt-3'><MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
 
@@ -275,7 +317,14 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
           </Col>
         </Row>
 
+        <Col md={12} sm={12} xs={12} className='mt-3' style={{fontSize: '12px'}}>Выберите автора для обратного сообщения о просталенной съёмке</Col>
+        <Col md={12} sm={12} xs={12} className='mt-1'><MySelect placeholder={'автор'} options={userSelect} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px', minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} onChange={setSelectUser}></MySelect></Col>
+
       </> : <></> }
+
+
+
+
 
 
 
