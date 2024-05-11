@@ -214,8 +214,8 @@ const filterDate = () => {
     </div>
 
 
-    <Row className='mt-2 mb-4'>
-      <Col className='d-flex flex-column  justify-content-center' md={12}>
+    <Row className='d-flex flex-column  justify-content-center align-items-center mt-3'  style={{marginLeft: '10px', marginRight: '20px'}}>
+      <Col className='d-flex flex-column justify-content-center' md={12}>
 
         {(triggerDate === true) ? <ListFilmingDate date={`${calendarDate.getMonth()} месяц`}></ListFilmingDate> : <ListFilmingDate date={calendarDate.toDateString()}></ListFilmingDate>}
 

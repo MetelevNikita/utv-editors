@@ -112,33 +112,23 @@ const Main = ({isAuth, authEmailLog}) => {
 
   return(
 
-    <Container fluid='md'>
       <Row className='d-flex justify-content-center'>
-        <Col sm={6} xs={12}>
+        <Col sm={6} xs={12} className='d-flex flex-column'>
 
-        <div className="logo-container">
+            <Col className='mt-3 mb-3' style={{marginLeft: '10px', marginRight: '10px'}}>
 
-          <img className='logo' src={logoUTV} alt="logoUTV" />
+                <Col style={{width: '100%', height: '200px', marginTop: '50px', overflow: 'hidden'}} className='d-flex justify-content-center align-items-center mt-3 mb-3'><img style={{width: '100%', height: '150px'}} className='logo' src={logoUTV} alt="logoUTV" /></Col>
+                <Col style={{width: '100%', height: '50px', fontSize: '22px', fontWeight: 'bold', textAlign: 'center'}} className='d-flex justify-content-center mt-3 mb-3'>СЕРВИС ЗАЯВОК НА РАЗРАБОТКУ ПРОЕКТА</Col>
+                <Col style={{width: '100%', textAlign: 'center'}} className='d-flex justify-content-center mt-1'>при заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</Col>
 
-        </div>
+            </Col>
 
-        <div className="logo-subtitle-box">
 
-          <div className="logo-subtitle">СЕРВИС ЗАЯВОК НА РАЗРАБОТКУ ПРОЕКТА</div>
 
-        </div>
-
-        <div className="logo-description-box-box">
-
-          <div className="logo-description">при заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</div>
-
-        </div>
-
-        <Row className='mt-5 mb-5'>
+        <Row>
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
               <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon style={{width: '300px'}} className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
-
               <Link to={`design`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
 
           </Col>
@@ -147,7 +137,6 @@ const Main = ({isAuth, authEmailLog}) => {
           <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
               <Link to={`editing`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
-
               <Link to={`technical`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
 
           </Col>
@@ -155,10 +144,10 @@ const Main = ({isAuth, authEmailLog}) => {
         </Row>
 
 
-        <Row className='mt-5' style={{paddingRight: '0px', paddingLeft: '0px'}}>
-          <Col>
+        <Row className='mt-5'>
+          <Col className='d-flex flex-column justify-content-center'>
 
-          <div className="form-theme-title">{menuTitle}</div>
+          <Col style={{width: '100%', textAlign: 'center', fontSize: '24px', fontWeight: 'bold'}}>{menuTitle}</Col>
 
           <Routes>
 
@@ -183,19 +172,14 @@ const Main = ({isAuth, authEmailLog}) => {
           </Col>
         </Row>
 
-
-
-
-
         <Footer></Footer>
-
 
             <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
             <ModalPageDislike dislike={{modalActiveDislike, setModaActiveDislike}} modalDislikeImg={dislike} modalDislikeTitle={'заполните все поля'} modalBtnTitle={'Продолжить'}></ModalPageDislike>
 
         </Col>
       </Row>
-    </Container>
+
 
 
   )

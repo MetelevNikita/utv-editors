@@ -103,7 +103,6 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         }
       }).then(responce => responce.json())
         .then(data => {
-          console.log(data)
           setColumnId(data.content[6].id)
         })
     }
@@ -237,7 +236,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
   return(
 
-    <Col>
+
+    <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput></Col>
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}}  placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>

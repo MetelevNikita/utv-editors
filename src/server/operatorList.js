@@ -8,7 +8,7 @@ const operatorList = [
 
   {
     label: 'СТУДИЯ',
-    value: '85252645',
+    value: '',
     colorId: "#ff0000"
   },
 

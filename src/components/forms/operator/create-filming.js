@@ -69,7 +69,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
   const [selectUser, setSelectUser] = useState('')
-  console.log(selectUser)
 
 
 
@@ -189,9 +188,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         projectPay: project.label
 
       })
-      selectedIdUserSend()
 
-      (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
+      selectedIdUserSend()
+      selectedAuthorSend()
+
+      // (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
 
       setFio('')
       setTitle('')
@@ -207,6 +208,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
    }
+
 
 
   const selectedIdUserSend = () => {
@@ -230,30 +232,26 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     }
 
 
-    const selectedAuthorSend = () => {
+    const selectedAuthorSend = async () => {
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
-      return fetch(URL_API, {
-        method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({chat_id: selectUser.value, text: messageAuthorTG})
-
-      }).then(responce => responce.json())
-        .then(data => data)
-        .catch(error => console.log(error, 'ERROR'))
+      try {
+        const responce = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG })
+        })
+        const data = await responce.json()
+        return data
+      } catch (error) {
+        return console.log(error, 'ERROR')
+      }
     }
-
-
-
-
-
-
-
 
 
   return(

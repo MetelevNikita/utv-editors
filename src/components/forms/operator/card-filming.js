@@ -26,7 +26,6 @@ const CardFilming = ({authEmailLog , ...props}) => {
 
   const {authEmail, setAuthEmail} = authEmailLog
 
-  console.log(authEmail)
 
 
   const [cardList, setCardList] = useState([])
@@ -74,7 +73,6 @@ const delCard = () => {
     return item.id === id
   })
 
-  console.log(singleArr)
 
 
 

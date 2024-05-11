@@ -28,10 +28,9 @@ import MyButtonBack from '../../UI/MyButtonBack'
 const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
   const users = useSelector(state => state.users.users)
-  console.log(users)
   const email = sessionStorage.getItem('email')
-  const singleUser = users.filter((user) => user.email === email)[0]
-  console.log(singleUser)
+  const singleUser = users.filter((user) => user.email.toLowerCase() === email)[0]
+
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike

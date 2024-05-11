@@ -39,11 +39,8 @@ const FormEditors = ({modalLike, modalDisLike}) => {
 
 const users = useSelector(state => state.users.users)
 const email = sessionStorage.getItem('email')
+const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
-
-
-const singleUser = users.filter(user => user.email === email)[0]
-console.log(singleUser)
 
 const {modalActiveLike, setModalActiveLike} = modalLike
 const {modalActiveDislike, setModaActiveDislike} = modalDisLike
@@ -160,7 +157,7 @@ const getList = () => {
 
 }
 
-// useEffect(() => {getList()}, [])
+useEffect(() => {getList()}, [])
 
 
 
@@ -322,12 +319,11 @@ const newProject = () => {
 
 
 
-
   return(
     <Col className='d-flex justify-content-center align-items-center mt-3 flex-column'>
 
 
-      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-1'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
       <Col className='mt-2' md={12} sm={12} xs={12}><MyInput style={{width: '100%'}} value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'}></MyInput></Col>
 
@@ -401,7 +397,7 @@ const typeProject = () => {
     <Col>
 
 
-      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{width: '100%'}}></MyInput></Col>
 
@@ -465,10 +461,10 @@ const masterProject = () => {
 
 
   return (
-    <Col>
+    <Col md={12} sm={12} xs={12}>
 
 
-          {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disable={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+          {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
           <Col md={12} sm={12} xs={12} className='mt-3'><MySelect styles={{control: (styles) => {return {...styles, width: '100%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={sampleProject} placeholder={'проект'} onChange={setSample}></MySelect></Col>
 
@@ -504,7 +500,8 @@ const masterProject = () => {
 
 
   return (
-    <div className='form-container'>
+
+    <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
       {undefinedProject()}
       {(category.label === 'типовой проект') ? typeProject({category, setCategory}) : <></>}
@@ -512,7 +509,9 @@ const masterProject = () => {
       {(category.label === 'шаблонный проект') ? masterProject({category, setCategory}) : <></>}
 
       <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
-  </div>
+
+    </Col>
+
   )
 }
 

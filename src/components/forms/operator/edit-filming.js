@@ -74,7 +74,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const [loading, setLoading] = useState(true)
 
   const [selectUser, setSelectUser] = useState('')
-  console.log(selectUser)
 
 
   const params = useParams()
@@ -150,7 +149,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
         })
 
       selectedIdUserSend()
-      (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
+      selectedAuthorSend()
 
       setFio('')
       setTitle('')
@@ -229,60 +228,41 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
     <div className="filming-container">
 
-      <div className='filming-edit-title'>внесите изменения в съёмку</div>
+      <Col style={{width: '100%', textAlign: 'center', fontSize: '18px'}} className='mt-3'>внесите изменения в съёмку</Col>
 
-      <MyInput  style={{marginTop: 20 + 'px'}} value={checkedCard.name} onChange={(e) => {setCheckedCard({...checkedCard, name: e.target.value})}}></MyInput>
-      <MyInput  style={{marginTop: 20 + 'px'}} value={checkedCard.title} onChange={(e) => {setCheckedCard({...checkedCard, title: e.target.value})}}></MyInput>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput  style={{width: '100%'}} value={checkedCard.name} onChange={(e) => {setCheckedCard({...checkedCard, name: e.target.value})}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} value={checkedCard.title} onChange={(e) => {setCheckedCard({...checkedCard, title: e.target.value})}}></MyInput></Col>
 
-      <Row className='d-flex justify-content-md-center'>
+          <Col md={12} sm={12} xs={12} className='mt-3 d-flex'>
 
-            <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
-
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect>
-
-            </Col>
-
-
-
-            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-                  <MyDate style={{marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
-
-            </Col>
-
-      </Row>
-
-
-      <Row className='d-flex justify-content-md-center'>
-
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-              <MyTime title={'время начала съёмки'} value={checkedCard.timeStart} onChange={(e) => {setCheckedCard({...checkedCard, timeStart: e.target.value})}}></MyTime>
+            <Col md={6} sm={12} xs={12}><MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
+            <Col  md={6} sm={12} xs={12}><MyDate style={{width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
 
           </Col>
 
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
 
-              <MyTime title={'время окончания съёмки'} value={checkedCard.timeEnd} onChange={(e) => {setCheckedCard({...checkedCard, timeEnd: e.target.value})}}></MyTime>
 
-          </Col>
 
-      </Row>
+        <Col md={12} sm={12} xs={12} className='mt-3 d-flex'>
 
-      <MyInput placeholder={'место съёмки'} style={{marginTop: 20 + 'px'}} value={checkedCard.place} onChange={(e) => {setCheckedCard({...checkedCard, place: e.target.value})}}></MyInput>
-      <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={checkedCard.contacts} onChange={(e) => {setCheckedCard({...checkedCard, contacts: e.target.value})}}></MyInput>
+          <Col className='mt-3' md={6} sm={12} xs={12}><MyTime title={'время начала съёмки'} value={checkedCard.timeStart} onChange={(e) => {setCheckedCard({...checkedCard, timeStart: e.target.value})}} style={{width: '98%'}}></MyTime></Col>
 
-      <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={checkedCard.conditions} onChange={(e) => {setCheckedCard({...checkedCard, conditions: e.target.value})}}></MyTextArea>
+          <Col className='mt-3' md={6} sm={12} xs={12}><MyTime title={'время окончания съёмки'} value={checkedCard.timeEnd} onChange={(e) => {setCheckedCard({...checkedCard, timeEnd: e.target.value})}} style={{width: '98%'}}></MyTime></Col>
 
-      <Row>
-        <Col>
-          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorProject} onChange={setProject}></MySelect>
         </Col>
 
-        <Col>
-        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorCloth} onChange={setCloth}></MySelect>
+      <Col className='mt-3' md={12} sm={12} xs={12}><MyInput placeholder={'место съёмки'} style={{width: '100%'}} value={checkedCard.place} onChange={(e) => {setCheckedCard({...checkedCard, place: e.target.value})}}></MyInput></Col>
+      <Col className='mt-3' md={12} sm={12} xs={12}><MyInput placeholder={'контакты'} style={{width: '100%'}} value={checkedCard.contacts} onChange={(e) => {setCheckedCard({...checkedCard, contacts: e.target.value})}}></MyInput></Col>
+
+      <Col className='mt-3' md={12} sm={12} xs={12}><MyTextArea placeholder={'условия съёмки'} style={{width: '100%'}} value={checkedCard.conditions} onChange={(e) => {setCheckedCard({...checkedCard, conditions: e.target.value})}}></MyTextArea></Col>
+
+      <Col md={12} sm={12} xs={12} className='mt-3 d-flex'>
+
+        <Col><MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '98%'})}} options={operatorProject} onChange={setProject}></MySelect></Col>
+
+        <Col><MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' ,  borderRadius: 10 + 'px', width: '98%'})}} options={operatorCloth} onChange={setCloth}></MySelect></Col>
+
         </Col>
-      </Row>
 
 
         <Col md={12} sm={12} xs={12} className='mt-3' style={{fontSize: '12px'}}>Выберите автора для обратного сообщения о просталенной съёмке</Col>

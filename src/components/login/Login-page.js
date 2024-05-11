@@ -73,15 +73,15 @@ const LoginPage = ({isAuth, authEmailLog}) => {
           <Col className='d-flex flex-column justify-content-center align-items-center' style={{marginTop: '150px'}}>
 
 
-              <Col className='logo-container'><img className='logo' src={logoUtv} alt="logoUTV" /></Col>
+              <Col style={{width: '100%', height: '100px', overflow: 'hidden'}} className='d-flex justify-content-center align-items-center'><img className='logo' src={logoUtv} alt="logoUTV" /></Col>
 
               <Col md={4} sm={12} xs={12} className='mt-3'><MyInput placeholder={'email'} type={'email'} style={{width: '100%'}} value={email} onChange={(e) => setEmail(e.target.value)}></MyInput></Col>
               <Col md={4} sm={12} xs={12} className='mt-1'><MyInput placeholder={'password'} type={'password'} style={{width: '100%'}} value={password} onChange={(e) => {setPassword(e.target.value)}}></MyInput></Col>
 
               <Col md={8} sm={12} xs={12} className='d-flex flex-md-row flex-column justify-content-center align-items-center'>
 
-                <Col md={3} sm={12} xs={12} className='mt-3'><MyButton style={{width: '100%'}} onClick={() => {submitLoginIn()}}>Войти</MyButton></Col>
-                <Col md={3} sm={12} xs={12} className='mt-3'><Link to={'/registration'}><MyButton style={{width: '100%'}}>Регистрация</MyButton></Link></Col>
+                <Col md={3} sm={12} xs={12} className='mt-3 d-flex justify-content-center align-items-center'><MyButton style={{width: '90%'}} onClick={() => {submitLoginIn()}}>Войти</MyButton></Col>
+                <Col md={3} sm={12} xs={12} className='mt-3 d-flex justify-content-center align-items-center'><Link style={{width: '90%'}} to={'/registration'}><MyButton>Регистрация</MyButton></Link></Col>
 
               </Col>
 

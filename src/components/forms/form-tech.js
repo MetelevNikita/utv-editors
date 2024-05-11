@@ -77,7 +77,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       }
     }).then(responce => responce.json())
       .then(data => {
-        console.log(data)
         setColumnId(data.content[1].id)
       })
   }
@@ -166,7 +165,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   return(
 
 
-    <Col>
+    <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
