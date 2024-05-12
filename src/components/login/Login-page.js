@@ -35,8 +35,10 @@ const LoginPage = ({isAuth, authEmailLog}) => {
   const navigate = useNavigate('')
 
   const [email, setEmail] = useState('')
+  const [modalPassAuth, setModalPassAuth] = useState(true)
+  const [modalPassRepeat, setModalPassRepeat] = useState(true)
+  const [authOk, setAuthOk] = useState(true)
   const [password, setPassword] = useState('')
-
   const [modalAuth, setModalAuth] = useState(true)
 
   const submitLoginIn = () => {
@@ -67,7 +69,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
 
     <Container fluid>
 
-        {(modalAuth === true) ? <></> : <ModalPageAuth ModalPageAuth={{modalAuth, setModalAuth}} modalDislikeImg={dislike} modalDislikeTitle={'Неправильный логин или пароль'} modalBtnTitle={'заново'}></ModalPageAuth>}
+        {(modalAuth === true) ? <></> : <ModalPageAuth ModalPageAuth={{modalAuth, setModalAuth}} ModalPassAuth={{modalPassAuth, setModalPassAuth}} AuthOk={{authOk, setAuthOk}} ModalPassRepeat={{modalPassRepeat, setModalPassRepeat}} modalDislikeImg={dislike} modalDislikeTitle={'Неправильный логин или пароль'} modalBtnTitle={'заново'}></ModalPageAuth>}
 
         <Row md={12} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
           <Col className='d-flex flex-column justify-content-center align-items-center' style={{marginTop: '150px'}}>
