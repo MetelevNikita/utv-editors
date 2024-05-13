@@ -126,7 +126,7 @@ const Main = ({isAuth, authEmailLog}) => {
 
 
         <Row>
-          <Col className='d-flex justify-content-center align-items-center'>
+          <Col className='d-flex flex-md-row flex-column justify-content-center align-items-center'>
 
 
             <Col md={5} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
