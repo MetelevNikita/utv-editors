@@ -78,6 +78,9 @@ const [newMessageTG, setNewMessageTg] = useState('')
 const [newMessageYG, setNewMessageYG] = useState('')
 
 
+console.log(selectedOption)
+
+
 
 //
 

@@ -29,8 +29,8 @@ const usersList = [
 
   {
     label: 'Александр Карпов',
-    value: "4cd044d1-e78b-40f9-8fb7-0b6f0e1835bb",
-    tgId: 265695055
+    value: "134f54ad-5a17-4c6f-846d-381e3c616799",
+    tgId: 422276672
 
   },
 
