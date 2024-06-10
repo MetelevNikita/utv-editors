@@ -38,8 +38,8 @@ const operatorList = [
   },
 
   {
-    label: 'Габидуллин Руслан',
-    value: '901944117',
+    label: 'Сагидуллин Айдар',
+    value: '717358495',
     colorId: "#FC7C05"
   },
 

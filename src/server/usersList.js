@@ -27,6 +27,13 @@ const usersList = [
 
   },
 
+  {
+    label: 'Александр Карпов',
+    value: "4cd044d1-e78b-40f9-8fb7-0b6f0e1835bb",
+    tgId: 265695055
+
+  },
+
 
   {
     label: 'Денис Селезнев',
