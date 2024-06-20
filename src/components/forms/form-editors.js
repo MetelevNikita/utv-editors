@@ -162,7 +162,7 @@ const getList = () => {
 
 }
 
-// useEffect(() => {getList()}, [])
+useEffect(() => {getList()}, [])
 
 
 
@@ -208,7 +208,7 @@ const getList = () => {
 
 
 
-const message ``
+
 
 
 
