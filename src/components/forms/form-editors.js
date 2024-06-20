@@ -162,8 +162,7 @@ const getList = () => {
 
 }
 
-useEffect(() => {getList()}, [])
-
+// useEffect(() => {getList()}, [])
 
 
 
@@ -180,7 +179,7 @@ useEffect(() => {getList()}, [])
 
       messageYG = `${category.label} ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
+      messageTG = `${category.label} ${<br />} ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
 
       return sendCard(messageTG, messageYG)
 
@@ -196,9 +195,9 @@ useEffect(() => {getList()}, [])
 
     } else if (category.value === 'шаблонный проект') {
 
-      messageYG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\n\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label} \n \n ПУТЬ К СЫРЬЮ: \n ${sample.path}\n\nОПИСАНИЕ:\n${description}\n\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\n\n\nСРОКИ: ${date}`
+      messageYG = `${category.label}${<br />}${<br />}ФИО АВТОРА:${<br />}${(singleUser) ? singleUser.name + singleUser.lastName : fio}${<br />}${<br />}НАЗВАНИЕ ПРОЕКТА:${<br />}${sample.label}${<br />}${<br />}ПУТЬ К СЫРЬЮ:${<br />}${sample.path}${<br />}${<br />}ОПИСАНИЕ:${<br />}${description}${<br />}${<br />}ИСПОЛНИТЕЛЬ:${<br />}${selectedOption.label}${<br />}${<br />}${<br />}СРОКИ: ${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
+      messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
       return sendCard(messageTG, messageYG)
 
@@ -208,6 +207,8 @@ useEffect(() => {getList()}, [])
 //
 
 
+
+const message ``
 
 
 
