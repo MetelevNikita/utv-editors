@@ -50,7 +50,7 @@ const {modalActiveDislike, setModaActiveDislike} = modalDisLike
 
 const [user, setUser] = useState('')
 const [colums, setColums] = useState('')
-const [selectedOption, setSelectionOption] = useState('')
+const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
 
 
 //
@@ -128,6 +128,7 @@ const fetchDesk = async () => {
   })
 
   const data = await res.json()
+  console.log(data)
   return setColums(data)
 
 }
@@ -146,6 +147,7 @@ const fetchUser = async () => {
   })
 
   const data = await res.json()
+  console.log(user)
   return setUser(data)
 }
 
@@ -185,18 +187,18 @@ useEffect(() => {getList()}, [])
 
     } else if (category.value === 'новый проект') {
 
-      messageYG = `${category.label}  ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ССЫЛКИ НА ПРИМЕР: ${referense} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation} ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ: ${selectedOption.label} СРОКИ: ${date}`
+      messageYG = `${category.label} \n \nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\n\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nТИП ПРОЕКТА:\n${sale.label}\n\nСОГЛАСОВАТЕЛЬ:\n${coordination}\n\nЦЕЛЕВАЯ АУДИТОРИЯ:\n${audience}\n\nОПИСАНИЕ:\n${description}\n\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\n\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\n\nССЫЛКИ НА ПРИМЕР:\n${referense}\n\nХРОНОМЕТРАЖ:\n${time}\n\nНАПРАВЛЕНИЕ:\n${price.label}\n\nГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:\n${destanation}\n\nВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:\n${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+      messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
       return sendCard(messageTG, messageYG)
 
 
     } else if (category.value === 'шаблонный проект') {
 
-      messageYG = `${category.label} ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${sample.label} ПУТЬ К СЫРЬЮ: ${sample.path} ОПИСАНИЕ: ${description} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+      messageYG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\n\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label} \n \n ПУТЬ К СЫРЬЮ: \n ${sample.path}\n\nОПИСАНИЕ:\n${description}\n\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\nСРОКИ: ${date}`
+      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
       return sendCard(messageTG, messageYG)
 
@@ -231,7 +233,7 @@ body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
 
 
 }).then(responce => responce.json())
-.then(data => console.log(data))
+.then(data => data)
 .catch(error => console.log(error, 'ERROR'))
 
 
@@ -248,7 +250,7 @@ if (selectedOption.tgId === "") {
 
 
     }).then(responce => responce.json())
-    .then(data => console.log(data))
+    .then(data => data)
     .catch(error => console.log(error, 'ERROR'))
 }
 
@@ -272,9 +274,9 @@ const sendCard = (newMessageTG, newMessageYG) => {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${userKey}`
     },
-    body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: JSON.stringify(newMessageYG)})
+    body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
   }).then(responce => responce.json())
-    .then(data => console.log(data))
+    .then(data => data)
     .catch(error => console.log(error, 'ERROR'))
 
 
@@ -322,8 +324,6 @@ const undefinedProject = () => {
 
 const newProject = () => {
 
-
-
   return(
     <Col className='d-flex justify-content-center align-items-center mt-3 flex-column'>
 
@@ -346,7 +346,7 @@ const newProject = () => {
 
       <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
-      <Col className='mt-2' md={12} sm={12} xs={12} ><MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{width: '100%'}}></MyInput></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
 
 
@@ -421,7 +421,7 @@ const typeProject = () => {
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
 
-      <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={link} onChange={(e) => {setLink(e.target.value)}} placeholder={'ссылки на файлы, которые нужно приложить, архив:'} style={{width: '100%'}}></MyInput></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{width: '100%'}}></MyInput></Col>
 
