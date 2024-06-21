@@ -176,7 +176,7 @@ useEffect(() => {getList()}, [])
 
       messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time} НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
 
-      messageTG = `${category.label} ${<br />} ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
+      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
 
       return sendCard(messageTG, messageYG)
 
