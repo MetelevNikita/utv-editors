@@ -135,7 +135,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-    const messageYG = `Автор: ${name} Контакты заказчика: ${contacts} Название проекта: ${title} Важность проекта: ${priority.label} Заказчик: ${customer.label} Технические требования: ${requirements} Описание: ${description} Сылки на файлы: ${link} Что требуется изготовить: ${selectedPackageProject().join(', ')} Референсы: ${reference} Дата сдачи проекта: ${date}`
+    const messageYG = `Автор:<br>${name}<br><br>Контакты заказчика:<br>${contacts}<br><br>Название проекта:<br>${title}<br><br>Важность проекта:<br>${priority.label}<br><br>Заказчик:<br>${customer.label}<br><br>Технические требования:<br>${requirements}<br><br>Описание:<br>${description}<br><br>Сылки на файлы:<br>${link}<br><br>Что требуется изготовить:<br>${selectedPackageProject().join(', ')}<br><br>Референсы:<br>${reference}<br><br>Дата сдачи проекта: ${date}`
 
     const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
 
@@ -261,11 +261,11 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'технические требования (формат, разрешеение и т.д.)'} value={requirements} onChange={(e) => {setRequirements(e.target.value)}}></MyInput></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'ссылки на файлы'} type={'link'} value={link} onChange={(e) => {setLink(e.target.value)}} ></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы'} value={link} onChange={(e) => {setLink(e.target.value)}}></MyTextArea></Col>
 
 
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MySelect placeholder={'из чего состоит проект'} isMulti closeMenuOnSelect={false} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , borderRadius: 10 + 'px'})}}  options={designParts}></MySelect></Col>
+      <Col md={12} sm={12} xs={12} className='mt-2'><MySelect placeholder={'из чего состоит проект'} isMulti closeMenuOnSelect={false} value={packageProject} onChange={setPackageProject} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , borderRadius: 10 + 'px'})}}  options={designParts}></MySelect></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'пожелания референсы'} value={reference} onChange={(e) => {setReference(e.target.value)}}></MyInput></Col>
 

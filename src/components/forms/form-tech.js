@@ -82,7 +82,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   }
 
 
-  const messageYG = ` ФИО АВТОРА: ${fio} ТЕЛЕФОН ДЛЯ СВЯЗИ: ${phone} ТИП ПРОЕКТА: ${type.label} ОПИСАНИЕ: ${description} СРОКИ: ${date} ОПИСАНИЕ ${description}`
+  const messageYG = ` ФИО АВТОРА:<br>${fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
 
 

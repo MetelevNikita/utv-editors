@@ -78,8 +78,6 @@ const [newMessageTG, setNewMessageTg] = useState('')
 const [newMessageYG, setNewMessageYG] = useState('')
 
 
-console.log(selectedOption)
-
 
 
 //
@@ -128,7 +126,6 @@ const fetchDesk = async () => {
   })
 
   const data = await res.json()
-  console.log(data)
   return setColums(data)
 
 }
@@ -177,7 +174,7 @@ useEffect(() => {getList()}, [])
 
     if(category.value === 'типовой проект') {
 
-      messageYG = `${category.label} ФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio} НАЗВАНИЕ ПРОЕКТА: ${title} ТИП ПРОЕКТА: ${sale.label} \n СОГЛАСОВАТЕЛЬ: ${coordination} ОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link} МАТЕРИАЛЫ К ПРОЕКТУ: ${info} ХРОНОМЕТРАЖ: ${time} НАПРАВЛЕНИЕ: ${price.label} ИСПОЛНИТЕЛЬ: ${selectedOption.label} СРОКИ: ${date}`
+      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time} НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
 
       messageTG = `${category.label} ${<br />} ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
 
@@ -186,7 +183,7 @@ useEffect(() => {getList()}, [])
 
     } else if (category.value === 'новый проект') {
 
-      messageYG = `${category.label} \n \nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\n\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nТИП ПРОЕКТА:\n${sale.label}\n\nСОГЛАСОВАТЕЛЬ:\n${coordination}\n\nЦЕЛЕВАЯ АУДИТОРИЯ:\n${audience}\n\nОПИСАНИЕ:\n${description}\n\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\n\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\n\nССЫЛКИ НА ПРИМЕР:\n${referense}\n\nХРОНОМЕТРАЖ:\n${time}\n\nНАПРАВЛЕНИЕ:\n${price.label}\n\nГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:\n${destanation}\n\nВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:\n${selectedOption.label}\n\n\nСРОКИ: ${date}`
+      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ЦЕЛЕВАЯ АУДИТОРИЯ:<br>${audience}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ССЫЛКИ НА ПРИМЕР:<br>${referense}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:<br>${destanation}<br><br>ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
 
       messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
@@ -195,7 +192,7 @@ useEffect(() => {getList()}, [])
 
     } else if (category.value === 'шаблонный проект') {
 
-      messageYG = `${category.label}${<br />}${<br />}ФИО АВТОРА:${<br />}${(singleUser) ? singleUser.name + singleUser.lastName : fio}${<br />}${<br />}НАЗВАНИЕ ПРОЕКТА:${<br />}${sample.label}${<br />}${<br />}ПУТЬ К СЫРЬЮ:${<br />}${sample.path}${<br />}${<br />}ОПИСАНИЕ:${<br />}${description}${<br />}${<br />}ИСПОЛНИТЕЛЬ:${<br />}${selectedOption.label}${<br />}${<br />}${<br />}СРОКИ: ${date}`
+      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${sample.label}<br><br>ПУТЬ К СЫРЬЮ:<br>${sample.path}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:\n${date}`
 
       messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
@@ -205,13 +202,6 @@ useEffect(() => {getList()}, [])
   }
 
 //
-
-
-
-
-
-
-
 
 
 
