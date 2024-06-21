@@ -69,7 +69,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
   const sendMessage = () => {
 
-    if( fio !== '' && contacts !== '' && title !== '' && description !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && adress !== '') {
+    if(contacts !== '' && title !== '' && description !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && adress !== '') {
 
           sendMessageTg()
           setModalActiveLike(true)
@@ -83,7 +83,6 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
           setTimeEnd('')
           setTimeStart('')
           setDescription('')
-
 
       } else {
                 setModaActiveDislike(true)
