@@ -126,6 +126,7 @@ const fetchDesk = async () => {
   })
 
   const data = await res.json()
+  console.log(data)
   return setColums(data)
 
 }
@@ -144,7 +145,7 @@ const fetchUser = async () => {
   })
 
   const data = await res.json()
-  console.log(user)
+  console.log(data)
   return setUser(data)
 }
 
