@@ -15,9 +15,17 @@ import { useNavigate } from 'react-router-dom'
 // components
 
 import MyButton from '../../UI/MyButton'
+import MyButtonBack from '../../UI/MyButtonBack'
+
+//
 
 
-const CardFilming = (props) => {
+
+const CardFilming = ({authEmailLog , ...props}) => {
+
+
+  const {authEmail, setAuthEmail} = authEmailLog
+
 
 
   const [cardList, setCardList] = useState([])
@@ -29,14 +37,16 @@ const CardFilming = (props) => {
   const id = params.id
 
 
-const getCard = () => {
-    const db = getDatabase()
-    const cardList = ref(db, 'cardsFilming/')
-    onValue(cardList, (data) => {
-      setCardList(Object.values(data.val()))
-      setLoading(false)
-    })
-  }
+
+
+  const getCard = () => {
+      const db = getDatabase()
+      const cardList = ref(db, 'cardsFilming/')
+      onValue(cardList, (data) => {
+        setCardList(Object.values(data.val()))
+        setLoading(false)
+      })
+    }
 
 
 
@@ -45,8 +55,6 @@ const delCard = () => {
   remove(ref(db, `cardsFilming/${singleArr[0].id}`))
   navigate('/main/operator/schedule')
 }
-
-
 
 
   useEffect(() => {
@@ -65,9 +73,12 @@ const delCard = () => {
     return item.id === id
   })
 
-  console.log(singleArr)
 
 
+
+  if(loading === true) {
+    <>LOADING</>
+  }
 
 
   return(
@@ -76,11 +87,11 @@ const delCard = () => {
       <div className="card-filming-date">{singleArr[0].date}</div>
         <div className="card-filming-box">
 
-          <div className="card-filming-title">{singleArr[0].title}</div>
+          <div className="card-filming-title">{(singleArr[0].title === '') ? singleArr[0].type : singleArr[0].title}</div>
           <div className="card-filming-author">{`Контактное лицо: ${singleArr[0].contacts}`}</div>
           <div className="card-filming-place">{singleArr[0].place}</div>
           <div className="card-filming-conditions">{singleArr[0].conditions}</div>
-          <div className='card-filming-time'>{`Время: ${singleArr[0].timeStart} - ${singleArr[0].timeEnd}`}</div>
+          <div className='card-filming-time'>{(singleArr[0].title === '') ? `Время: ${singleArr[0].type}` : `Время:  ${singleArr[0].timeStart} - ${singleArr[0].timeEnd}`}</div>
           <div className='card-filming-cloth'>{`Форма одежды: ${singleArr[0].cloth}`}</div>
           <div className='card-filming-project'>{`Проект: ${singleArr[0].projectPay}`}</div>
 
@@ -92,11 +103,18 @@ const delCard = () => {
 
       <Row className='mt-4'>
         <Col>
-            <Link to={'/main/schedule'}><MyButton>Назад</MyButton></Link>
+            <Link to={`/main/schedule/edit/${id}`}><MyButton onClick={() => {console.log('редактируй')}}>Редактировать</MyButton></Link>
         </Col>
 
+        {(authEmail === 'admin@gmail.com') ? <Col><MyButton onClick={() => {delCard()}}>Удалить</MyButton></Col> : <></> }
+
+
+      </Row>
+
+      <Row className='mt-4'>
         <Col>
-            <MyButton onClick={() => {delCard()}}>Удалить</MyButton>
+
+            <Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link>
         </Col>
       </Row>
     </>

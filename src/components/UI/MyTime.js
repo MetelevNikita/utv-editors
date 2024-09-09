@@ -3,11 +3,10 @@ import './MyTime.css'
 const MyTime = (props) => {
 
   return(
-    <div className="form-time-box">
-
+    <div>
 
         <div className="form-time-title">{props.title}</div>
-        <input className="form-time-input" type="time" {...props}/>
+        <input defaultValue className="form-time-input" type="time" {...props}/>
 
     </div>
 

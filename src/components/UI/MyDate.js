@@ -10,7 +10,7 @@ const MyDate = (props) => {
         <Row>
 
         <div className="form-date-box">
-          <input className='form-date' type="date" name="date" id="date" value={props.insertDate} {...props}/>
+          <input defaultValue className='form-date' type="date" name="date" id="date" value={props.insertDate} {...props}/>
         </div>
 
         </Row>

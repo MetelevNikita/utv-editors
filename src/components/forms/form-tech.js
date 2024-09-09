@@ -14,7 +14,7 @@ import MyButton from '../UI/MyButton'
 
 // server
 
-import streamType from '../streamType'
+import streamType from '../../server/streamType'
 
 
 const FormTech = ({modalTechLike, modalTechDislike}) => {
@@ -67,7 +67,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-
   const fetchDesk = () => {
     const keyTech = localStorage.getItem('keyTech')
     fetch('https://yougile.com/api-v2/columns', {
@@ -78,14 +77,12 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       }
     }).then(responce => responce.json())
       .then(data => {
-        console.log(data)
         setColumnId(data.content[1].id)
       })
   }
 
 
-
-  const messageYG = ` ФИО АВТОРА: ${fio} ТЕЛЕФОН ДЛЯ СВЯЗИ: ${phone} ТИП ПРОЕКТА: ${type.label} ОПИСАНИЕ: ${description} СРОКИ: ${date} ОПИСАНИЕ ${description}`
+  const messageYG = ` ФИО АВТОРА:<br>${fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
 
 
@@ -102,7 +99,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       .then(data => console.log(data))
       .catch(error => console.log(error, 'ERROR'))
   }
-
 
 
   // send to TG
@@ -126,8 +122,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
       .catch(error => console.log(error, 'ERROR'))
 
   }
-
-
 
 
 
@@ -169,24 +163,42 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
   return(
-    <div className="form-container">
-      <MyInput placeholder={'фио'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-      <MyInput placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'контактная информация'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'} style={{marginTop: 20 + 'px'}}></MyInput>
-      <MyInput placeholder={'место проведения'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyInput>
 
 
-      <MySelect options={streamType} onChange={setType} styles={{control: (styles) => {return {...styles, marginTop: 20 + 'px', width: 300 + 'px', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} placeholder={'тип проекта'}></MySelect>
+    <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
-      <MyTextArea placeholder={'описание'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyTextArea>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'контактная информация'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'место проведения'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} ></MyInput></Col>
 
-      <div className='form-deadline'>рекомендуемая дата сдачи проекта</div>
 
-      <MyDate  placeholder={'дата проведения'} value={date} onChange={(e) => {setDate(e.target.value)}} style={{marginTop: 20 + 'px'}}></MyDate>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MySelect options={streamType} onChange={setType} styles={{control: (styles) => {return {...styles, width: '100%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} placeholder={'тип проекта'}></MySelect></Col>
 
-      <div className="form-tech-info"> ПОСЛЕ ПОЛУЧЕНИЯ ИНФОРМАЦИИ С ВАМИ СВЯЖЕТСЯ РУКОВОДИТЕЛЬ НАПРАВЛЕНИЯ ДЛЯ УТОЧНЕНИЯ ИНОФРМАЦИИ</div>
-      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendMessage()}}>Создать</MyButton>
-    </div>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyTextArea placeholder={'описание'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
+
+      <Col md={12} sm={12} xs={12} className='mt-3'>
+
+        <div style={{width: '100%', textAlign: 'center'}}>рекомендуемая дата сдачи проекта</div>
+        <Col><MyDate style={{width: '100%'}} placeholder={'дата проведения'} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
+      </Col>
+
+
+      <Col md={12} sm={12} xs={12} className='mt-3'>
+
+        <div style={{width: '100%', textAlign: 'center'}}> ПОСЛЕ ПОЛУЧЕНИЯ ИНФОРМАЦИИ С ВАМИ СВЯЖЕТСЯ РУКОВОДИТЕЛЬ НАПРАВЛЕНИЯ ДЛЯ УТОЧНЕНИЯ ИНОФРМАЦИИ</div>
+        <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendMessage()}}>Создать</MyButton>
+
+      </Col>
+
+
+
+
+
+    </Col>
+
+
 
   )
 }

@@ -10,10 +10,24 @@ import { Container, Col, Row } from 'react-bootstrap'
 import MyButton from '../UI/MyButton'
 
 
-const ModalPageAuth = ({ModalPageAuth, ...props}) => {
+const ModalPageAuth = ({ModalPageAuth, ModalPassAuth, ModalPassRepeat, AuthOk, ...props}) => {
 
 
   const {modalAuth, setModalAuth} = ModalPageAuth
+  const {modalPassAuth, setModalPassAuth} = ModalPassAuth
+  const {modalPassRepeat, setModalPassRepeat} = ModalPassRepeat
+  const {authOk, setAuthOk} = AuthOk
+
+
+
+
+  const resetModal = () => {
+    setModalAuth(true)
+    setModalPassAuth(true)
+    setAuthOk(true)
+    setModalPassRepeat(true)
+
+  }
 
 
   return(
@@ -29,7 +43,7 @@ const ModalPageAuth = ({ModalPageAuth, ...props}) => {
 
                   <img className="modal-auth-img" src={props.modalDislikeImg} alt="modal-img" />
                   <div className="modal-auth-title">{props.modalDislikeTitle}</div>
-                  <MyButton onClick={() => {setModalAuth(true)}} style={{width: 175 + 'px', height: 44 + 'px' }}>{props.modalBtnTitle}</MyButton>
+                  <MyButton onClick={() => {resetModal()}} style={{width: 175 + 'px', height: 44 + 'px' }}>{props.modalBtnTitle}</MyButton>
 
                 </div>
               </div>

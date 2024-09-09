@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useState } from 'react'
 
+// redux
+
+
+import { useSelector } from 'react-redux'
+
 // components
 
 import MyInput from '../../UI/MyInput'
@@ -21,6 +26,11 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 
 const PlanFilming = ({modalOperLike, modalOperDislike}) => {
+
+  const users = useSelector(state => state.users.users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter((user) => user.email.toLowerCase() === email)[0]
+
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
@@ -59,7 +69,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
   const sendMessage = () => {
 
-    if( fio !== '' && contacts !== '' && title !== '' && description !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && adress !== '') {
+    if(contacts !== '' && title !== '' && description !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && adress !== '') {
 
           sendMessageTg()
           setModalActiveLike(true)
@@ -74,7 +84,6 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
           setTimeStart('')
           setDescription('')
 
-
       } else {
                 setModaActiveDislike(true)
       }
@@ -86,61 +95,61 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
   return(
 
-    <div className="filming-container">
+    <Col>
 
-      <div className='plan-card-title'>Заявка на съёмку</div>
+      <Col style={{width: '100%', textAlign: 'center', fontSize: '22px'}} className='mt-3'>Заявка на съёмку</Col>
 
-      <div className='plan-card-subtitle'>Заявка попадет на рассмотрения к руководителю операторов, после анализа заявки вам придет сообщение о постановке съёмке в назанченный период или с изменениями по времени</div>
+      <Col style={{width: '100%', textAlign: 'center', fontSize: '16px'}} className='mt-3'>Заявка попадет на рассмотрения к руководителю операторов, после анализа заявки вам придет сообщение о постановке съёмке в назанченный период или с изменениями по времени</Col>
 
-      <MyInput placeholder={'фио'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-      <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput>
-      <MyInput placeholder={'название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
-      <MyInput placeholder={'адрес'} style={{marginTop: 20 + 'px'}} value={adress} onChange={(e) => {setAdress(e.target.value)}}></MyInput>
+      {/*  */}
 
-      <Row className='d-flex justify-content-center'>
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} placeholder={'фио'} style={{width: '100%'}} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'фио'} style={{width: '100%'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>}
 
-        <Col className='mt-3 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'контакты'} style={{width: '100%'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
 
-        <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'название съёмки'} style={{width: '100%'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
 
-        </Col>
-
-        <Col className='mt-3 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-        <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime>
-
-        </Col>
-
-      </Row>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'адрес'} style={{width: '100%'}} value={adress} onChange={(e) => {setAdress(e.target.value)}}></MyInput></Col>
 
 
-      <MyTextArea placeholder={'описание'} style={{marginTop: 20 + 'px'}} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea>
-
-      <div className='filming-deadline'>Дата съёмки</div>
-      <MyDate style={{marginTop: 10 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
 
-      <Row className='mt-4'>
-        <Col>
-            <MyButton onClick={() => {sendMessage()}}>Запланировать</MyButton>
-        </Col>
+      <Col md={6} sm={12} xs={12} className='mt-3'><MyTime style={{width: '98%'}} title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime></Col>
+
+      <Col md={6} sm={12} xs={12} className='mt-3'> <MyTime style={{width: '98%'}} title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime></Col>
 
 
-        <Col>
+      </Col>
 
-        <Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link>
 
-        </Col>
-      </Row>
+
+      <Col md={12} sm={12} xs={12} className='mt-4'><MyTextArea placeholder={'описание'} style={{width: '100%'}} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
+
+
+      <Col md={12} sm={12} xs={12} className='mt-3'>
+
+        <div className='filming-deadline'>Дата съёмки</div>
+        <Col><MyDate style={{width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
+      </Col>
 
 
 
 
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+        <Col md={6} sm={12} xs={12} className='mt-3'><MyButton onClick={() => {sendMessage()}}>Запланировать</MyButton></Col>
+
+        <Col md={6} sm={12} xs={12} className='mt-3'><Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link></Col>
+
+      </Col>
+
+
+      </Col>
 
 
 
-
-    </div>
   )
 }
 

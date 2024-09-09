@@ -1,4 +1,4 @@
-const oepratorList = [
+const operatorList = [
 
   {
     label: 'не определен',
@@ -38,8 +38,8 @@ const oepratorList = [
   },
 
   {
-    label: 'Габидуллин Руслан',
-    value: '901944117',
+    label: 'Сагидуллин Айдар',
+    value: '717358495',
     colorId: "#FC7C05"
   },
 
@@ -56,8 +56,8 @@ const oepratorList = [
   },
 
   {
-    label: 'Газимуллин Нургизар',
-    value: '705189721',
+    label: 'Роман Седов',
+    value: '942533767',
     colorId: "#05FCFC"
   },
 
@@ -66,6 +66,12 @@ const oepratorList = [
     value: '1267512293',
     colorId: "#05FCFC"
   },
+
+  {
+    label: 'Руслан Габидуллин',
+    value: '901944117',
+    colorId: "#fc0303"
+  }
 ]
 
-export default oepratorList
+export default operatorList

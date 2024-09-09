@@ -1,17 +1,17 @@
 
 
-.login-container {
+.logo-container {
+  margin-top: 20px;
   width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
+  height: 120px;
+  overflow: hidden;
 
 }
 
 
-.login-logo {
-  margin-bottom: 40px;
+.logo {
+  width: 400px;
+  animation: logo-inner 1500ms ease forwards;
+
 }
+

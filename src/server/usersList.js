@@ -3,8 +3,8 @@ const usersList = [
 
   {
     label: 'На усмотрение руководителя',
-    value: "8860a11e-c100-4949-8cbd-d01d945e20eb",
-    tgId: ''
+    value: "2c74ebe5-f486-4f19-9b0f-e88083906ca9",
+    tgId: 85252645
   },
 
   {
@@ -15,15 +15,22 @@ const usersList = [
 
 
   {
-    label: 'Живи Активно',
+    label: 'Александр Борисов',
     value: "f29cc9d9-a6fe-4ade-8607-925c403bbbb0",
-    tgId: ''
+    tgId: 6378089936
   },
 
   {
     label: 'Денис Габбасов',
     value: "103fd61a-7459-46c4-b8d5-5d6877091537",
     tgId: 265695055
+
+  },
+
+  {
+    label: 'Александр Карпов',
+    value: "134f54ad-5a17-4c6f-846d-381e3c616799",
+    tgId: 422276672
 
   },
 
@@ -65,9 +72,9 @@ const usersList = [
   },
 
   {
-    label: 'Продакшн',
+    label: 'Руслан Габидуллин',
     value: "280129e1-cfa2-49f6-ae0e-e40c0e707a91",
-    tgId: ''
+    tgId: 901944117
 
   },
 ]

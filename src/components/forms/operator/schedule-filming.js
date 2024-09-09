@@ -7,15 +7,12 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from "react-calendar"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom';
-import { Container, Col, Row } from 'react-bootstrap';
-import app from '../../../firebaseApp';
+import { Col, Row } from 'react-bootstrap';
 import { getDatabase, ref, onValue } from "firebase/database";
 
 // components
 
 import MySelect from '../../UI/MySelect';
-import CardFilming from './card-filming';
-import MyButton from '../../UI/MyButton';
 import MyButtonBack from '../../UI/MyButtonBack';
 import MyOperatorButton from '../../UI/MyOperatorButton';
 import ListFilming from './list-filming';
@@ -24,20 +21,20 @@ import ListFilmingDate from './list-filming-date';
 // server
 
 import oepratorList from '../../../server/operatorList';
-import operatorProject from '../../../server/operatorProject';
 
 
-const ScheludeFilming = () => {
+const ScheludeFilming = ({fixedCalendarDay}) => {
 
-  const [calendarDate, setCalendarDate] = useState(new Date())
+  const {calendarDate, setCalendarDate} = fixedCalendarDay
+
+
+
   const [month, setMonth] = useState()
   const [triggerDate, setTriggerDate] = useState(false)
   const [cardList, setCardList] = useState([])
   const [user, setUser] = useState('не определен')
 
 
-  const userEmail = sessionStorage.getItem('userEmail')
-  console.log(userEmail)
 
 
   const getCard = () => {
@@ -54,6 +51,7 @@ const ScheludeFilming = () => {
   }, [])
 
 
+  const authEmail = sessionStorage.getItem('email')
 
 
 // filter
@@ -67,6 +65,7 @@ const onClickMonth = (value, event) => {
 }
 
 const onClickDay = (date) => {
+
   setCalendarDate(date)
   setTriggerDate(false)
 }
@@ -122,16 +121,47 @@ const sortMonthTime = searchMonthCard.sort((a, b) => {
 })
 
 
+
+const timeData = (label, item) => {
+
+  if(label === 'РЕЗЕРВ 8часовой') {
+
+    return `${8} часов`
+
+  } else if (label === 'РЕЗЕРВ 11часовой') {
+
+    return `${11} часов`
+
+  } else if (label === 'ДЕЖУРНЫЙ') {
+
+    return `${8} часов`
+
+  } else if (label === 'ОТПУСК') {
+
+    return ``
+
+  } else if (label === 'ВЫХОДНОЙ') {
+
+    return ``
+
+  } else {
+
+    return `${item.timeStart} - ${item.timeEnd}`
+  }
+
+}
+
+
 const filterDate = () => {
 
 
     if (triggerDate === true) {
 
-      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`} time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
 
     } else {
 
-      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={`${item.title}`} date={`${item.date}`} time={`${item.timeStart} - ${item.timeEnd}`} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`}  time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
     }
 }
 
@@ -146,29 +176,37 @@ const filterDate = () => {
 
       <Row className='d-flex'>
         <Col md={6} className='d-flex flex-column justify-content-center align-items-center'>
-            <Calendar className={'shelude-calendar'} defaultActiveStartDate={new Date()} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex' }}></Calendar>
+            <Calendar className={'shelude-calendar'} defaultActiveStartDate={calendarDate} onClickMonth={onClickMonth}  onChange={onClickDay} value={calendarDate} style={{display: 'flex'}}></Calendar>
             <MySelect styles={{control: (baseStyles, state) => ({...baseStyles, width: 100 + '%', height: 61 + 'px' , marginTop: 20 + 'px', marginBottom: 20 + 'px'})}} placeholder={'выберите опреатора'} options={oepratorList} value={user} onChange={setUser}></MySelect>
         </Col>
 
+
         <Col md={6}>
 
-            <div className='schelude-info'>
-
-              <div className="shelude-title">Выберите месяц</div>
-              <div className='shelude-subtittle'>это необходимо для получения списка всех съёмок за выбранный период</div>
-
-            </div>
+          <Col className='d-none d-sm-block'>
 
 
-        <Row>
+          <div className='schelude-info'>
 
-          {(userEmail === 'admin@gmail.com') ? <Col className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
+                <div className="shelude-title">Выберите месяц</div>
+                <div className='shelude-subtittle'>это необходимо для получения списка всех съёмок за выбранный период</div>
 
-          <Col className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
-        </Row>
+          </div>
 
+          </Col>
+
+
+          <Col md={12} className='d-flex justify-content-around mb-2'>
+
+              {(authEmail === 'admin@gmail.com' || authEmail === "news@gmail.com") ? <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/create'}><MyOperatorButton>Создать</MyOperatorButton></Link></Col> : <></>}
+
+              <Col md={5} sm={5} xs={5} className='mt-4'><Link to={'/main/schedule/plan'}><MyOperatorButton onClick={() => {console.log('click')}}>Запланировать</MyOperatorButton></Link></Col>
+
+          </Col>
 
         </Col>
+
+
       </Row>
 
 
@@ -176,17 +214,14 @@ const filterDate = () => {
     </div>
 
 
-    <Row>
-      <Col className='d-flex flex-column  justify-content-center' md={12}>
-
+    <Row className='d-flex flex-column  justify-content-center align-items-center mt-3'  style={{marginLeft: '10px', marginRight: '20px'}}>
+      <Col className='d-flex flex-column justify-content-center' md={12}>
 
         {(triggerDate === true) ? <ListFilmingDate date={`${calendarDate.getMonth()} месяц`}></ListFilmingDate> : <ListFilmingDate date={calendarDate.toDateString()}></ListFilmingDate>}
 
 
           <ul className='card-list'>
-
             {(cardList.length < 1) ? <div className='empty-card-list'>Список пуст</div> : filterDate()}
-
           </ul>
 
       </Col>
@@ -194,7 +229,6 @@ const filterDate = () => {
 
     <Row >
       <Col className='d-flex justify-content-center'>
-
 
         <Link to={'/main'}><MyButtonBack style={{width: 250 + 'px'}}>НАЗАД</MyButtonBack></Link>
 

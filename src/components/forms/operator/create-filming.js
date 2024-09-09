@@ -4,13 +4,21 @@ import './filming.css'
 
 //
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get, onValue } from "firebase/database";
 import uuid from 'react-uuid'
+
+
+// redux
+
+
+import { useSelector } from 'react-redux'
+
+
 
 // components
 
@@ -24,24 +32,30 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 // server
 
-import oepratorList from '../../../server/operatorList'
+import operatorList from '../../../server/operatorList'
 import operatorProject from '../../../server/operatorProject'
 import operatorCloth from '../../../server/operatorCloth'
+import operatorCotegory from '../../../server/operatorCotegory'
 
 
 
 const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const navigate = useNavigate()
+  const users = useSelector(state => state.users.users)
+
+
+
+
+
 
   const {modalActiveLike, setModalActiveLike} = modalOperLike
   const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
 
-
-
+  const [cardList, setCardList] = useState([])
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState([])
   const [userColor, setUserColor]= useState('')
   const [date, setDate] = useState('')
   const [timeStart, setTimeStart] = useState('')
@@ -49,64 +63,153 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [place, setPlace] = useState('')
   const [contacts, setContacts] = useState('')
   const [conditions, setConditions] = useState('')
-  const [cloth, setCloth]= useState('')
-  const [project, setProject] = useState('')
+  const [cloth, setCloth]= useState({label: 'не выбрано', value: ''})
+  const [project, setProject] = useState({label: 'не выбрано', value: ''})
+  const [type, setType] = useState('')
+
+
+  const [selectUser, setSelectUser] = useState('')
+
+
 
   const id = uuid()
-  const URL_FIREBASE = 'https://utv-edit-list-default-rtdb.firebaseio.com/card.json'
+  const userEmail = sessionStorage.getItem('email')
+
+  // getUsers
+
+
+  const userSelect = (!users) ? [{value: 'не выбрано', label: 'не выбрано'}] : users.map((item) => {
+    return {
+      value: item.tgId,
+      label: item.name
+    }
+  })
+
+
+
+  // getCard
+
+
+  const getCard = () => {
+
+    const db = getDatabase()
+    const cardBase = ref(db, 'cardsFilming/')
+    onValue(cardBase, (snapshot) => {
+      const data = snapshot.val()
+      setCardList(Object.values(data))
+    })
+  }
+
+
+  const userArr = (user.length < 1) ? ['не определен'] : user.map((item) => {return item.label})
+
+  const filterCard = cardList.filter((userList) => {
+    return userList.user.includes(userArr)
+  })
+
+  const dateCardList = filterCard.filter((item) => {
+    return item.date === new Date(date).toDateString()
+  })
+
+  //
+
+  const filterTimeStart = dateCardList.map((item) => {
+      return item.timeStart
+  })
+  const filterTimeEnd = dateCardList.map((item) => {
+    if(item.timeEnd === '') {
+      return Math.random()
+    } else {
+      return item.timeEnd
+    }
+  })
+
+
+
+
+
+
+
+  useEffect(() => {
+    getCard()
+  }, [])
+
+
+
+  // createCard
+
 
   const selectedUser = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.label})
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
-  const messageTG = ` ФИО АВТОРА: \n ${fio} \n \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n \n ОПЕРАТОРЫ: \n ${selectedUser().join(' ')} \n \n ДАТА СЪЕМКИ \n ${new Date(date).toDateString()} \n \n ВРЕМЯ \n ${timeStart} - ${timeEnd} \n \n АДРЕС \n ${place} \n \n КОНТАКТЫ \n ${contacts} \n \n ОПИСАНИЕ \n ${conditions} \n \n Проект \n ${project.label} \n \n Форма одежды \n ${cloth.label}`
+
+  const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
 
 
-  console.log(user)
+  const messageAuthorTG = (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title}\nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \n\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
+
+
+
+  const checkTimeCreateCard = () => {
+
+    if(filterTimeStart.includes(timeStart) && filterTimeEnd.includes(timeEnd)) {
+      return alert('Данное время занято')
+    }
+
+    createCard()
+
+  }
+
+
   const createCard = () => {
 
-    if(fio !== '' && title !== '' && date !== '' && timeStart !== '' && timeEnd !== '' && place !== '' && contacts !== '' && conditions !== '') {
+    if (fio === '' || date === '' ) {
+        return setModaActiveDislike(true)
+      }
 
-    const db = getDatabase()
+
+
+      const db = getDatabase()
       set(ref(db, 'cardsFilming/' + id), {
 
         id: id,
         name: fio,
+        type: type.label,
         title: title,
         user: selectedUser().join(' '),
         userColor: selectedUserColor().join(),
         date: new Date(date).toDateString(),
-        timeStart: timeStart,
-        timeEnd: timeEnd,
+        timeStart: (timeStart === '') ? type.value : timeStart,
+        timeEnd: (timeEnd === '') ? type.value : timeEnd,
         place: place,
         contacts: contacts,
         conditions: conditions,
-        projectPay: project.label,
-        cloth: cloth.label
+        cloth: cloth.label,
+        projectPay: project.label
 
       })
 
-    selectedIdUserSend()
+      selectedIdUserSend()
+      selectedAuthorSend()
 
-    setFio('')
-    setTitle('')
-    setUser('')
-    setDate('')
-    setTimeStart('')
-    setTimeEnd('')
-    setPlace('')
-    setConditions('')
-    setContacts('')
+      // (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
 
-    setModalActiveLike(true)
-    navigate('/main/operator/schedule')
+      setFio('')
+      setTitle('')
+      setUser('')
+      setDate('')
+      setTimeStart('')
+      setTimeEnd('')
+      setPlace('')
+      setConditions('')
+      setContacts('')
+      setModalActiveLike(true)
+      navigate('/main/schedule/create')
 
-  } else {
 
-    setModaActiveDislike(true)
+   }
 
-  }
 
-}
 
   const selectedIdUserSend = () => {
     return (user.length < 1) ? ['не определен'] : user.map((item) => {
@@ -129,70 +232,103 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     }
 
 
+    const selectedAuthorSend = async () => {
 
-    console.log(project)
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+      try {
+        const responce = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG })
+        })
+        const data = await responce.json()
+        return data
+      } catch (error) {
+        return console.log(error, 'ERROR')
+      }
+    }
 
 
   return(
-    <div className="filming-container">
-
-      <MyInput placeholder={'ФИО'} style={{marginTop: 20 + 'px'}} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput>
-      <MyInput placeholder={'Название съёмки'} style={{marginTop: 20 + 'px'}} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput>
-
-      <Row className='d-flex justify-content-md-center'>
-
-            <Col className='mt-1 d-flex' md={6} sm={12} xs={12}>
-
-                <MySelect placeholder={'Выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px'})}} options={oepratorList} value={user} onChange={setUser}></MySelect>
-
-            </Col>
 
 
+    <Col>
 
-            <Col className='mt-1 d-flex justify-content-center' md={6} sm={12} xs={12}>
+        <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-                  <MyDate style={{marginTop: 20 + 'px', paddingLeft: 30 + 'px'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate>
+        <Col md={6} sm={12} xs={12} className='mt-3'><MyInput style={{width: '98%', marginTop: '4px'}} placeholder={'ФИО'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+        <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите категорию'} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} options={operatorCotegory} value={type} onChange={setType}></MySelect></Col>
 
-            </Col>
-
-      </Row>
-
-
-      <Row className='d-flex justify-content-md-center'>
-
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-              <MyTime title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime>
-
-          </Col>
-
-          <Col className='mt-4 mb-4 d-flex justify-content-center' md={6} sm={12} xs={12}>
-
-              <MyTime title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime>
-
-          </Col>
-
-      </Row>
-
-      <MyInput placeholder={'место съёмки'} style={{marginTop: 20 + 'px'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput>
-      <MyInput placeholder={'контакты'} style={{marginTop: 20 + 'px'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput>
-
-      <MyTextArea placeholder={'условия съёмки'} style={{marginTop: 20 + 'px'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea>
-
-      <Row>
-        <Col>
-          <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorProject} value={project} onChange={setProject}></MySelect>
         </Col>
 
-        <Col>
-        <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px' , marginTop: 20 + 'px', borderRadius: 10 + 'px', width: 250 + 'px'})}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
-        </Col>
-      </Row>
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название съёмки'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col> : <></>}
+
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'><MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+
+      </Col>
 
 
-      <Row className='mt-4'>
+
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime style={{width: '98%'}} title={'время начала съёмки'} value={timeStart} onChange={(e) => {setTimeStart(e.target.value)}}></MyTime> : <></>}
+          </Col>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <MyTime style={{width: '98%'}} title={'время окончания съёмки'} value={timeEnd} onChange={(e) => {setTimeEnd(e.target.value)}}></MyTime> : <></>}
+          </Col>
+
+      </Col>
+
+
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
+
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'место съёмки'} style={{width: '100%'}} value={place} onChange={(e) => {setPlace(e.target.value)}}></MyInput></Col>
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyInput placeholder={'контакты'} style={{width: '100%'}} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
+
+        <Col md={12} sm={12} xs={12} className='mt-3'><MyTextArea placeholder={'условия съёмки'} style={{width: '100%'}} value={conditions} onChange={(e) => {setConditions(e.target.value)}}></MyTextArea></Col>
+
+      </>  : <></>}
+
+
+      {(type.label === 'ПРОСТАЯ СЪЁМКА') ? <>
+
+        <Row md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+            <MySelect placeholder={'Статус проекта'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorProject} value={project} onChange={setProject}></MySelect>
+          </Col>
+
+          <Col md={6} sm={12} xs={12} className='mt-3'>
+          <MySelect placeholder={'Форма одежды'} name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} defaultValue={{label: 'не выбрано', value: ''}} options={operatorCloth} value={cloth} onChange={setCloth}></MySelect>
+          </Col>
+        </Row>
+
+        <Col md={12} sm={12} xs={12} className='mt-3' style={{fontSize: '12px'}}>Выберите автора для обратного сообщения о просталенной съёмке</Col>
+        <Col md={12} sm={12} xs={12} className='mt-1'><MySelect placeholder={'автор'} options={userSelect} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px', minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} onChange={setSelectUser}></MySelect></Col>
+
+      </> : <></> }
+
+
+
+
+
+
+
+      <Row className='mt-3'>
         <Col md={6} sm={6} xs={12} className='mb-4'>
-          <MyButton onClick={() => {createCard()}}>Создать</MyButton>
+          <MyButton onClick={() => {(userEmail === 'admin@gmail.com') ? createCard() : checkTimeCreateCard()}}>Создать</MyButton>
         </Col>
 
         <Col md={6} sm={6} xs={12} className='mb-4'>
@@ -200,7 +336,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         </Col>
       </Row>
 
-    </div>
+    </Col>
   )
 }
 

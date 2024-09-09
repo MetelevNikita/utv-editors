@@ -60,6 +60,7 @@ import UiTechSvg from './components/UI/menu_image/uiTechSvg'
 import UiEditingSvg from './components/UI/menu_image/uiEditingSvg'
 import UiDesignSvg from './components/UI/menu_image/uiDesignSvg'
 import CardFilming from './components/forms/operator/card-filming'
+import EditFilming from './components/forms/operator/edit-filming'
 
 
 
@@ -67,7 +68,7 @@ import CardFilming from './components/forms/operator/card-filming'
 
 
 
-const Main = ({isAuth}) => {
+const Main = ({isAuth, authEmailLog}) => {
 
 
 
@@ -76,14 +77,20 @@ const Main = ({isAuth}) => {
 
   const [modalActiveLike, setModalActiveLike] = useState(false)
   const [modalActiveDislike, setModaActiveDislike] = useState(false)
+  const [calendarDate, setCalendarDate] = useState(new Date())
+
   const [menuTitle, setMenuTitle] = useState('КАТЕГОРИЯ')
 
   const {auth, setAuth} = isAuth
+  const {authEmail, setAuthEmail} = authEmailLog
   const navigate = useNavigate()
 
 
+  const authLogin = sessionStorage.getItem('email')
+
+
   useEffect(() => {
-    if (auth === false) {
+    if (authLogin === null) {
       return navigate('/')
     }
   }, [])
@@ -98,8 +105,6 @@ const Main = ({isAuth}) => {
       top: 950,
       behavior: "smooth",
     });
-
-
   }
 
 
@@ -107,60 +112,53 @@ const Main = ({isAuth}) => {
 
   return(
 
-    <Container fluid='md'>
       <Row className='d-flex justify-content-center'>
-        <Col sm={6} xs={12}>
+        <Col sm={6} xs={12} className='d-flex flex-column'>
 
-        <div className="logo-container">
+            <Col className='mt-3 mb-3' style={{marginLeft: '10px', marginRight: '10px'}}>
 
-          <img className='logo' src={logoUTV} alt="logoUTV" />
+                <Col style={{width: '100%', height: '200px', marginTop: '50px', overflow: 'hidden'}} className='d-flex justify-content-center align-items-center mt-3 mb-3'><img style={{width: '100%', height: '150px'}} className='logo' src={logoUTV} alt="logoUTV" /></Col>
+                <Col style={{width: '100%', height: '50px', fontSize: '22px', fontWeight: 'bold', textAlign: 'center'}} className='d-flex justify-content-center mt-3 mb-3'>СЕРВИС ЗАЯВОК НА РАЗРАБОТКУ ПРОЕКТА</Col>
+                <Col style={{width: '100%', textAlign: 'center'}} className='d-flex justify-content-center mt-1'>при заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</Col>
 
-        </div>
-
-        <div className="logo-subtitle-box">
-
-          <div className="logo-subtitle">СЕРВИС ЗАЯВОК НА РАЗРАБОТКУ ПРОЕКТА</div>
-
-        </div>
-
-        <div className="logo-description-box-box">
-
-          <div className="logo-description">При заполнении заявки необходимо заполнять все поля,в случаи их не заполнения заявка не будет отправленна исполнителю</div>
-
-        </div>
-
-        <Row className='mt-5 mb-5'>
-          <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
-
-              <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
-
-              <Link to={`design`} value={'операторский отдел'}><MenuButon className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
-
-          </Col>
+            </Col>
 
 
-          <Col md={6} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
 
-              <Link to={`editing`} value={'операторский отдел'}><MenuButon className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
+        <Row>
+          <Col className='d-flex flex-md-row flex-column justify-content-center align-items-center'>
 
-              <Link to={`technical`} value={'операторский отдел'}><MenuButon className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
+
+            <Col md={5} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
+
+            <Link to={`schedule`} value={'операторский отдел'} onClick={submitMenu}><MenuButon style={{width: '300px'}} className="menu-button" value={'операторский отдел'} link={{menuTitle, setMenuTitle}}>{<UiCameraSvg className='logo-color'/>}{'операторский отдел'}</MenuButon></Link>
+            <Link to={`design`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел дизайна'}  onClick={submitMenu}>{<UiDesignSvg className='logo-color'/>}{'отдел дизайна'}</MenuButon></Link>
+
+            </Col>
+
+
+            <Col md={5} sm={12} xs={12} className='d-flex flex-column justify-content-center align-items-center'>
+
+            <Link to={`editing`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'отдел видеомонтажа'} onClick={submitMenu}> {<UiEditingSvg className='logo-color'/>}{'отдел видеомонтажа'}</MenuButon></Link>
+            <Link to={`technical`} value={'операторский отдел'}><MenuButon style={{width: '300px'}} className="menu-button" value={'технический отдел'} onClick={submitMenu}> {<UiTechSvg className='logo-color'/>}{'технический отдел'}</MenuButon></Link>
 
           </Col>
 
+
+          </Col>
         </Row>
 
 
         <Row className='mt-5'>
-          <Col>
+          <Col className='d-flex flex-column justify-content-center'>
 
-          <div className="form-theme-title">{menuTitle}</div>
+          <Col style={{width: '100%', textAlign: 'center', fontSize: '24px', fontWeight: 'bold'}}>{menuTitle}</Col>
 
           <Routes>
 
-
                 <Route path={`/editing`} element={<FormEditors modalLike = {{modalActiveLike, setModalActiveLike}} modalDisLike = {{modalActiveDislike, setModaActiveDislike}}></FormEditors>}></Route>
 
-                <Route path={`/schedule`} element={<ScheludeFilming></ScheludeFilming>}></Route>
+                <Route path={`/schedule`} element={<ScheludeFilming fixedCalendarDay={{calendarDate, setCalendarDate}} authEmailLog={{authEmail, setAuthEmail}}></ScheludeFilming>}></Route>
 
                 <Route path={`/technical`} element={<FormTech modalTechLike = {{modalActiveLike, setModalActiveLike}} modalTechDislike={{modalActiveDislike, setModaActiveDislike}}></FormTech>}></Route>
 
@@ -168,35 +166,25 @@ const Main = ({isAuth}) => {
 
 
                 {/* operator routing */}
-                
+
                 <Route path={'schedule/plan'} element={<PlanFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></PlanFilming>}></Route>
                 <Route path={`schedule/create`} element={<CreateFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></CreateFilming>}></Route>
-                <Route path={`schedule/:id`} element={<CardFilming></CardFilming>}></Route>
-
+                <Route path={`schedule/:id`} element={<CardFilming authEmailLog={{authEmail, setAuthEmail}}></CardFilming>}></Route>
+                <Route path={`schedule/edit/:id`} element={<EditFilming modalOperLike = {{modalActiveLike, setModalActiveLike}} modalOperDislike={{modalActiveDislike, setModaActiveDislike}}></EditFilming>}></Route>
 
           </Routes>
-
-
-
 
           </Col>
         </Row>
 
-
-
-
-
         <Footer></Footer>
 
-
             <ModalPageLike like={{modalActiveLike, setModalActiveLike}} modalLikeImg={like} modalLikeTitle={'ЗАЯВКА ОТПРАВЛЕНА'} modalBtnTitle={'СПАСИБО'}></ModalPageLike>
-
             <ModalPageDislike dislike={{modalActiveDislike, setModaActiveDislike}} modalDislikeImg={dislike} modalDislikeTitle={'заполните все поля'} modalBtnTitle={'Продолжить'}></ModalPageDislike>
-
 
         </Col>
       </Row>
-    </Container>
+
 
 
   )
