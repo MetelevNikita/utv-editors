@@ -72,9 +72,9 @@ const usersList = [
   },
 
   {
-    label: 'Продакшн',
+    label: 'Руслан Габидуллин',
     value: "280129e1-cfa2-49f6-ae0e-e40c0e707a91",
-    tgId: ''
+    tgId: 901944117
 
   },
 ]

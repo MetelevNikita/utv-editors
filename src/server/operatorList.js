@@ -66,6 +66,12 @@ const operatorList = [
     value: '1267512293',
     colorId: "#05FCFC"
   },
+
+  {
+    label: 'Руслан Габидуллин',
+    value: '901944117',
+    colorId: "#fc0303"
+  }
 ]
 
 export default operatorList
