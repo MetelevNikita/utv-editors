@@ -52,8 +52,10 @@ const { setModaActiveDislike } = modalDisLike
 const [user, setUser] = useState('')
 const [colums, setColums] = useState('')
 const [editorKey, setEditorKey] = useState('')
-const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
+const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '2c74ebe5-f486-4f19-9b0f-e88083906ca9', tgId: ''})
 
+
+console.log(selectedOption)
 
 //
 
@@ -269,7 +271,7 @@ const fetchAddTask = async (newMessageYG) => {
       body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
     })
 
-    const data = await responce.jon()
+    const data = await responce.json()
     return data
 
   } catch (error) {
