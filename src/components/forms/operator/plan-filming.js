@@ -5,7 +5,7 @@ import './filming.css'
 //
 
 import { Link } from 'react-router-dom'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import { useState } from 'react'
 
 // redux
@@ -16,12 +16,12 @@ import { useSelector } from 'react-redux'
 // components
 
 import MyInput from '../../UI/MyInput'
-import MySelect from '../../UI/MySelect'
 import MyTextArea from '../../UI/MyTextArea'
 import MyDate from '../../UI/MyDate'
 import MyTime from '../../UI/MyTime'
 import MyButton from '../../UI/MyButton'
 import MyButtonBack from '../../UI/MyButtonBack'
+import MyCheckBox from '../../UI/MyCheckBox'
 
 
 
@@ -32,8 +32,8 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
   const singleUser = users.filter((user) => user.email.toLowerCase() === email)[0]
 
 
-  const {modalActiveLike, setModalActiveLike} = modalOperLike
-  const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
+  const { setModalActiveLike } = modalOperLike
+  const { setModaActiveDislike } = modalOperDislike
 
   const [fio, setFio] = useState('')
   const [contacts, setContacts] = useState('')
@@ -44,9 +44,15 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
   const [description, setDescription] = useState('')
   const [date, setDate] = useState('')
 
+  // check
 
 
-  const messageTG = `ЗАЯВКА НА СЪЁМКУ \n \n  АВТОР \n ${fio} \n КОНТАКТЫ \n ${contacts} \n ПРОЕКТ \n ${title} \n ОПИСАНИЕ \n ${description} \n ДАТА \n ${date} (${timeStart} - ${timeEnd}) \n АДРЕС \n ${adress} \n \n После сооздания съёмки просьба связаться с автором для подтверждения.`
+  const [techCheck, setTechCheck] = useState(false)
+  const [soundCheck, setSoundCheck] = useState(false)
+
+
+
+  const messageTG = `ЗАЯВКА НА СЪЁМКУ \n \n  АВТОР \n ${fio} \n КОНТАКТЫ \n ${contacts} \n ПРОЕКТ \n ${title} \n ОПИСАНИЕ \n ${description} \n ДАТА \n ${date} (${timeStart} - ${timeEnd}) \n АДРЕС \n ${adress} \n \n После сооздания съёмки просьба связаться с автором для подтверждения.\n\n\n Участие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\n Участие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
 
 
 
@@ -65,7 +71,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
           }).then(responce => responce.json())
             .then(data => console.log(data))
             .catch(error => console.log(error, 'ERROR'))
-    }
+  }
 
   const sendMessage = () => {
 
@@ -89,7 +95,11 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
       }
 
 
-    }
+  }
+
+
+  console.log(techCheck)
+  console.log(soundCheck)
 
 
 
@@ -135,12 +145,19 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
       </Col>
 
 
+      <Col md={12} sm={12} xs={12} className='mt-3'>
+
+        <MyCheckBox title={'Проставьте галочку если необходимо участие технического отдела на съёмке'} info={'Участие технического отдела'} checked={techCheck} onChange={() => {setTechCheck(prev => !prev)}}></MyCheckBox>
+        <MyCheckBox title={'Проставьте галочку если необходимо участие звукорежиссера на съёмке'} info={'Участие звукорежиссера'} checked={soundCheck} onChange={() => {setSoundCheck(prev => !prev)}}></MyCheckBox>
+
+      </Col>
+
+
 
 
       <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
         <Col md={6} sm={12} xs={12} className='mt-3'><MyButton onClick={() => {sendMessage()}}>Запланировать</MyButton></Col>
-
         <Col md={6} sm={12} xs={12} className='mt-3'><Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link></Col>
 
       </Col>

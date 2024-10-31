@@ -6,7 +6,7 @@ import './filming.css'
 
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useNavigate } from 'react-router-dom'
@@ -23,11 +23,7 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 const CardFilming = ({authEmailLog , ...props}) => {
 
-
-  const {authEmail, setAuthEmail} = authEmailLog
-
-
-
+  const { authEmail } = authEmailLog
   const [cardList, setCardList] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -75,6 +71,8 @@ const delCard = () => {
 
 
 
+  console.log(singleArr)
+
 
   if(loading === true) {
     <>LOADING</>
@@ -98,6 +96,9 @@ const delCard = () => {
           <hr></hr>
 
           <div className="card-filming-user">{`Оператор: ${singleArr[0].user}`}</div>
+
+          {(singleArr[0].soundEngineer) ? <div className="card-filming-user">Звукорежиссер Владимир Симановский</div> : <></>}
+          {(singleArr[0].soundEngineer) ? <div className="card-filming-user">Отмечено участие технического отдела</div> : <></>}
         </div>
     </li>
 
@@ -113,7 +114,6 @@ const delCard = () => {
 
       <Row className='mt-4'>
         <Col>
-
             <Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link>
         </Col>
       </Row>

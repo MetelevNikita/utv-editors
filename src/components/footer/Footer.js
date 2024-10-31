@@ -6,7 +6,6 @@ import { Container, Col, Row } from 'react-bootstrap'
 
 import UiTgSvg from '../UI/footer_imge/uiTgSvg'
 import UiWaSvg from '../UI/footer_imge/uiWaSvg'
-import { Link } from 'react-router-dom'
 
 
 const Footer = () => {

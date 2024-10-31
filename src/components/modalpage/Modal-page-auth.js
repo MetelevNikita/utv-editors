@@ -3,7 +3,7 @@ import './Modal-page-auth.css'
 //
 
 
-import { Container, Col, Row } from 'react-bootstrap'
+import { Container, Col } from 'react-bootstrap'
 
 // components
 
@@ -13,10 +13,10 @@ import MyButton from '../UI/MyButton'
 const ModalPageAuth = ({ModalPageAuth, ModalPassAuth, ModalPassRepeat, AuthOk, ...props}) => {
 
 
-  const {modalAuth, setModalAuth} = ModalPageAuth
-  const {modalPassAuth, setModalPassAuth} = ModalPassAuth
-  const {modalPassRepeat, setModalPassRepeat} = ModalPassRepeat
-  const {authOk, setAuthOk} = AuthOk
+  const { setModalAuth } = ModalPageAuth
+  const { setModalPassAuth } = ModalPassAuth
+  const { setModalPassRepeat } = ModalPassRepeat
+  const { setAuthOk } = AuthOk
 
 
 

@@ -2,6 +2,11 @@ import './form.css'
 import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 
+//
+
+
+import { YouGileAuth } from '../../util/youGileKey'
+
 
 // components
 
@@ -15,6 +20,7 @@ import MyButton from '../UI/MyButton'
 // server
 
 import streamType from '../../server/streamType'
+import { set } from '@firebase/database'
 
 
 const FormTech = ({modalTechLike, modalTechDislike}) => {
@@ -32,6 +38,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   const [description, setDescription] = useState('')
 
 
+  const [techKey, setTechKey] = useState('')
   const [columnId, setColumnId] = useState('')
 
   // timestamp
@@ -41,88 +48,101 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-
-  const fetchIdKey = () => {
-    fetch('https://yougile.com/api-v2/auth/companies', {
-      method: 'POST',
-      headers: {
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    }).then(responce => responce.json())
-      .then(data => {
-        return fetch('https://yougile.com/api-v2/auth/keys/get', {
-            method: 'POST',
-            headers: {
-              'Content-Type':'application/json'
-            },
-            body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[0].id})
-          })
-        }).then(responce => responce.json())
-          .then(data => {
-            return localStorage.setItem('keyTech', data[0].key)
-          })
-
-  }
+  useEffect(() => {
+    const getYouGileKey = async (team) => {
+      const keyTech = await YouGileAuth(team)
+      setTechKey(keyTech)
 
 
 
-  const fetchDesk = () => {
-    const keyTech = localStorage.getItem('keyTech')
-    fetch('https://yougile.com/api-v2/columns', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${keyTech}`
-      }
-    }).then(responce => responce.json())
-      .then(data => {
-        setColumnId(data.content[1].id)
+      fetchDesk(keyTech)
+
+    }
+    getYouGileKey('Технический отдел')
+  }, [])
+
+
+
+
+
+
+  const fetchDesk = async (key) => {
+
+    try {
+
+      const responce = await fetch('https://yougile.com/api-v2/columns', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        }
       })
-  }
 
+      const data = await responce.json()
+      setColumnId(data.content[1].id)
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
+  }
 
   const messageYG = ` ФИО АВТОРА:<br>${fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
 
 
-  const fetchAddTask = () => {
-    const keyTech = localStorage.getItem('keyTech')
-    fetch('https://yougile.com/api-v2/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${keyTech}`
-      },
-      body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
-    }).then(responce => responce.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error, 'ERROR'))
+  const fetchAddTask = async (key) => {
+
+
+    try {
+      const responce = await fetch('https://yougile.com/api-v2/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${key}`
+        },
+        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
+      })
+
+      const data = await responce.json()
+       console.log(data)
+       return data
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
   }
 
 
   // send to TG
 
 
-  const sendToTelegram = () => {
+  const sendToTelegram = async () => {
 
 
     const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
     const CHAT_ID = '-1002046063150'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
-    fetch(URL_API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
-    }).then(responce => responce.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error, 'ERROR'))
+
+    try {
+
+      const responce = await fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+      })
+
+      const data = await responce.json()
+      console.log(data)
+      return data
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
 
   }
-
 
 
   const sendMessage = () => {
@@ -151,14 +171,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-  useEffect(() => {
-
-    fetchIdKey()
-    setTimeout(() => {
-      fetchDesk()
-    }, 5000)
-
-  }, [])
 
 
 

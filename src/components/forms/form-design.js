@@ -4,10 +4,14 @@ import './form.css'
 
 //
 
+
+import { YouGileAuth } from "../../util/youGileKey"
+
+
+
 import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Select from 'react-select'
 
 // components
 
@@ -26,10 +30,11 @@ import designParts from '../../server/designParts'
 
 const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
-  const {modalActiveLike, setModalActiveLike} = modalDesLike
-  const {modalActiveDislike, setModaActiveDislike} = modalDesDislike
+  const { setModalActiveLike } = modalDesLike
+  const { setModaActiveDislike } = modalDesDislike
 
   const [columnId, setColumnId] = useState('')
+  const [designKey, setDesignKey] = useState('')
   const [customerSticker, setCustomerSticker] = useState([])
   const [prioritySticker, setPrioritySticker] = useState([])
 
@@ -48,7 +53,6 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [reference, setReference] = useState('')
   const [date, setDate] = useState('')
 
-  const [test, setTest] = useState('')
 
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
@@ -62,174 +66,180 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const timestamp = newDate.getTime()
 
 
+  //
+
+
+  useEffect(() => {
+
+    const getYouGileKey = async (team) => {
+      const keyDes = await YouGileAuth(team)
+      setDesignKey(keyDes)
+
+      fetchDesk(keyDes)
+      fetchGetStickers(keyDes)
+
+    }
+
+
+    getYouGileKey('Design')
+
+  }, [])
+
+
 
   // fetchIdKey
 
 
-  const fetchIdKey = () => {
+  const fetchDesk = async (key) => {
+    try {
 
-    fetch('https://yougile.com/api-v2/auth/companies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    }).then(responce => responce.json())
-      .then(data => {
-        return fetch('https://yougile.com/api-v2/auth/keys/get', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[2].id})
-        }).then(responce => responce.json())
-          .then(data => {
-            localStorage.setItem('keyDes', data[0].key)
-
-          })
-
-        })
-    }
-
-
-
-    const fetchDesk = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/columns', {
+      const responce = await fetch('https://yougile.com/api-v2/columns', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keyDes}`
+          'Authorization': `Bearer ${key}`
         }
-      }).then(responce => responce.json())
-        .then(data => {
-          setColumnId(data.content[6].id)
-        })
+      })
+
+      const data = await responce.json()
+      setColumnId(data.content[6].id)
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
     }
+  }
 
 
+  // getStickers
 
-    // getStickers
+  const fetchGetStickers = async (key) => {
 
-    const fetchGetStickers = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/string-stickers', {
+    try {
+
+      const responce = await fetch('https://yougile.com/api-v2/string-stickers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keyDes}`
+          'Authorization': `Bearer ${key}`
         }
-      }).then(responce => responce.json())
-        .then(data => {
-          setPrioritySticker(data.content[0].states.map((item) => {
-            return {label: item.name, value: item.id, color: item.color}
-          })
-      )
-          setCustomerSticker(data.content[1].states.map((item) => {
-            return {label: item.name, value: item.id, color: item.color}
-          })
-      )
-        })
-        .catch(error => console.log(error, "ERROR"))
+      })
+
+      const data = await responce.json()
+      setPrioritySticker(data.content[0].states.map((item) => {return {label: item.name, value: item.id, color: item.color}}))
+      setCustomerSticker(data.content[1].states.map((item) => {return {label: item.name, value: item.id, color: item.color}}))
+
+    } catch (error) {
+
+      console.error(`ОШИБКА - ${error}`)
+
     }
 
+  }
 
 
-    const messageYG = `Автор:<br>${name}<br><br>Контакты заказчика:<br>${contacts}<br><br>Название проекта:<br>${title}<br><br>Важность проекта:<br>${priority.label}<br><br>Заказчик:<br>${customer.label}<br><br>Технические требования:<br>${requirements}<br><br>Описание:<br>${description}<br><br>Сылки на файлы:<br>${link}<br><br>Что требуется изготовить:<br>${selectedPackageProject().join(', ')}<br><br>Референсы:<br>${reference}<br><br>Дата сдачи проекта: ${date}`
 
-    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
+  const messageYG = `Автор:<br>${name}<br><br>Контакты заказчика:<br>${contacts}<br><br>Название проекта:<br>${title}<br><br>Важность проекта:<br>${priority.label}<br><br>Заказчик:<br>${customer.label}<br><br>Технические требования:<br>${requirements}<br><br>Описание:<br>${description}<br><br>Сылки на файлы:<br>${link}<br><br>Что требуется изготовить:<br>${selectedPackageProject().join(', ')}<br><br>Референсы:<br>${reference}<br><br>Дата сдачи проекта: ${date}`
+
+  const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
 
 
 
     // fetchAddTask
 
 
-    const fetchAddTask = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${keyDes}`
-          },
-          body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
-      })
-      .catch(error => console.log(error, 'ERROR'))
+  const fetchAddTask = async (key) => {
+
+
+    try {
+
+    const responce = await fetch('https://yougile.com/api-v2/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${key}`
+        },
+        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
+    })
+
+    const data = responce.json()
+    console.log(data)
+    return data
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
+
     }
 
 
 
 
+  // send to Telegram
 
-    // send to Telegram
-
-    const sendToTelegram = () => {
+  const sendToTelegram = async () => {
 
 
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const CHAT_ID = '-1002092523389'
-      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const CHAT_ID = '-1002092523389'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
-      fetch(URL_API, {
+
+    try {
+
+      const responce = await fetch(URL_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
-      }).then(responce => responce.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error, 'ERROR'))
+      })
 
+      const data = responce.json()
+      console.log(data)
+      return data
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
+  }
+
+
+  const sendMessage = () => {
+
+    if (name !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
+
+      fetchAddTask(designKey)
+      sendToTelegram()
+
+      console.log('отправлено')
+
+      setName('')
+      setContacts('')
+      setTitle('')
+      setType('')
+      setСustomer('')
+      setRequirements('')
+      setDescription('')
+      setLink('')
+      setPackageProject('')
+      setReference('')
+      setDate('')
+
+
+      setModalActiveLike(true)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+    } else {
+
+      setModaActiveDislike(true)
     }
 
-
-    const sendMessage = () => {
-
-      if (name !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
+  }
 
 
-        console.log('отправлено')
-        fetchAddTask()
-        sendToTelegram()
-
-
-        setName('')
-        setContacts('')
-        setTitle('')
-        setType('')
-        setСustomer('')
-        setRequirements('')
-        setDescription('')
-        setLink('')
-        setPackageProject('')
-        setReference('')
-        setDate('')
-
-
-        setModalActiveLike(true)
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-
-      } else {
-
-        setModaActiveDislike(true)
-      }
-
-    }
-
-
-
-    useEffect(() => {
-      fetchIdKey()
-
-      setTimeout(() => {
-        fetchDesk()
-        fetchGetStickers()
-      }, 5000)
-
-    }, [])
 
 
 

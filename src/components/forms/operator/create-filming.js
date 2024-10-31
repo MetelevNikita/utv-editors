@@ -5,8 +5,7 @@ import './filming.css'
 //
 
 import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
-import { useId } from 'react'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { getDatabase, ref, set, get, onValue } from "firebase/database";
@@ -15,10 +14,7 @@ import uuid from 'react-uuid'
 
 // redux
 
-
 import { useSelector } from 'react-redux'
-
-
 
 // components
 
@@ -29,6 +25,7 @@ import MySelect from '../../UI/MySelect'
 import MyTime from '../../UI/MyTime'
 import MyButton from '../../UI/MyButton'
 import MyButtonBack from '../../UI/MyButtonBack'
+import MyCheckBox from '../../UI/MyCheckBox'
 
 // server
 
@@ -49,8 +46,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-  const {modalActiveLike, setModalActiveLike} = modalOperLike
-  const {modalActiveDislike, setModaActiveDislike} = modalOperDislike
+  const { setModalActiveLike} = modalOperLike
+  const { setModaActiveDislike} = modalOperDislike
 
   const [cardList, setCardList] = useState([])
   const [fio, setFio] = useState('')
@@ -70,10 +67,18 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const [selectUser, setSelectUser] = useState('')
 
+  // check
+
+  const [techCheck, setTechCheck] = useState(false)
+  const [soundCheck, setSoundCheck] = useState(false)
+
 
 
   const id = uuid()
   const userEmail = sessionStorage.getItem('email')
+
+  const techTGid = '-1002046063150'
+  const soundTgId = '334273478'
 
   // getUsers
 
@@ -127,9 +132,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-
-
-
   useEffect(() => {
     getCard()
   }, [])
@@ -143,10 +145,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
 
-  const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title} \nКонтакт: ${contacts} \nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \nФорма одежды \n ${cloth.label} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
+  const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd}\n${title}\nКонтакт: ${contacts}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n ${project.label}\nФорма одежды\n${cloth.label} \nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\n Участие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
 
-
-  const messageAuthorTG = (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()} \n${timeStart} - ${timeEnd} \n${title}\nАдрес: ${place} \n \nОписание: ${conditions} \n \nПроект\n ${project.label} \n\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}` : `${type.label} \n${new Date(date).toDateString()} \nВремя: ${type.value} \n${title} \nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}`
+  const messageAuthorTG = (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()}\n${timeStart} - ${timeEnd}\n${title}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n${project.label}\n\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
 
 
 
@@ -185,14 +186,23 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         contacts: contacts,
         conditions: conditions,
         cloth: cloth.label,
-        projectPay: project.label
+        projectPay: project.label,
+        techEngineer: techCheck,
+        soundEngineer: soundCheck
+
 
       })
 
       selectedIdUserSend()
       selectedAuthorSend()
 
-      // (!selectUser) ? console.log('Не найден телеграм ID') : selectedAuthorSend()
+      if(techCheck) {
+        selectedSupportSend(techTGid)
+      }
+
+      if(soundCheck) {
+        selectedSupportSend(soundTgId)
+      }
 
       setFio('')
       setTitle('')
@@ -205,53 +215,95 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       setContacts('')
       setModalActiveLike(true)
       navigate('/main/schedule/create')
+      setTechCheck(false)
+      setSoundCheck(false)
 
 
    }
 
 
 
-  const selectedIdUserSend = () => {
-    return (user.length < 1) ? ['не определен'] : user.map((item) => {
-
-
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
-
-
-      return fetch(URL_API, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({chat_id: item.value, text: messageTG})
-            }).then(responce => responce.json())
-              .then(data => console.log(data))
-              .catch(error => console.log(error, 'ERROR'))
-          })
-    }
-
-
-    const selectedAuthorSend = async () => {
+  const selectedIdUserSend = async () => {
+    return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
       try {
+
         const responce = await fetch(URL_API, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG })
+          body: JSON.stringify({chat_id: item.value, text: messageTG})
         })
+
         const data = await responce.json()
+        console.log(data)
         return data
+
       } catch (error) {
-        return console.log(error, 'ERROR')
+
+        console.error(`Оишбка отправки сообщения исполнителям - ${error}`)
+
       }
+
+      })
     }
+
+
+  const selectedAuthorSend = async () => {
+
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+    try {
+      const responce = await fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG })
+      })
+      const data = await responce.json()
+      return data
+    } catch (error) {
+      console.error(`Ошибка отправки сообщения автору - ${error}`)
+    }
+  }
+
+
+
+  const selectedSupportSend = async (id) => {
+
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+    try {
+
+      const responce = await fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chat_id: id, text: messageTG})
+      })
+
+      const data = await responce.json()
+      console.log(data)
+      return data
+
+
+
+    } catch (error) {
+      console.error(`Ошибка отправки сообщения технический отдел - ${error}`)
+    }
+  }
+
+
 
 
   return(
@@ -317,6 +369,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
         <Col md={12} sm={12} xs={12} className='mt-3' style={{fontSize: '12px'}}>Выберите автора для обратного сообщения о просталенной съёмке</Col>
         <Col md={12} sm={12} xs={12} className='mt-1'><MySelect placeholder={'автор'} options={userSelect} styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px', minHeight: 61 + 'px', borderRadius: 10 + 'px', width: '100%'})}} onChange={setSelectUser}></MySelect></Col>
+
+        <Col md={12} sm={12} xs={12} className='mt-3'>
+
+          <MyCheckBox title={'Проставьте галочку если необходимо участие технического отдела на съёмке'} info={'Участие технического отдела'} checked={techCheck} onChange={() => {setTechCheck(prev => !prev)}}></MyCheckBox>
+          <MyCheckBox title={'Проставьте галочку если необходимо участие звукорежиссера на съёмке'} info={'Участие звукорежиссера'} checked={soundCheck} onChange={() => {setSoundCheck(prev => !prev)}}></MyCheckBox>
+
+        </Col>
 
       </> : <></> }
 

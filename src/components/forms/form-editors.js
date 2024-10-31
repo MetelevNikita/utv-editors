@@ -1,10 +1,11 @@
 import './form.css'
-import { Container, Col, Row } from "react-bootstrap"
-import app from '../../firebaseApp'
+import { Col } from "react-bootstrap"
 
+// YG
+
+import { YouGileAuth } from "../../util/youGileKey"
 
 // redux
-
 
 import { useSelector } from 'react-redux'
 
@@ -42,14 +43,15 @@ const email = sessionStorage.getItem('email')
 const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
 
-const {modalActiveLike, setModalActiveLike} = modalLike
-const {modalActiveDislike, setModaActiveDislike} = modalDisLike
+const { setModalActiveLike } = modalLike
+const { setModaActiveDislike } = modalDisLike
 
 
 // auth
 
 const [user, setUser] = useState('')
 const [colums, setColums] = useState('')
+const [editorKey, setEditorKey] = useState('')
 const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
 
 
@@ -72,206 +74,221 @@ const [price, setPrice] = useState('')
 const [category, setCategory] = useState('')
 const [sample, setSample] = useState('')
 
-//
-
-const [newMessageTG, setNewMessageTg] = useState('')
-const [newMessageYG, setNewMessageYG] = useState('')
-
 
 
 
 //
+
 
 const newDate = new Date(date)
 const timestamp = newDate.getTime()
 
-      //
+
+//
 
 
-const fetchIdKey = () => {
-  fetch('https://yougile.com/api-v2/auth/companies', {
-    method: 'POST',
-    headers: {
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-  }).then(responce => responce.json())
-    .then(data => {
-      return fetch('https://yougile.com/api-v2/auth/keys/get', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[1].id})
-      }).then(responce => responce.json())
-        .then(data => {
-          return localStorage.setItem('key', data[0].key)})
-    })
 
-}
 
-const userKey = localStorage.getItem('key')
+useEffect(() => {
+
+  const getYouGileKey = async (team) => {
+
+    const keyEdit = await YouGileAuth(team)
+    setEditorKey(keyEdit)
+
+    fetchDesk(keyEdit)
+    fetchUser(keyEdit)
+
+  }
+  getYouGileKey('Монтажеры')
+
+}, [])
+
+
 
 
 // получаем colums
 
-const fetchDesk = async () => {
-  const userKey = localStorage.getItem('key')
-  const res = await fetch('https://yougile.com/api-v2/columns?limit=100', {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
-    },
-  })
+const fetchDesk = async (key) => {
+  try {
 
-  const data = await res.json()
-  console.log(data)
-  return setColums(data)
+    const res = await fetch('https://yougile.com/api-v2/columns?limit=100', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${key}`
+      },
+    })
+
+    const data = await res.json()
+    return setColums(data)
+
+  } catch (error) {
+
+    console.error(`ОШИБКА - ${error}`)
+
+  }
+
 
 }
-
 
 // получаем пользователей
 
-const fetchUser = async () => {
-  const userKey = localStorage.getItem('key')
-  const res = await fetch('https://yougile.com/api-v2/boards', {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
-    }
-  })
+const fetchUser = async (key) => {
 
-  const data = await res.json()
-  console.log(data)
-  return setUser(data)
+  try {
+
+    const res = await fetch('https://yougile.com/api-v2/boards', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${key}`
+      }
+    })
+
+    const data = await res.json()
+    return setUser(data)
+
+  } catch (error) {
+
+    console.error(`ОШИБКА - ${error}`)
+
+  }
+
+
+
 }
-
-
-const getList = () => {
-  fetchIdKey()
-
-  setTimeout(() => {
-    fetchDesk()
-    fetchUser()
-  }, 5000)
-
-}
-
-useEffect(() => {getList()}, [])
-
 
 
 
 // message send
 
-  const sendNewMessageCard = () => {
-
+const sendNewMessageCard = () => {
 
     let messageTG = ''
     let messageYG = ''
 
-    if(category.value === 'типовой проект') {
+    if(category.value === 'типовой тв проект') {
 
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time} НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time} НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
+    messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
 
-      return sendCard(messageTG, messageYG)
+    return sendCard(messageTG, messageYG)
 
 
     } else if (category.value === 'новый проект') {
 
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ЦЕЛЕВАЯ АУДИТОРИЯ:<br>${audience}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ССЫЛКИ НА ПРИМЕР:<br>${referense}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:<br>${destanation}<br><br>ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ЦЕЛЕВАЯ АУДИТОРИЯ:<br>${audience}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ССЫЛКИ НА ПРИМЕР:<br>${referense}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:<br>${destanation}<br><br>ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
 
-      messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
+    messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
-      return sendCard(messageTG, messageYG)
+    return sendCard(messageTG, messageYG)
 
 
-    } else if (category.value === 'шаблонный проект') {
+    } else if (category.value === 'шаблонный тв проект') {
 
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${sample.label}<br><br>ПУТЬ К СЫРЬЮ:<br>${sample.path}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:\n${date}`
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${sample.label}<br><br>ПУТЬ К СЫРЬЮ:<br>${sample.path}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:\n${date}`
 
-      messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
+    messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
 
-      return sendCard(messageTG, messageYG)
+    return sendCard(messageTG, messageYG)
 
     }
-  }
 
-//
-
+}
 
 
 
-const sendToTelegram = (newMessageTG) => {
+
+
+
+
+const sendToTelegram = async (newMessageTG) => {
 
 const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
 const CHAT_ID = '-1002013845900'
 const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
+try {
 
-fetch(URL_API, {
-method: 'POST',
-headers: {
-  'Content-Type': 'application/json'
-},
-body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
-
-
-
-}).then(responce => responce.json())
-.then(data => data)
-.catch(error => console.log(error, 'ERROR'))
-
-
-if (selectedOption.tgId === "") {
-  return
-} else {
-  fetch(URL_API, {
+  const responce = await fetch(URL_API, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+    body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+    })
+
+    const data = await responce.json()
+    return data
+
+} catch (error) {
+  console.error(`ОШИБКА - ${error}`)
 
 
+}
 
-    }).then(responce => responce.json())
-    .then(data => data)
-    .catch(error => console.log(error, 'ERROR'))
+if (selectedOption.tgId === "") {
+  return
+
+} else {
+
+  try {
+    const responce = await fetch(URL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+      })
+
+    const data = responce.json()
+    return data
+
+  } catch (error) {
+    console.error(`ОШИБКА - ${error}`)
+  }
+
 }
 
 }
 
 
-const sendCard = (newMessageTG, newMessageYG) => {
-  const userKey = localStorage.getItem('key')
+const fetchAddTask = async (newMessageYG) => {
 
-  if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
+  try {
 
-      setModaActiveDislike(true)
-      return
+    const responce = await fetch('https://yougile.com/api-v2/tasks', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${editorKey}`
+      },
+      body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
+    })
 
+    const data = await responce.jon()
+    return data
+
+  } catch (error) {
+    console.error(`ОШИБКА - ${error}`)
   }
 
 
-  fetch('https://yougile.com/api-v2/tasks', {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
-    },
-    body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
-  }).then(responce => responce.json())
-    .then(data => data)
-    .catch(error => console.log(error, 'ERROR'))
+}
 
 
+const sendCard = async (newMessageTG, newMessageYG) => {
+
+  if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
+      setModaActiveDislike(true)
+      return
+  }
+
+
+  fetchAddTask(newMessageYG)
   sendToTelegram(newMessageTG)
 
   setFio('')
@@ -298,6 +315,11 @@ const sendCard = (newMessageTG, newMessageYG) => {
 
 
 }
+
+
+
+
+
 
 
 //
@@ -456,7 +478,6 @@ const typeProject = () => {
 
 const masterProject = () => {
 
-
   return (
     <Col md={12} sm={12} xs={12}>
 
@@ -501,11 +522,17 @@ const masterProject = () => {
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
       {undefinedProject()}
-      {(category.label === 'типовой проект') ? typeProject({category, setCategory}) : <></>}
+      {(category.label === 'типовой тв проект') ? typeProject({category, setCategory}) : <></>}
       {(category.label === 'новый проект') ? newProject({category, setCategory}) : <></>}
-      {(category.label === 'шаблонный проект') ? masterProject({category, setCategory}) : <></>}
+      {(category.label === 'шаблонный тв проект') ? masterProject({category, setCategory}) : <></>}
 
-      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
+
+      <Col md={12} className='d-flex flex-md-row flex-column' style={{marginTop: 20 + 'px'}}>
+
+        <MyButton style={{width: '90%', marginLeft: '20px', marginRight: '20px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
+
+      </Col>
+
 
     </Col>
 
