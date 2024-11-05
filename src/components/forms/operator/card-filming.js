@@ -23,9 +23,13 @@ import MyButtonBack from '../../UI/MyButtonBack'
 
 const CardFilming = ({authEmailLog , ...props}) => {
 
-  const { authEmail } = authEmailLog
+
   const [cardList, setCardList] = useState([])
   const [loading, setLoading] = useState(true)
+
+
+  const authEmail = sessionStorage.getItem('email')
+
 
 
   const navigate = useNavigate()
@@ -65,13 +69,14 @@ const delCard = () => {
   }
 
 
+
   const singleArr = cardList.filter((item) => {
     return item.id === id
   })
 
 
 
-  console.log(singleArr)
+
 
 
   if(loading === true) {

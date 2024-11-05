@@ -55,7 +55,7 @@ const [editorKey, setEditorKey] = useState('')
 const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '2c74ebe5-f486-4f19-9b0f-e88083906ca9', tgId: ''})
 
 
-console.log(selectedOption)
+
 
 //
 
@@ -268,7 +268,7 @@ const fetchAddTask = async (newMessageYG) => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${editorKey}`
       },
-      body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
+      body: JSON.stringify({title: (category.label === 'шаблонный тв проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
     })
 
     const data = await responce.json()
@@ -411,8 +411,6 @@ const newProject = () => {
 
 
 const typeProject = () => {
-
-
 
   return(
     <Col>

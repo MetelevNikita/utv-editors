@@ -54,7 +54,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [title, setTitle] = useState('')
   const [user, setUser] = useState([])
   const [userColor, setUserColor]= useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState([null, null])
   const [timeStart, setTimeStart] = useState('')
   const [timeEnd, setTimeEnd] = useState('')
   const [place, setPlace] = useState('')
@@ -64,8 +64,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [project, setProject] = useState({label: 'не выбрано', value: ''})
   const [type, setType] = useState('')
 
-
   const [selectUser, setSelectUser] = useState('')
+
+
+  // rangeDate
+
+  const [dates, setDates] = useState([])
+
 
   // check
 
@@ -74,7 +79,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-  const id = uuid()
+
   const userEmail = sessionStorage.getItem('email')
 
   const techTGid = '-1002046063150'
@@ -133,8 +138,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
   useEffect(() => {
+    rangeDate(date[0], date[1])
     getCard()
-  }, [])
+  }, [date[0], date[1]])
+
+
 
 
 
@@ -145,9 +153,50 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedUserColor = () => (user.length < 1) ? ['не выбрано'] : user.map((item) => {return item.colorId})
 
 
-  const messageTG = (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd}\n${title}\nКонтакт: ${contacts}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n ${project.label}\nФорма одежды\n${cloth.label} \nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\n Участие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
+//
 
-  const messageAuthorTG = (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()}\n${timeStart} - ${timeEnd}\n${title}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n${project.label}\n\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
+
+  const messageTG = (date) => {
+
+    return (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd}\n${title}\nКонтакт: ${contacts}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n ${project.label}\nФорма одежды\n${cloth.label} \nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
+
+  }
+
+  const messageAuthorTG = (date) => {
+
+
+    return (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()}\n${timeStart} - ${timeEnd}\n${title}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n${project.label}\n\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
+
+  }
+
+
+
+
+
+
+  const rangeDate = (dateStart, dateEnd) => {
+    try {
+
+
+      if (dateEnd !== null) {
+
+      const dateArr = []
+      for (let date = new Date(dateStart); date <= new Date(dateEnd); date.setDate(date.getDate() + 1)) {
+        dateArr.push(date.toISOString().slice(0, 10))
+      }
+      setDates(dateArr)
+
+    } else {
+      setDates([dateStart])
+
+    }
+
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
 
@@ -162,73 +211,92 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   }
 
 
+  const createDatabase = () => {
+    const db = getDatabase()
+
+
+  }
+
+
   const createCard = () => {
 
     if (fio === '' || date === '' ) {
         return setModaActiveDislike(true)
       }
 
-
-
       const db = getDatabase()
-      set(ref(db, 'cardsFilming/' + id), {
 
-        id: id,
-        name: fio,
-        type: type.label,
-        title: title,
-        user: selectedUser().join(' '),
-        userColor: selectedUserColor().join(),
-        date: new Date(date).toDateString(),
-        timeStart: (timeStart === '') ? type.value : timeStart,
-        timeEnd: (timeEnd === '') ? type.value : timeEnd,
-        place: place,
-        contacts: contacts,
-        conditions: conditions,
-        cloth: cloth.label,
-        projectPay: project.label,
-        techEngineer: techCheck,
-        soundEngineer: soundCheck
 
+      dates.forEach((item, index) => {
+        const id = uuid()
+
+        set(ref(db, 'cardsFilming/' + `${id}`), {
+
+          id: id,
+          name: fio,
+          type: type.label,
+          title: title,
+          user: selectedUser().join(' '),
+          userColor: selectedUserColor().join(),
+          date: new Date(item).toDateString(),
+          timeStart: (timeStart === '') ? type.value : timeStart,
+          timeEnd: (timeEnd === '') ? type.value : timeEnd,
+          place: place,
+          contacts: contacts,
+          conditions: conditions,
+          cloth: cloth.label,
+          projectPay: project.label,
+          techEngineer: techCheck,
+          soundEngineer: soundCheck
+
+
+        })
+
+        selectedIdUserSend(item)
+        selectedAuthorSend(item)
+
+        if(techCheck) {
+          selectedSupportSend(techTGid, item)
+        }
+
+        if(soundCheck) {
+          selectedSupportSend(soundTgId, item)
+        }
 
       })
 
-      selectedIdUserSend()
-      selectedAuthorSend()
 
-      if(techCheck) {
-        selectedSupportSend(techTGid)
-      }
-
-      if(soundCheck) {
-        selectedSupportSend(soundTgId)
-      }
 
       setFio('')
       setTitle('')
       setUser('')
-      setDate('')
+      setDate([null, null])
       setTimeStart('')
       setTimeEnd('')
       setPlace('')
       setConditions('')
       setContacts('')
       setModalActiveLike(true)
-      navigate('/main/schedule/create')
       setTechCheck(false)
       setSoundCheck(false)
+
+      //
+
+      navigate('/main/schedule/create')
 
 
    }
 
 
 
-  const selectedIdUserSend = async () => {
+
+
+
+  const selectedIdUserSend = async (date) => {
     return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
-
 
       try {
 
@@ -237,11 +305,10 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({chat_id: item.value, text: messageTG})
+          body: JSON.stringify({chat_id: item.value, text: messageTG(date)})
         })
 
         const data = await responce.json()
-        console.log(data)
         return data
 
       } catch (error) {
@@ -254,7 +321,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     }
 
 
-  const selectedAuthorSend = async () => {
+  const selectedAuthorSend = async (date) => {
 
     const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
@@ -266,7 +333,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG })
+        body: JSON.stringify({ chat_id: selectUser.value, text: messageAuthorTG(date)})
       })
       const data = await responce.json()
       return data
@@ -277,7 +344,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-  const selectedSupportSend = async (id) => {
+  const selectedSupportSend = async (id, date) => {
 
     const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
@@ -289,7 +356,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({chat_id: id, text: messageTG})
+        body: JSON.stringify({chat_id: id, text: messageTG(date)})
       })
 
       const data = await responce.json()
@@ -323,9 +390,21 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
 
-          <Col md={6} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
+          <Col md={12} sm={12} xs={12} className='mt-3'><MySelect placeholder={'выберите оператора'} isMulti name="colors" styles={{control: (baseStyles) => ({...baseStyles, paddingLeft: 10 + 'px' , minHeight: 61 + 'px', borderRadius: 10 + 'px'})}} options={operatorList} value={user} onChange={setUser}></MySelect></Col>
 
-          <Col md={6} sm={12} xs={12} className='mt-3'><MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date} onChange={(e) => {setDate(e.target.value)}}></MyDate></Col>
+      </Col>
+
+
+      <Col md={12} sm={12} xs={12} className='d-flex justify-content-md-between justify-content-center align-items-center flex-md-row flex-column'>
+
+            <Col md={6} sm={12} xs={12} className='mt-3'>
+            <span style={{marginLeft: '30px'}}>Выберите дату начала</span>
+            <MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date[0]} onChange={(e) => {setDate([e.target.value, null])}}></MyDate>
+            </Col>
+            <Col md={6} sm={12} xs={12} className='mt-3'>
+            <span style={{marginLeft: '30px'}}>Выберите дату окончания</span>
+            <MyDate style={{paddingLeft: 30 + 'px', width: '100%'}} value={date[1]} min={date[0]} onChange={(e) => {setDate([date[0], e.target.value])}}></MyDate>
+            </Col>
 
       </Col>
 
