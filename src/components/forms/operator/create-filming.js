@@ -266,11 +266,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       })
 
 
+      console.log(date)
+
+
 
       setFio('')
       setTitle('')
       setUser('')
-      setDate([null, null])
       setTimeStart('')
       setTimeEnd('')
       setPlace('')
