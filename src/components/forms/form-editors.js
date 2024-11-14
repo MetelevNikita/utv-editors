@@ -106,7 +106,7 @@ useEffect(() => {
 
 }, [])
 
-
+console.log(selectedOption.tgId)
 
 
 // получаем colums
@@ -156,10 +156,8 @@ const fetchUser = async (key) => {
     console.error(`ОШИБКА - ${error}`)
 
   }
-
-
-
 }
+
 
 
 
@@ -224,21 +222,10 @@ try {
     })
 
     const data = await responce.json()
-    return data
-
-} catch (error) {
-  console.error(`ОШИБКА - ${error}`)
+    console.log(data)
 
 
-}
-
-if (selectedOption.tgId === "") {
-  return
-
-} else {
-
-  try {
-    const responce = await fetch(URL_API, {
+    const responceToUsers = await fetch(URL_API, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -246,12 +233,13 @@ if (selectedOption.tgId === "") {
       body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
       })
 
-    const data = responce.json()
-    return data
+    const dataUsers = await responceToUsers.json()
+    console.log(dataUsers)
 
-  } catch (error) {
-    console.error(`ОШИБКА - ${error}`)
-  }
+
+} catch (error) {
+  console.error(`ОШИБКА - ${error}`)
+
 
 }
 
