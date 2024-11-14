@@ -106,7 +106,7 @@ useEffect(() => {
 
 }, [])
 
-console.log(selectedOption.tgId)
+
 
 
 // получаем colums
@@ -222,7 +222,7 @@ try {
     })
 
     const data = await responce.json()
-    console.log(data)
+
 
 
     const responceToUsers = await fetch(URL_API, {
@@ -234,7 +234,7 @@ try {
       })
 
     const dataUsers = await responceToUsers.json()
-    console.log(dataUsers)
+
 
 
 } catch (error) {
