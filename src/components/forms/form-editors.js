@@ -354,7 +354,7 @@ const newProject = () => {
 
       <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
-      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылка на SRC'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
 
 
@@ -427,7 +427,7 @@ const typeProject = () => {
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
 
-      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылка на SRC'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{width: '100%'}}></MyInput></Col>
 
