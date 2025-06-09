@@ -49,8 +49,9 @@ const {modalActiveDislike, setModaActiveDislike} = modalDisLike
 // auth
 
 const [user, setUser] = useState('')
+const [YouGileKey, setYouGileKey] = useState('')
 const [colums, setColums] = useState('')
-const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
+const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: "24cfbf0d-a0f5-4206-a40c-c32ff0e8d122", tgId: 85252645})
 
 
 //
@@ -85,82 +86,106 @@ const [newMessageYG, setNewMessageYG] = useState('')
 const newDate = new Date(date)
 const timestamp = newDate.getTime()
 
-      //
+
+//
 
 
-const fetchIdKey = () => {
-  fetch('https://yougile.com/api-v2/auth/companies', {
-    method: 'POST',
-    headers: {
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-  }).then(responce => responce.json())
-    .then(data => {
-      return fetch('https://yougile.com/api-v2/auth/keys/get', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[1].id})
-      }).then(responce => responce.json())
-        .then(data => {
-          return localStorage.setItem('key', data[0].key)})
+
+const getCompany = async () => {
+  try {
+
+    const responce = await fetch('https://yougile.com/api-v2/auth/companies', {
+      method: 'POST',
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
     })
 
+    if(!responce.ok) {
+      alert('Ошибка при получении компании YouGile - попробуйте позже')
+      throw new Error('Ошибка при получении компании YouGile')
+    }
+
+    const data = await responce.json()
+    return data
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-const userKey = localStorage.getItem('key')
+const getKey = async (companyId) => {
+  try {
+    const responce = await fetch('https://yougile.com/api-v2/auth/keys/get', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: companyId})
+    })
 
+    if (!responce.ok) {
+      alert('Ошибка при получении ключа YouGile - попробуйте позже')
+      throw new Error('Ошибка при получении ключа YouGile')
+    }
+
+    const data = await responce.json()
+    return data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 // получаем colums
 
-const fetchDesk = async () => {
-  const userKey = localStorage.getItem('key')
+const fetchDesk = async (key) => {
   const res = await fetch('https://yougile.com/api-v2/columns?limit=100', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
+      "Authorization": `Bearer ${key}`
     },
   })
 
   const data = await res.json()
-  console.log(data)
   return setColums(data)
 
 }
 
-
 // получаем пользователей
 
-const fetchUser = async () => {
-  const userKey = localStorage.getItem('key')
+const fetchUser = async (key) => {
   const res = await fetch('https://yougile.com/api-v2/boards', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
+      "Authorization": `Bearer ${key}`
     }
   })
 
   const data = await res.json()
-  console.log(data)
   return setUser(data)
 }
 
 
-const getList = () => {
-  fetchIdKey()
+const getList = async () => {
 
-  setTimeout(() => {
-    fetchDesk()
-    fetchUser()
-  }, 5000)
+  const company = await getCompany()
+  const key = await getKey(company.content[1].id)
+
+  setYouGileKey(key[0].key)
+
+  await fetchUser(key[0].key)
+  await fetchDesk(key[0].key)
 
 }
 
 useEffect(() => {getList()}, [])
+
+
+
 
 
 
@@ -207,72 +232,79 @@ useEffect(() => {getList()}, [])
 
 
 
-const sendToTelegram = (newMessageTG) => {
+const sendToTelegram = async (newMessageTG) => {
 
-const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-const CHAT_ID = '-1002013845900'
-const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+  try {
 
-
-
-fetch(URL_API, {
-method: 'POST',
-headers: {
-  'Content-Type': 'application/json'
-},
-body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const CHAT_ID = '-1002013845900'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
+    const responceBotTg = await fetch(URL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+    })
 
-}).then(responce => responce.json())
-.then(data => data)
-.catch(error => console.log(error, 'ERROR'))
+    if (!responceBotTg.ok) {
+      throw new Error('Ошибка при отправке сообщения в Телеграм Бот')
+    }
+    const dataBot = await responceBotTg.json()
+    console.log(dataBot)
 
+    if (selectedOption.tgId === "") return
 
-if (selectedOption.tgId === "") {
-  return
-} else {
-  fetch(URL_API, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+    const responceUserTg = await fetch(URL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+    })
 
+    if (!responceUserTg.ok) {
+      throw new Error('Ошибка при отправке сообщения в Телеграм Пользователю')
+    }
 
+    const dataUser = await responceUserTg.json()
+    console.log(dataUser)
+    
+  } catch (error) {
+    console.log(error, 'ERROR')
+  }
 
-    }).then(responce => responce.json())
-    .then(data => data)
-    .catch(error => console.log(error, 'ERROR'))
 }
 
-}
 
 
-const sendCard = (newMessageTG, newMessageYG) => {
-  const userKey = localStorage.getItem('key')
+
+const sendCard = async (newMessageTG, newMessageYG) => {
 
   if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
-
       setModaActiveDislike(true)
       return
-
   }
 
 
-  fetch('https://yougile.com/api-v2/tasks', {
+  const responce = await fetch('https://yougile.com/api-v2/tasks', {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${userKey}`
+      "Authorization": `Bearer ${YouGileKey}`
     },
     body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
-  }).then(responce => responce.json())
-    .then(data => data)
-    .catch(error => console.log(error, 'ERROR'))
+  })
 
-
-  sendToTelegram(newMessageTG)
+  if (!responce.ok) {
+    alert('Ошибка при создании карточки в YouGile - попробуйте позже yougile перегружен')
+    throw new Error('Ошибка при создании карточки в YouGile')
+  }
+  const data = await responce.json()
+  console.log(data)
+  await sendToTelegram(newMessageTG)
 
   setFio('')
   setTitle('')
@@ -290,12 +322,11 @@ const sendCard = (newMessageTG, newMessageYG) => {
   setSample('проект')
 
   setModalActiveLike(true)
+
   window.scrollTo({
     top: 0,
     behavior: "smooth",
   });
-
-
 
 }
 

@@ -3,7 +3,7 @@ const usersList = [
 
   {
     label: 'На усмотрение руководителя',
-    value: "2c74ebe5-f486-4f19-9b0f-e88083906ca9",
+    value: "24cfbf0d-a0f5-4206-a40c-c32ff0e8d122",
     tgId: 85252645
   },
 
