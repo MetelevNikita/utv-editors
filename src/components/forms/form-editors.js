@@ -134,7 +134,7 @@ const getKey = async (companyId) => {
     return data
     
   } catch (error) {
-    console.log(error)
+    console.log(error, 'Ошибка при получении ключа YouGile')
   }
 }
 
