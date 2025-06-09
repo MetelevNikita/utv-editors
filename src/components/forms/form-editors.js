@@ -157,7 +157,10 @@ const fetchDesk = async (key) => {
 // получаем пользователей
 
 const fetchUser = async (key) => {
-  const res = await fetch('https://yougile.com/api-v2/boards', {
+
+  try {
+
+    const responce = await fetch('https://yougile.com/api-v2/boards', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -165,8 +168,13 @@ const fetchUser = async (key) => {
     }
   })
 
-  const data = await res.json()
+  const data = await responce.json()
   return setUser(data)
+    
+  } catch (error) {
+    console.log(error)
+  }
+  
 }
 
 
