@@ -178,7 +178,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
         title: title,
         user: selectedUser().join(' '),
         userColor: selectedUserColor().join(),
-        date: new Date(date).toDateString(),
+        date: {date: new Date(date).toDateString(), dateCreate: new Date().toDateString() + ' ' + new Date().toLocaleTimeString()},
         timeStart: (timeStart === '') ? type.value : timeStart,
         timeEnd: (timeEnd === '') ? type.value : timeEnd,
         place: place,
@@ -208,6 +208,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
    }
+
+
+   console.log({date: new Date(date).toDateString(), time: new Date(date).toLocaleTimeString()})
 
 
 

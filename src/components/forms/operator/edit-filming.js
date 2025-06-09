@@ -137,7 +137,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
           title: checkedCard.title,
           user: selectedUser().join(' '),
           userColor: selectedUserColor().join(),
-          date: new Date(date).toDateString(),
+          date: {date: new Date(date).toDateString(), dateCreate: new Date().toDateString() + ' ' + new Date().toLocaleTimeString()},
           timeStart: checkedCard.timeStart,
           timeEnd: checkedCard.timeEnd,
           place: checkedCard.place,

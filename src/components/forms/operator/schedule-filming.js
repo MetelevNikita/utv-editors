@@ -75,7 +75,16 @@ const onClickDay = (date) => {
 const weekArr = cardList.filter((item) => {return new Date(item.date).getMonth() === new Date(month).getMonth()})
 const searchMonthCard = weekArr.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
-const filterDayCard = cardList.filter((item) => {return item.date.includes(calendarDate.toDateString())})
+const filterDayCard = cardList.filter((item) => {
+
+  if (typeof item.date !== 'string') {
+    return item.date.date.includes(calendarDate.toDateString())
+  } else {
+    return item.date.includes(calendarDate.toDateString())
+  }
+
+
+})
 const searchFilterCard = filterDayCard.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
 
@@ -151,17 +160,21 @@ const timeData = (label, item) => {
 
 }
 
+console.log(sortMonthTime)
+
 
 const filterDate = () => {
 
 
     if (triggerDate === true) {
 
-      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`} time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+
+
+      return sortMonthTime.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={(typeof item.date !== 'string') ? `${item.date.date}` : `${item.date}`} time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
 
     } else {
 
-      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={`${item.date}`}  time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
+      return sortDay.map((item,index) => {return <Link key={item.id} to={`/main/schedule/${item.id}`}><ListFilming style={{background: item.userColor}} title={(item.title === '') ? `${item.type}` : `${item.title}`} date={(typeof item.date !== 'string') ? `${item.date.date}` : `${item.date}`}  time={timeData(item.type, item)} name={`${item.user}`} id={index+1}></ListFilming></Link>})
     }
 }
 

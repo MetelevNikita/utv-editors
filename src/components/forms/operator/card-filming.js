@@ -26,6 +26,8 @@ const CardFilming = ({authEmailLog , ...props}) => {
 
   const {authEmail, setAuthEmail} = authEmailLog
 
+  console.log(authEmail)
+
 
 
   const [cardList, setCardList] = useState([])
@@ -73,6 +75,8 @@ const delCard = () => {
     return item.id === id
   })
 
+  console.log(singleArr)
+
 
 
 
@@ -84,7 +88,14 @@ const delCard = () => {
   return(
     <>
     <li className="card-filming-container">
-      <div className="card-filming-date">{singleArr[0].date}</div>
+
+      <div className="card-filming-date_box">
+
+        <div className="card-filming-date_current">{(typeof singleArr[0].date !== 'string') ? singleArr[0].date.date : singleArr[0].date}</div>
+        <div className="card-filming-date_create">{(typeof singleArr[0].date !== 'string') ? `Дата создания: ${singleArr[0].date.dateCreate}` : ''}</div>
+
+      </div>
+
         <div className="card-filming-box">
 
           <div className="card-filming-title">{(singleArr[0].title === '') ? singleArr[0].type : singleArr[0].title}</div>
