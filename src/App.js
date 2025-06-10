@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router'
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // redux
@@ -26,6 +26,8 @@ import ModalPageAuth from './components/modalpage/Modal-page-auth'
 
 import dislike from './asset/dislike.svg'
 import like from './asset/like.svg'
+
+export const emailContext = createContext(null)
 
 
 const App = () => {
@@ -66,8 +68,6 @@ const App = () => {
     lastName: '',
     tgId: ''
   })
-
-
 
 
   const createNewUser = () => {
@@ -138,6 +138,8 @@ const App = () => {
 
   return(
 
+    <emailContext.Provider value={authEmail}>
+
     <>
     <Routes>
 
@@ -162,6 +164,8 @@ const App = () => {
 
 
     </>
+
+    </emailContext.Provider>
 
   )
 }

@@ -5,8 +5,7 @@ import './filming.css'
 //
 
 import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
-import { useId } from 'react'
+import { Col, Row } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { getDatabase, ref, set, get, update, onValue } from "firebase/database";

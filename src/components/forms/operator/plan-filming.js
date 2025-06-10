@@ -5,7 +5,7 @@ import './filming.css'
 //
 
 import { Link } from 'react-router-dom'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import { useState } from 'react'
 
 // redux
@@ -16,7 +16,6 @@ import { useSelector } from 'react-redux'
 // components
 
 import MyInput from '../../UI/MyInput'
-import MySelect from '../../UI/MySelect'
 import MyTextArea from '../../UI/MyTextArea'
 import MyDate from '../../UI/MyDate'
 import MyTime from '../../UI/MyTime'

@@ -5,11 +5,15 @@ import './filming.css'
 //
 
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
+import { useEffect, useState, useContext } from 'react'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useNavigate } from 'react-router-dom'
+
+// context
+
+import { emailContext } from '../../../App'
 
 
 // components
@@ -24,9 +28,10 @@ import MyButtonBack from '../../UI/MyButtonBack'
 const CardFilming = ({authEmailLog , ...props}) => {
 
 
-  const {authEmail, setAuthEmail} = authEmailLog
+ 
 
-  console.log(authEmail)
+  const authEmail = useContext(emailContext)
+
 
 
 
@@ -75,7 +80,7 @@ const delCard = () => {
     return item.id === id
   })
 
-  console.log(singleArr)
+
 
 
 

@@ -5,7 +5,7 @@ import './form.css'
 //
 
 import { useEffect, useState } from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Select from 'react-select'
 
@@ -188,7 +188,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       if (name !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
 
 
-        console.log('отправлено')
+
         fetchAddTask()
         sendToTelegram()
 

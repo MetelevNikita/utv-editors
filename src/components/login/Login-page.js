@@ -7,7 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 //
 
 import { Row ,Col, Container } from "react-bootstrap"
-import { useEffect, useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 

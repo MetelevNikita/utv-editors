@@ -5,10 +5,14 @@ import 'react-calendar/dist/Calendar.css';
 //
 
 import Calendar from "react-calendar"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import { getDatabase, ref, onValue } from "firebase/database";
+
+// context
+
+import { emailContext } from '../../../App';
 
 // components
 
@@ -51,7 +55,7 @@ const ScheludeFilming = ({fixedCalendarDay}) => {
   }, [])
 
 
-  const authEmail = sessionStorage.getItem('email')
+const authEmail = useContext(emailContext)
 
 
 // filter
@@ -160,7 +164,7 @@ const timeData = (label, item) => {
 
 }
 
-console.log(sortMonthTime)
+
 
 
 const filterDate = () => {

@@ -28,7 +28,11 @@ import programCotegory from '../../server/programCotegory'
 import sampleProject from '../../server/sampleProject'
 
 
-//
+// functions
+
+import { getYGCompany } from '../functions/getYGCompany'
+import { getYGKey } from '../functions/getYGKey'
+
 
 import { useState, useEffect } from "react"
 
@@ -180,8 +184,8 @@ const fetchUser = async (key) => {
 
 const getList = async () => {
 
-  const company = await getCompany()
-  const key = await getKey(company.content[1].id)
+  const company = await getYGCompany(1)
+  const key = await getYGKey(company)
 
   setYouGileKey(key[0].key)
 
@@ -261,7 +265,7 @@ const sendToTelegram = async (newMessageTG) => {
       throw new Error('Ошибка при отправке сообщения в Телеграм Бот')
     }
     const dataBot = await responceBotTg.json()
-    console.log(dataBot)
+
 
     if (selectedOption.tgId === "") return
 
@@ -278,7 +282,7 @@ const sendToTelegram = async (newMessageTG) => {
     }
 
     const dataUser = await responceUserTg.json()
-    console.log(dataUser)
+
     
   } catch (error) {
     console.log(error, 'ERROR')

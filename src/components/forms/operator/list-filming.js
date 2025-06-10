@@ -2,25 +2,18 @@ import './filming.css'
 
 //
 
-import { Container, Col, Row } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+import { Col } from 'react-bootstrap'
+
 
 //
 
 
 const ListFilming = (props) => {
 
-  const [cardList, setCardList] = useState([])
-  const [loading, setLoading] = useState(true)
-
-
 
   return(
 
-
     <>
-
-
 
       <Col xl={12} md={12} sm={12} xs={12} className='d-flex flex-row justify-content-center align-items-center mb-3'>
 
@@ -33,8 +26,6 @@ const ListFilming = (props) => {
       </Col>
 
       <hr className='filming-line'/>
-
-
 
     </>
 

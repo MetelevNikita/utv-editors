@@ -1,6 +1,7 @@
 import './form.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
+import { emailContext } from '../../App'
 
 
 // components
@@ -16,12 +17,25 @@ import MyButton from '../UI/MyButton'
 
 import streamType from '../../server/streamType'
 
+// fn
+
+import { getYGCompany } from '../functions/getYGCompany'
+import { getYGKey } from '../functions/getYGKey'
+
 
 const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
   const {modalActiveLike, setModalActiveLike} = modalTechLike
   const {modalActiveDislike, setModaActiveDislike} = modalTechDislike
+
+
+
+  const [YouGileKey, setYouGileKey] = useState('')
+
+
+  // 
+
 
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
@@ -42,94 +56,122 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-  const fetchIdKey = () => {
-    fetch('https://yougile.com/api-v2/auth/companies', {
-      method: 'POST',
-      headers: {
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    }).then(responce => responce.json())
-      .then(data => {
-        return fetch('https://yougile.com/api-v2/auth/keys/get', {
-            method: 'POST',
-            headers: {
-              'Content-Type':'application/json'
-            },
-            body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[0].id})
-          })
-        }).then(responce => responce.json())
-          .then(data => {
-            return localStorage.setItem('keyTech', data[0].key)
-          })
+
+
+  const getYouGileData = async () => {
+    const company = await getYGCompany(0)
+    const key = await getYGKey(company)
+    setYouGileKey(key[0].key)
+    await fetchDesk(key[0].key)
 
   }
 
 
+  useEffect(() => {getYouGileData()}, [])
 
-  const fetchDesk = () => {
-    const keyTech = localStorage.getItem('keyTech')
-    fetch('https://yougile.com/api-v2/columns', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${keyTech}`
-      }
-    }).then(responce => responce.json())
-      .then(data => {
-        setColumnId(data.content[1].id)
-      })
-  }
+
+
+
 
 
   const messageYG = ` ФИО АВТОРА:<br>${fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
   const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
 
 
-  const fetchAddTask = () => {
-    const keyTech = localStorage.getItem('keyTech')
-    fetch('https://yougile.com/api-v2/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${keyTech}`
-      },
-      body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
-    }).then(responce => responce.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error, 'ERROR'))
+  const fetchDesk = async (key) => {
+    try {
+
+      const responce = await fetch(process.env.REACT_APP_YG_COLUMS, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${key}`
+        }
+      })
+
+      const data = await responce.json()
+      setColumnId(data.content[1].id)
+      return data
+      
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
+
+  const fetchAddTask = async () => {
+
+    try {
+      const responce = await fetch(process.env.REACT_APP_YG_TASK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${YouGileKey}`
+        },
+        body: JSON.stringify({
+          title: title,
+          columnId: columnId,
+          description: messageYG,
+          deadline: {deadline: timestamp}
+        })
+      })
+
+      if (!responce.ok) {
+        alert(`Ошибка создании карточки в YouGile: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка создании карточки в YouGile: ${responce.status}`)
+      }
+
+      const data = await responce.json()
+      return data
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // send to TG
 
+  const sendToTelegram = async () => {
 
-  const sendToTelegram = () => {
+    try {
+
+      const CHAT_ID = '-1002046063150'
+      const URL_API = `https://api.telegram.org/bot${process.env.REACT_APP_TG_TOKEN}/sendMessage`
+
+      const responce = await fetch(URL_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: messageTG
+        })
+      })
 
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-    const CHAT_ID = '-1002046063150'
-    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+      if (!responce.ok) {
+        alert(`Ошибка отправки сообщения в Telegram: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка отправки сообщения в Telegram: ${responce.status}`)
+      }
 
-    fetch(URL_API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
-    }).then(responce => responce.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error, 'ERROR'))
+      const data = await responce.json()
+      return data
+
+    } catch (error) {
+      console.log(error, {status: 500})
+    }
 
   }
 
 
+  const sendMessage = async () => {
 
-  const sendMessage = () => {
     if (fio !== '' && title !== '' && phone !== '' && place !== '' && description !== '') {
 
-    fetchAddTask()
-    sendToTelegram()
+    await fetchAddTask()
+    await sendToTelegram()
 
     setFio('')
     setTitle('')
@@ -151,14 +193,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
 
 
-  useEffect(() => {
-
-    fetchIdKey()
-    setTimeout(() => {
-      fetchDesk()
-    }, 5000)
-
-  }, [])
 
 
 

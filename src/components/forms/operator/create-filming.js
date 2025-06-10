@@ -56,7 +56,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [fio, setFio] = useState('')
   const [title, setTitle] = useState('')
   const [user, setUser] = useState([])
-  const [userColor, setUserColor]= useState('')
   const [date, setDate] = useState('')
   const [timeStart, setTimeStart] = useState('')
   const [timeEnd, setTimeEnd] = useState('')
