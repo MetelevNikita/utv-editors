@@ -7,7 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 //
 
 import { Row ,Col, Container } from "react-bootstrap"
-import { useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,8 +30,8 @@ import ModalPageAuth from '../modalpage/Modal-page-auth';
 
 const LoginPage = ({isAuth, authEmailLog}) => {
 
-  const {auth, setAuth} = isAuth
-  const {authEmail, setAuthEmail} = authEmailLog
+  const { setAuth } = isAuth
+  const { setAuthEmail } = authEmailLog
   const navigate = useNavigate('')
 
   const [email, setEmail] = useState('')
@@ -46,6 +46,8 @@ const LoginPage = ({isAuth, authEmailLog}) => {
     signInWithEmailAndPassword(userAuth, email, password)
       .then((userCredentioal) => {
           const user = userCredentioal.user
+
+          console.log(user.email)
 
           setAuthEmail(user.email)
           sessionStorage.setItem('email', user.email)

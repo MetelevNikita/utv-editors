@@ -1,7 +1,6 @@
 import './form.css'
 import { useEffect, useState, useContext } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
-import { emailContext } from '../../App'
 
 
 // components
@@ -13,14 +12,21 @@ import MyDate from '../UI/MyDate'
 import MySelect from '../UI/MySelect'
 import MyButton from '../UI/MyButton'
 
+// redux
+
+import { useSelector } from 'react-redux'
+
 // server
 
 import streamType from '../../server/streamType'
 
-// fn
+
+// function
 
 import { getYGCompany } from '../functions/getYGCompany'
 import { getYGKey } from '../functions/getYGKey'
+
+// 
 
 
 const FormTech = ({modalTechLike, modalTechDislike}) => {
@@ -44,8 +50,6 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   const [type, setType] = useState('')
   const [date, setDate] = useState('')
   const [description, setDescription] = useState('')
-
-
   const [columnId, setColumnId] = useState('')
 
   // timestamp
@@ -53,84 +57,93 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   const newDate = new Date(date)
   const timestamp = newDate.getTime()
 
+  // 
+
+  const users = useSelector(state => state.users.users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
 
 
+  useEffect(() => {
+
+    getAllYougileData()
+
+  }, [])
 
 
-  const getYouGileData = async () => {
-    const company = await getYGCompany(0)
-    const key = await getYGKey(company)
+  const getAllYougileData = async () => {
+
+    const companyId = await getYGCompany(0)
+    const key = await getYGKey(companyId)
     setYouGileKey(key[0].key)
+
     await fetchDesk(key[0].key)
+
 
   }
 
 
-  useEffect(() => {getYouGileData()}, [])
+
+  const fetchDesk = async (keyTech) => {
 
 
-
-
-
-
-  const messageYG = ` ФИО АВТОРА:<br>${fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
-  const messageTG = ` ФИО АВТОРА: \n ${fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
-
-
-  const fetchDesk = async (key) => {
     try {
-
       const responce = await fetch(process.env.REACT_APP_YG_COLUMS, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${key}`
+          'Authorization': `Bearer ${keyTech}`
         }
       })
 
+
+      if (!responce.ok) {
+        alert(`Ошибка при получении столбцов из YouGile: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка при получении столбцов из YouGile: ${responce.status}`)
+      } 
+
       const data = await responce.json()
       setColumnId(data.content[1].id)
-      return data
-      
+
     } catch (error) {
-      console.log(error);
+      console.log(error) 
     }
 
   }
 
 
+  const messageYG = ` ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}<br><br>ТЕЛЕФОН ДЛЯ СВЯЗИ:<br>${phone}<br><br>ТИП ПРОЕКТА:<br>${type.label}<br><br>ОПИСАНИЕ:<br>${description}<br><br>СРОКИ:<br>${date}<br><br>ОПИСАНИЕ<br>${description}`
+  const messageTG = ` ФИО АВТОРА: \n ${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} \n НАЗВАНИЕ ПРОЕКТА: \n ${title} \n ТЕЛЕФОН ДЛЯ СВЯЗИ: \n ${phone} \n ТИП ПРОЕКТА: \n ${type.label} \n ОПИСАНИЕ: \n ${description} \n СРОКИ: \n ${date} \n ОПИСАНИЕ: \n ${description}`
+
+
   const fetchAddTask = async () => {
 
+
     try {
+
       const responce = await fetch(process.env.REACT_APP_YG_TASK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${YouGileKey}`
+          'Authorization': `Bearer ${YouGileKey}`
         },
-        body: JSON.stringify({
-          title: title,
-          columnId: columnId,
-          description: messageYG,
-          deadline: {deadline: timestamp}
-        })
+        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}})
       })
 
       if (!responce.ok) {
-        alert(`Ошибка создании карточки в YouGile: ${responce.status} - попробуйте позже`)
-        throw new Error(`Ошибка создании карточки в YouGile: ${responce.status}`)
+        alert(`Ошибка при добавлении таска в YouGile: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка при добавлении таска в YouGile: ${responce.status}`)
       }
-
-      const data = await responce.json()
-      return data
-
+      
     } catch (error) {
       console.log(error)
     }
   }
 
+
   // send to TG
+
 
   const sendToTelegram = async () => {
 
@@ -144,26 +157,21 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: messageTG
-        })
+        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
       })
 
-
       if (!responce.ok) {
-        alert(`Ошибка отправки сообщения в Telegram: ${responce.status} - попробуйте позже`)
-        throw new Error(`Ошибка отправки сообщения в Telegram: ${responce.status}`)
+        alert(`Ошибка при отправке сообщения в Телеграм Бот: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка при отправке сообщения в Телеграм Бот: ${responce.status}`)
       }
-
-      const data = await responce.json()
-      return data
-
+      
     } catch (error) {
-      console.log(error, {status: 500})
+      console.log(error)
+      
     }
 
   }
+
 
 
   const sendMessage = async () => {
@@ -201,7 +209,10 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={fio} onChange={(e) => {setFio(e.target.value)}}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={(singleUser ? {width: '100%', color: 'grey'} : {width: '100%'})} placeholder={'фио'} value={(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} onChange={(e) => {setFio(e.target.value)}} disabled={(singleUser) ? true : false}></MyInput></Col>
+
+
+
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'контактная информация'} value={phone} onChange={(e) => {setPhone(e.target.value)}} type={'tel'}></MyInput></Col>
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'место проведения'} type={'text'} value={place} onChange={(e) => {setPlace(e.target.value)}} ></MyInput></Col>

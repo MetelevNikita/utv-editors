@@ -8,7 +8,7 @@ const operatorList = [
 
   {
     label: 'СТУДИЯ',
-    value: '',
+    value: '85252645',
     colorId: "#ff0000"
   },
 
@@ -38,12 +38,6 @@ const operatorList = [
   },
 
   {
-    label: 'Сагидуллин Айдар',
-    value: '717358495',
-    colorId: "#FC7C05"
-  },
-
-  {
     label: 'Яковлев Игорь',
     value: '486408353',
     colorId: "#FC7C05"
@@ -67,11 +61,6 @@ const operatorList = [
     colorId: "#05FCFC"
   },
 
-  {
-    label: 'Руслан Габидуллин',
-    value: '901944117',
-    colorId: "#fc0303"
-  }
 ]
 
 export default operatorList

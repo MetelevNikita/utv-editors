@@ -7,6 +7,8 @@ const sampleProject = [
   {value: 'ufaAtlet', label: 'Уфа Атлет', path: '\\utv2\\UTV\\Передачи\\Ufa Атлет'},
   {value: 'miniAfisha', label: 'Мини Афиша', path: '\\utv2\\UTV\\Передачи\\Афиша'},
   {value: 'ourHouse', label: 'Наш дом', path: '\\utv2\\UTV\\Передачи\\Наш дом'},
+  {value: 'videoDozor', label: 'Видеодозор', path: '\\utv2\\Домофон\\Проект_Камеры Уфанет'},
+  {value: 'videoSalon', label: 'Видеосалон', path: '\\utv2\\UTV\\Передачи\\Видеосалон'},
 ]
 
 

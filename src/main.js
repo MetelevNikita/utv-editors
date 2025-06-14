@@ -2,8 +2,7 @@ import './main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-import { Container, Col, Row } from 'react-bootstrap'
-import app from './firebaseApp'
+import { Col, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -12,16 +11,6 @@ import { useNavigate } from 'react-router-dom'
 import logoUTV from './asset/logoUTV.svg'
 import like from './asset/like.svg'
 import dislike from './asset/dislike.svg'
-
-import ui_camera from './asset/ui_camera.svg'
-import ui_editor from './asset/ui_plenka.svg'
-import ui_design from './asset/ui_design.svg'
-import ui_tech from './asset/ui_prokat.svg'
-
-
-import usersList from './server/usersList'
-import userPrice from './server/userPrice'
-import programType from './server/programType'
 
 // components
 
@@ -81,7 +70,6 @@ const Main = ({isAuth, authEmailLog}) => {
 
   const [menuTitle, setMenuTitle] = useState('КАТЕГОРИЯ')
 
-  const {auth, setAuth} = isAuth
   const {authEmail, setAuthEmail} = authEmailLog
   const navigate = useNavigate()
 

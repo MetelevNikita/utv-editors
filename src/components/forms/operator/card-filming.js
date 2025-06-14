@@ -6,7 +6,7 @@ import './filming.css'
 
 import { useParams } from 'react-router-dom'
 import { useEffect, useState, useContext } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Container, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useNavigate } from 'react-router-dom'
@@ -28,15 +28,13 @@ import MyButtonBack from '../../UI/MyButtonBack'
 const CardFilming = ({authEmailLog , ...props}) => {
 
 
- 
-
-  const authEmail = useContext(emailContext)
-
-
-
 
   const [cardList, setCardList] = useState([])
   const [loading, setLoading] = useState(true)
+
+
+  const authEmail = useContext(emailContext)
+
 
 
   const navigate = useNavigate()
@@ -76,11 +74,10 @@ const delCard = () => {
   }
 
 
+
   const singleArr = cardList.filter((item) => {
     return item.id === id
   })
-
-
 
 
 
@@ -96,8 +93,13 @@ const delCard = () => {
 
       <div className="card-filming-date_box">
 
-        <div className="card-filming-date_current">{(typeof singleArr[0].date !== 'string') ? singleArr[0].date.date : singleArr[0].date}</div>
-        <div className="card-filming-date_create">{(typeof singleArr[0].date !== 'string') ? `Дата создания: ${singleArr[0].date.dateCreate}` : ''}</div>
+
+        <div className='card-filming-date-box'>
+
+          <div className="card-filming-date_current">{singleArr[0].date}</div>
+          {(singleArr[0].createAt) ? <div className="card-filming-date_create">{`Дата создания: ${singleArr[0].createAt}`}</div> : ''}
+
+        </div>
 
       </div>
 
@@ -114,6 +116,9 @@ const delCard = () => {
           <hr></hr>
 
           <div className="card-filming-user">{`Оператор: ${singleArr[0].user}`}</div>
+
+          {(singleArr[0].soundEngineer) ? <div className="card-filming-user">Звукорежиссер Владимир Симановский</div> : <></>}
+          {(singleArr[0].soundEngineer) ? <div className="card-filming-user">Отмечено участие технического отдела</div> : <></>}
         </div>
     </li>
 
@@ -129,7 +134,6 @@ const delCard = () => {
 
       <Row className='mt-4'>
         <Col>
-
             <Link to={'/main/schedule'}><MyButtonBack>Назад</MyButtonBack></Link>
         </Col>
       </Row>

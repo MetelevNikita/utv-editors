@@ -6,7 +6,6 @@ import { Container, Col, Row } from 'react-bootstrap'
 
 import UiTgSvg from '../UI/footer_imge/uiTgSvg'
 import UiWaSvg from '../UI/footer_imge/uiWaSvg'
-import { Link } from 'react-router-dom'
 
 
 const Footer = () => {
@@ -20,7 +19,7 @@ const Footer = () => {
             <div className="footer-box">
 
 
-                <div className="footer-release">release 4.0</div>
+                <div className="footer-release">release 5.1</div>
 
                 <Row className='d-flex justify-content-center mt-3 mb-3'>
 

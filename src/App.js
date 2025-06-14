@@ -10,9 +10,7 @@ import { createUser, getUsers} from './store/userSlice'
 
 // firebase
 
-import app from './firebaseApp'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore, addDoc, collection  } from 'firebase/firestore'
 
 
 // components
@@ -34,8 +32,6 @@ const App = () => {
 
 
   const navigate = useNavigate()
-  const db = getFirestore(app)
-
 
   // redux
 
@@ -54,7 +50,6 @@ const App = () => {
   const [modalPassAuth, setModalPassAuth] = useState(true)
   const [modalPassRepeat, setModalPassRepeat] = useState(true)
   const [authOk, setAuthOk] = useState(true)
-  const [regComplete, setRegComplete] = useState(false)
   const [authEmail, setAuthEmail] = useState('')
 
 

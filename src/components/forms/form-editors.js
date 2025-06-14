@@ -1,10 +1,7 @@
 import './form.css'
-import { Container, Col, Row } from "react-bootstrap"
-import app from '../../firebaseApp'
-
+import { Col } from "react-bootstrap"
 
 // redux
-
 
 import { useSelector } from 'react-redux'
 
@@ -33,6 +30,8 @@ import sampleProject from '../../server/sampleProject'
 import { getYGCompany } from '../functions/getYGCompany'
 import { getYGKey } from '../functions/getYGKey'
 
+// 
+
 
 import { useState, useEffect } from "react"
 
@@ -46,8 +45,9 @@ const email = sessionStorage.getItem('email')
 const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
 
-const {modalActiveLike, setModalActiveLike} = modalLike
-const {modalActiveDislike, setModaActiveDislike} = modalDisLike
+
+const { setModalActiveLike } = modalLike
+const { setModaActiveDislike } = modalDisLike
 
 
 // auth
@@ -55,7 +55,7 @@ const {modalActiveDislike, setModaActiveDislike} = modalDisLike
 const [user, setUser] = useState('')
 const [YouGileKey, setYouGileKey] = useState('')
 const [colums, setColums] = useState('')
-const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: "24cfbf0d-a0f5-4206-a40c-c32ff0e8d122", tgId: 85252645})
+const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
 
 
 //
@@ -74,273 +74,263 @@ const [referense, setReferense] = useState('')
 const [date, setDate] = useState('')
 const [destanation, setDestanation] = useState('')
 const [price, setPrice] = useState('')
+const [project, setProject] = useState('')
 const [category, setCategory] = useState('')
 const [sample, setSample] = useState('')
 
-//
-
-const [newMessageTG, setNewMessageTg] = useState('')
-const [newMessageYG, setNewMessageYG] = useState('')
-
 
 
 
 //
+
 
 const newDate = new Date(date)
 const timestamp = newDate.getTime()
 
-
-//
-
+      //
 
 
-const getCompany = async () => {
-  try {
 
-    const responce = await fetch('https://yougile.com/api-v2/auth/companies', {
-      method: 'POST',
-      headers: {
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    })
+  useEffect(() => {
 
-    if(!responce.ok) {
-      alert('Ошибка при получении компании YouGile - попробуйте позже')
-      throw new Error('Ошибка при получении компании YouGile')
-    }
+    getAllYougileData()
 
-    const data = await responce.json()
-    return data
-    
-  } catch (error) {
-    console.log(error)
+  }, [])
+
+
+  const getAllYougileData = async () => {
+
+    const companyId = await getYGCompany(1)
+    const key = await getYGKey(companyId)
+    setYouGileKey(key[0].key)
+
+    await fetchDesk(key[0].key)
+    await fetchUser(key[0].key)
+
+
   }
-}
 
-const getKey = async (companyId) => {
-  try {
-    const responce = await fetch('https://yougile.com/api-v2/auth/keys/get', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: companyId})
-    })
 
-    if (!responce.ok) {
-      alert('Ошибка при получении ключа YouGile - попробуйте позже')
-      throw new Error('Ошибка при получении ключа YouGile')
-    }
-
-    const data = await responce.json()
-    return data
-    
-  } catch (error) {
-    console.log(error, 'Ошибка при получении ключа YouGile')
-  }
-}
 
 // получаем colums
 
-const fetchDesk = async (key) => {
-  const res = await fetch('https://yougile.com/api-v2/columns?limit=100', {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${key}`
-    },
-  })
-
-  const data = await res.json()
-  return setColums(data)
-
-}
-
-// получаем пользователей
-
-const fetchUser = async (key) => {
+const fetchDesk = async (keyEdit) => {
 
   try {
-
-    const responce = await fetch('https://yougile.com/api-v2/boards', {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${key}`
-    }
-  })
-
-  const data = await responce.json()
-  return setUser(data)
-    
-  } catch (error) {
-    console.log(error)
-  }
-  
-}
-
-
-const getList = async () => {
-
-  const company = await getYGCompany(1)
-  const key = await getYGKey(company)
-
-  setYouGileKey(key[0].key)
-
-  await fetchUser(key[0].key)
-  await fetchDesk(key[0].key)
-
-}
-
-useEffect(() => {getList()}, [])
-
-
-
-
-
-
-
-// message send
-
-  const sendNewMessageCard = () => {
-
-
-    let messageTG = ''
-    let messageYG = ''
-
-    if(category.value === 'типовой проект') {
-
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time} НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
-
-      messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title} ТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${price.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
-
-      return sendCard(messageTG, messageYG)
-
-
-    } else if (category.value === 'новый проект') {
-
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ЦЕЛЕВАЯ АУДИТОРИЯ:<br>${audience}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ССЫЛКИ НА ПРИМЕР:<br>${referense}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${price.label}<br><br>ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:<br>${destanation}<br><br>ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
-
-      messageTG = `${category.label}\n\nФИО АВТОРА: ${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${price.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
-
-      return sendCard(messageTG, messageYG)
-
-
-    } else if (category.value === 'шаблонный проект') {
-
-      messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${sample.label}<br><br>ПУТЬ К СЫРЬЮ:<br>${sample.path}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:\n${date}`
-
-      messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
-
-      return sendCard(messageTG, messageYG)
-
-    }
-  }
-
-//
-
-
-
-
-const sendToTelegram = async (newMessageTG) => {
-
-  try {
-
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-    const CHAT_ID = '-1002013845900'
-    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
-
-
-    const responceBotTg = await fetch(URL_API, {
-      method: 'POST',
+    const responce = await fetch(`${process.env.REACT_APP_YG_COLUMS}?limit=100`, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${keyEdit}`
+      }
     })
-
-    if (!responceBotTg.ok) {
-      throw new Error('Ошибка при отправке сообщения в Телеграм Бот')
-    }
-    const dataBot = await responceBotTg.json()
-
-
-    if (selectedOption.tgId === "") return
-
-    const responceUserTg = await fetch(URL_API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
-    })
-
-    if (!responceUserTg.ok) {
-      throw new Error('Ошибка при отправке сообщения в Телеграм Пользователю')
-    }
-
-    const dataUser = await responceUserTg.json()
-
     
+    if (!responce.ok) {
+      alert(`Ошибка при получении данных из YouGile ${responce.status} - попробуйте позже`)
+      throw new Error('Ошибка при получении данных из YouGile')
+    }
+
+    const data = await responce.json()
+    setColums(data)
+
+
   } catch (error) {
     console.log(error, 'ERROR')
   }
 
+
+}
+
+
+// получаем пользователей
+
+const fetchUser = async (keyEdit) => {
+
+  try {
+    const responce = await fetch(process.env.REACT_APP_YG_BOARDS, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${keyEdit}`
+      }
+    })
+
+    if (!responce.ok) {
+      alert(`Ошибка при получении данных Досок из YouGile ${responce.status} - попробуйте позже`)
+      throw new Error('Ошибка при получении данных из YouGile')
+    }
+
+    const data = await responce.json()
+    setUser(data)
+    return data
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+
+// message send
+
+const sendNewMessageCard = () => {
+
+    let messageTG = ''
+    let messageYG = ''
+
+    if(category.value === 'типовой тв проект') {
+
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${project.label}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}`
+
+    messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${title}\nТИП ПРОЕКТА:\n${sale.label}\nСОГЛАСОВАТЕЛЬ:\n${coordination} \nОПИСАНИЕ:\n${description}\nССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:\n${link}\nМАТЕРИАЛЫ К ПРОЕКТУ:\n${info}\nХРОНОМЕТРАЖ:\n${time}\nНАПРАВЛЕНИЕ:\n${project.label}\nИСПОЛНИТЕЛЬ:\n${selectedOption.label}\nСРОКИ:\n${date}`
+
+    return sendMessage(messageTG, messageYG)
+
+
+
+    } else if (category.value === 'новый проект') {
+
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${title}<br><br>ТИП ПРОЕКТА:<br>${sale.label}<br><br>СОГЛАСОВАТЕЛЬ:<br>${coordination}<br><br>ЦЕЛЕВАЯ АУДИТОРИЯ:<br>${audience}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ:<br>${link}<br><br>МАТЕРИАЛЫ К ПРОЕКТУ:<br>${info}<br><br>ССЫЛКИ НА ПРИМЕР:<br>${referense}<br><br>ХРОНОМЕТРАЖ:<br>${time}<br><br>НАПРАВЛЕНИЕ:<br>${project.label}<br><br>ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ:<br>${destanation}<br><br>ВЫБЕРИТЕ ИСПОЛНИТЕЛЯ:<br>${selectedOption.label}<br><br>СРОКИ:<br>${date}<br><br>ЦЕНА:<br>${price}`
+
+    messageTG = `${category.label}\n\nФИО АВТОРА:\n${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА: ${title}\nТИП ПРОЕКТА: ${sale.label}\nСОГЛАСОВАТЕЛЬ: ${coordination} ЦЕЛЕВАЯ АУДИТОРИЯ: ${audience}\nОПИСАНИЕ: ${description} ССЫЛКИ или ПУТЬ ДО ФАЙЛОВ: ${link}\nМАТЕРИАЛЫ К ПРОЕКТУ: ${info}\nССЫЛКИ НА ПРИМЕР: ${referense}\nХРОНОМЕТРАЖ: ${time}\nНАПРАВЛЕНИЕ: ${project.label} ГДЕ БУДЕТ РАЗМЕЩЕН ПРОДУКТ: ${destanation}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}\n\nЦЕНА:${price}`
+
+    return sendMessage(messageTG, messageYG)
+
+
+
+    } else if (category.value === 'шаблонный тв проект') {
+
+    messageYG = `${category.label}<br><br>ФИО АВТОРА:<br>${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}<br><br>НАЗВАНИЕ ПРОЕКТА:<br>${sample.label}<br><br>ПУТЬ К СЫРЬЮ:<br>${sample.path}<br><br>ОПИСАНИЕ:<br>${description}<br><br>ИСПОЛНИТЕЛЬ:<br>${selectedOption.label}<br><br>СРОКИ:\n${date}`
+
+    messageTG = `${category.label} \n\n\n ФИО АВТОРА:\n${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}\nНАЗВАНИЕ ПРОЕКТА:\n${sample.label}\nПУТЬ К СЫРЬЮ:\n${sample.path}\nОПИСАНИЕ:\n${description}\nИСПОЛНИТЕЛЬ: ${selectedOption.label}\n\n\nСРОКИ: ${date}`
+
+    return sendMessage(messageTG, messageYG)
+
+
+    }
+
+
+    return window.location.href = '/main'
+
 }
 
 
 
 
-const sendCard = async (newMessageTG, newMessageYG) => {
 
-  if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
-      setModaActiveDislike(true)
-      return
+
+
+  const sendToTelegram = async (newMessageTG) => {
+
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const CHAT_ID = '-1002013845900'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+      try {
+
+        const responceEditor = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+        })
+
+        if (!responceEditor.ok) {
+          alert(`Ошибка при отправке сообщения исполнителю в Telegram ${responceEditor.status} - попробуйте позже`)
+          throw new Error('Ошибка при отправке сообщения в Telegram')
+        }
+
+        const dataEditor = await responceEditor.json()
+
+
+        if (selectedOption.tgId === "") return
+
+        const responceAuthor = await fetch(URL_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+
+        })
+
+        if (!responceAuthor.ok) {
+          alert(`Ошибка при отправке сообщения автору в Telegram ${responceAuthor.status} - попробуйте позже`)
+          throw new Error('Ошибка при отправке сообщения в Telegram')
+        }
+
+        const dataAuthore = await responceAuthor.json()
+
+      } catch (error) {
+        console.log(error, 'ERROR')
+      }
+
   }
 
 
-  const responce = await fetch('https://yougile.com/api-v2/tasks', {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${YouGileKey}`
-    },
-    body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
-  })
+  const fetchAddTask = async (newMessageYG) => {
 
-  if (!responce.ok) {
-    alert('Ошибка при создании карточки в YouGile - попробуйте позже yougile перегружен')
-    throw new Error('Ошибка при создании карточки в YouGile')
+
+    try {
+
+      const responce = await fetch(process.env.REACT_APP_YG_TASK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${YouGileKey}`
+        },
+        body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
+      })
+
+      if (!responce.ok) {
+        alert(`Ошибка при добавлении таска в YouGile: ${responce.status} - попробуйте позже`)
+        throw new Error(`Ошибка при добавлении таска в YouGile: ${responce.status}`)
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
-  const data = await responce.json()
-  console.log(data)
-  await sendToTelegram(newMessageTG)
 
-  setFio('')
-  setTitle('')
-  setSale('тип проекта')
-  setCoordination('')
-  setSelectionOption('выберите исполнителя')
-  setAudience('')
-  setDescription('')
-  setLink('')
-  setTime('')
-  setInfo('')
-  setReferense('')
-  setDate('')
-  setDestanation('')
-  setSample('проект')
 
-  setModalActiveLike(true)
+  const sendMessage = async (newMessageTG, newMessageYG) => {
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+    if (fio === '' && title === '' &&  link === '' && time === '' && info === ''  && date === ''  && description === '', selectedOption === '') {
+        setModaActiveDislike(true)
+        return
 
-}
+    }
+    await fetchAddTask(newMessageYG)
+    await sendToTelegram(newMessageTG)
+
+    setFio('')
+    setTitle('')
+    setSale('тип проекта')
+    setCoordination('')
+    setSelectionOption('выберите исполнителя')
+    setAudience('')
+    setDescription('')
+    setLink('')
+    setTime('')
+    setProject('')
+    setPrice('')
+    setInfo('')
+    setReferense('')
+    setDate('')
+    setDestanation('')
+    setSample('проект')
+
+    setModalActiveLike(true)
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+
+
+  }
 
 
 //
@@ -381,7 +371,7 @@ const newProject = () => {
 
       <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
-      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылка на SRC'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
 
 
@@ -400,12 +390,14 @@ const newProject = () => {
 
           <Col className='mt-2' md={6} sm={12} xs={12}><MyInput value={time} onChange={(e) => {setTime(e.target.value)}} style={{width: '98%'}} placeholder={'хронометраж'}></MyInput></Col>
 
-          <Col className='mt-2' md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  paddingLeft: 10 + 'px'}}}} options={userPrice} value={price} onChange={setPrice} placeholder={'проект'}></MySelect></Col>
+          <Col className='mt-2' md={6} sm={12} xs={12}><MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  paddingLeft: 10 + 'px'}}}} options={userPrice} value={project} onChange={setProject} placeholder={'проект'}></MySelect></Col>
 
       </Col>
 
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={destanation} onChange={(e) => {setDestanation(e.target.value)}} placeholder={'площадка размещения ролика'} style={{width: '100%'}}></MyInput></Col>
+
+      <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={price} onChange={(e) => {setPrice(e.target.value)}} placeholder={'стоимость проекта (в случае когда стоимость неизвестна ставим прочерк)'} style={{width: '100%'}} /></Col>
 
 
       <Col md={12} sm={12} xs={12} className='d-flex justify-content-between align-items-center mt-2 flex-md-row flex-column'>
@@ -431,8 +423,6 @@ const newProject = () => {
 
 const typeProject = () => {
 
-
-
   return(
     <Col>
 
@@ -456,7 +446,7 @@ const typeProject = () => {
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyTextArea placeholder={'краткое описание проекта'} value={description} onChange={(e) => {setDescription(e.target.value)}}></MyTextArea></Col>
 
-      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылки на файлы, которые нужно приложить, архив'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
+      <Col md={12} xs={12} className='mt-2'><MyTextArea placeholder={'ссылка на SRC'} value={link} onChange={(e) => {setLink(e.target.value)}} style={{width: '100%', paddingRight: '10px', paddingLeft: '10px'}}></MyTextArea></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={info} onChange={(e) => {setInfo(e.target.value)}} placeholder={'сценарный план + закадровый текст(ссылку на файл)'} style={{width: '100%'}}></MyInput></Col>
 
@@ -470,7 +460,7 @@ const typeProject = () => {
 
 
         <Col md={6} sm={12} xs={12} className='mt-2'>
-            <MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} onChange={setPrice} placeholder={'проект'}></MySelect>
+            <MySelect styles={{control: (styles) => {return {...styles, width: '98%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={userPrice} value={project} onChange={setProject} placeholder={'проект'}></MySelect>
         </Col>
       </Col>
 
@@ -498,7 +488,6 @@ const typeProject = () => {
 
 
 const masterProject = () => {
-
 
   return (
     <Col md={12} sm={12} xs={12}>
@@ -544,11 +533,17 @@ const masterProject = () => {
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
       {undefinedProject()}
-      {(category.label === 'типовой проект') ? typeProject({category, setCategory}) : <></>}
+      {(category.label === 'типовой тв проект') ? typeProject({category, setCategory}) : <></>}
       {(category.label === 'новый проект') ? newProject({category, setCategory}) : <></>}
-      {(category.label === 'шаблонный проект') ? masterProject({category, setCategory}) : <></>}
+      {(category.label === 'шаблонный тв проект') ? masterProject({category, setCategory}) : <></>}
 
-      <MyButton style={{marginTop: 20 + 'px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
+
+      <Col md={12} className='d-flex flex-md-row flex-column' style={{marginTop: 20 + 'px'}}>
+
+        <MyButton style={{width: '90%', marginLeft: '20px', marginRight: '20px'}} onClick={() => {sendNewMessageCard()}}>Создать</MyButton>
+
+      </Col>
+
 
     </Col>
 

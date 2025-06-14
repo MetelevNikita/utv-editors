@@ -2,12 +2,11 @@
 
 import './form.css'
 
-//
+
 
 import { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Select from 'react-select'
 
 // components
 
@@ -17,25 +16,35 @@ import MyTextArea from '../UI/MyTextArea'
 import MyInput from '../UI/MyInput'
 import MyDate from '../UI/MyDate'
 
+// redux
+
+import { useSelector } from 'react-redux'
+
 
 // server
 
 import designParts from '../../server/designParts'
 
+// functions
+
+import { getYGCompany } from '../functions/getYGCompany'
+import { getYGKey } from '../functions/getYGKey'
+
 
 
 const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
-  const {modalActiveLike, setModalActiveLike} = modalDesLike
-  const {modalActiveDislike, setModaActiveDislike} = modalDesDislike
+  const { setModalActiveLike } = modalDesLike
+  const { setModaActiveDislike } = modalDesDislike
 
   const [columnId, setColumnId] = useState('')
+  const [YouGileKey, setYouGileKey] = useState('')
   const [customerSticker, setCustomerSticker] = useState([])
   const [prioritySticker, setPrioritySticker] = useState([])
 
 
 
-  const [name, setName] = useState('')
+  const [fio, setFio] = useState('')
   const [contacts, setContacts] = useState('')
   const [title, setTitle] = useState('')
   const [type, setType] = useState('')
@@ -48,7 +57,16 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [reference, setReference] = useState('')
   const [date, setDate] = useState('')
 
-  const [test, setTest] = useState('')
+
+
+  // user
+
+  const users = useSelector(state => state.users.users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
+
+
+
 
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
@@ -62,174 +80,169 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const timestamp = newDate.getTime()
 
 
+  //
 
-  // fetchIdKey
+  useEffect(() => {
+
+    getAllYougileData()
+
+  }, [])
+  
+  
+  const getAllYougileData = async () => {
+
+    const companyId = await getYGCompany(2)
+    const key = await getYGKey(companyId)
+    setYouGileKey(key[0].key)
+
+    await fetchDesk(key[0].key)
+    await fetchGetStickers(key[0].key)
 
 
-  const fetchIdKey = () => {
+  }
 
-    fetch('https://yougile.com/api-v2/auth/companies', {
+
+
+  const fetchDesk = async (key) => {
+    try {
+
+      const responce = await fetch('https://yougile.com/api-v2/columns', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        }
+      })
+
+      const data = await responce.json()
+      setColumnId(data.content[6].id)
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
+  }
+
+
+  // getStickers
+
+  const fetchGetStickers = async (key) => {
+
+    try {
+
+      const responce = await fetch('https://yougile.com/api-v2/string-stickers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        }
+      })
+
+      const data = await responce.json()
+      setPrioritySticker(data.content[0].states.map((item) => {return {label: item.name, value: item.id, color: item.color}}))
+      setCustomerSticker(data.content[1].states.map((item) => {return {label: item.name, value: item.id, color: item.color}}))
+
+    } catch (error) {
+
+      console.error(`ОШИБКА - ${error}`)
+
+    }
+
+  }
+
+
+  const messageYG = `Автор:<br>${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio}<br><br>Контакты заказчика:<br>${contacts}<br><br>Название проекта:<br>${title}<br><br>Важность проекта:<br>${priority.label}<br><br>Заказчик:<br>${customer.label}<br><br>Технические требования:<br>${requirements}<br><br>Описание:<br>${description}<br><br>Сылки на файлы:<br>${link}<br><br>Что требуется изготовить:<br>${selectedPackageProject().join(', ')}<br><br>Референсы:<br>${reference}<br><br>Дата сдачи проекта: ${date}`
+
+  const messageTG = `Автор \n ${(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
+
+
+
+  // fetchAddTask
+
+
+  const fetchAddTask = async (key) => {
+
+    try {
+
+    const responce = await fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989'})
-    }).then(responce => responce.json())
-      .then(data => {
-        return fetch('https://yougile.com/api-v2/auth/keys/get', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({login: 'Kyle.B@mail.ru', password: 'Metelev1989', companyId: data.content[2].id})
-        }).then(responce => responce.json())
-          .then(data => {
-            localStorage.setItem('keyDes', data[0].key)
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${key}`
+        },
+        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
+    })
 
-          })
+    const data = responce.json()
+    return data
 
-        })
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
     }
 
+  }
+
+  // send to Telegram
+
+  const sendToTelegram = async () => {
 
 
-    const fetchDesk = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/columns', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keyDes}`
-        }
-      }).then(responce => responce.json())
-        .then(data => {
-          setColumnId(data.content[6].id)
-        })
-    }
+    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const CHAT_ID = '-1002092523389'
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
+    try {
 
-    // getStickers
-
-    const fetchGetStickers = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/string-stickers', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keyDes}`
-        }
-      }).then(responce => responce.json())
-        .then(data => {
-          setPrioritySticker(data.content[0].states.map((item) => {
-            return {label: item.name, value: item.id, color: item.color}
-          })
-      )
-          setCustomerSticker(data.content[1].states.map((item) => {
-            return {label: item.name, value: item.id, color: item.color}
-          })
-      )
-        })
-        .catch(error => console.log(error, "ERROR"))
-    }
-
-
-
-    const messageYG = `Автор:<br>${name}<br><br>Контакты заказчика:<br>${contacts}<br><br>Название проекта:<br>${title}<br><br>Важность проекта:<br>${priority.label}<br><br>Заказчик:<br>${customer.label}<br><br>Технические требования:<br>${requirements}<br><br>Описание:<br>${description}<br><br>Сылки на файлы:<br>${link}<br><br>Что требуется изготовить:<br>${selectedPackageProject().join(', ')}<br><br>Референсы:<br>${reference}<br><br>Дата сдачи проекта: ${date}`
-
-    const messageTG = ` Автор \n ${name} \n Контакты заказчика \n ${contacts} \n Название проекта \n ${title} \n Важность проекта \n ${priority.label} \n Заказчик \n ${customer.label} \n Технические требования \n ${requirements} \n Описание \n ${description} \n Сылки на файлы \n ${link} \n Что требуется изготовить \n ${selectedPackageProject().join(', ')} \n Референсы \n ${reference} \n Дата сдачи проекта \n ${date}`
-
-
-
-    // fetchAddTask
-
-
-    const fetchAddTask = () => {
-      const keyDes = localStorage.getItem('keyDes')
-      fetch('https://yougile.com/api-v2/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${keyDes}`
-          },
-          body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
-      })
-      .catch(error => console.log(error, 'ERROR'))
-    }
-
-
-
-
-
-    // send to Telegram
-
-    const sendToTelegram = () => {
-
-
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
-      const CHAT_ID = '-1002092523389'
-      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
-
-      fetch(URL_API, {
+      const responce = await fetch(URL_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
-      }).then(responce => responce.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error, 'ERROR'))
+      })
 
+      const data = responce.json()
+      return data
+
+    } catch (error) {
+      console.error(`ОШИБКА - ${error}`)
+    }
+  }
+
+
+  const sendMessage = async () => {
+
+    if (fio !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
+
+      await fetchAddTask(YouGileKey)
+      await sendToTelegram()
+
+      setFio('')
+      setContacts('')
+      setTitle('')
+      setType('')
+      setСustomer('')
+      setRequirements('')
+      setDescription('')
+      setLink('')
+      setPackageProject('')
+      setReference('')
+      setDate('')
+
+
+      setModalActiveLike(true)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+    } else {
+      setModaActiveDislike(true)
     }
 
-
-    const sendMessage = () => {
-
-      if (name !== '' && contacts !== '' && title !== '' && priority !== '' && customer !== '' && requirements !== '' && description !== '' && link !== '' && packageProject !== '' && reference !== '' && date !== '') {
+  }
 
 
-
-        fetchAddTask()
-        sendToTelegram()
-
-
-        setName('')
-        setContacts('')
-        setTitle('')
-        setType('')
-        setСustomer('')
-        setRequirements('')
-        setDescription('')
-        setLink('')
-        setPackageProject('')
-        setReference('')
-        setDate('')
-
-
-        setModalActiveLike(true)
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-
-      } else {
-
-        setModaActiveDislike(true)
-      }
-
-    }
-
-
-
-    useEffect(() => {
-      fetchIdKey()
-
-      setTimeout(() => {
-        fetchDesk()
-        fetchGetStickers()
-      }, 5000)
-
-    }, [])
 
 
 
@@ -239,7 +252,11 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'фио'} value={name} onChange={(e) => {setName(e.target.value)}}></MyInput></Col>
+
+
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={(singleUser ? {width: '100%', color: 'grey'} : {width: '100%'})} placeholder={'фио'} value={(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} onChange={(e) => {setFio(e.target.value)}} disabled={(singleUser) ? true : false}></MyInput></Col>
+
+
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}}  placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
 

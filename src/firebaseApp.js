@@ -10,7 +10,8 @@ const firebaseConfig = {
   projectId: "utv-edit-list",
   storageBucket: "utv-edit-list.appspot.com",
   messagingSenderId: "228703130523",
-  appId: "1:228703130523:web:54701fd15afcdec5a3c73e"
+  appId: "1:228703130523:web:54701fd15afcdec5a3c73e",
+  credential: true,
 };
 
 
