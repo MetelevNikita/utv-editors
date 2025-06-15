@@ -31,6 +31,26 @@ export const emailContext = createContext(null)
 const App = () => {
 
 
+  const currentVersion = '1.6';
+
+  window.addEventListener('load', () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then((reg) => {
+        reg.onupdatefound = () => {
+          const newWorker = reg.installing;
+          newWorker.onstatechange = () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // Новая версия доступна
+              console.log('New version available! Reloading...');
+              window.location.reload(true);
+            }
+          };
+        };
+      });
+    }
+  });
+
+
   const navigate = useNavigate()
 
   // redux
