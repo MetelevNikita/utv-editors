@@ -19,7 +19,7 @@ const Footer = () => {
             <div className="footer-box">
 
 
-                <div className="footer-release">version 1.8</div>
+                <div className="footer-release">version 1.9</div>
 
                 <Row className='d-flex justify-content-center mt-3 mb-3'>
 

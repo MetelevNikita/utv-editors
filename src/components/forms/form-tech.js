@@ -209,7 +209,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={(singleUser ? {width: '100%', color: 'grey'} : {width: '100%'})} placeholder={'фио'} value={(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} onChange={(e) => {setFio(e.target.value)}} disabled={(singleUser) ? true : false}></MyInput></Col>
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={(singleUser ? {width: '100%', color: 'grey'} : {width: '100%'})} placeholder={'фио'} value={(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} onChange={(e) => {setFio(e.target.value)}} required={false}></MyInput></Col>
 
 
 
