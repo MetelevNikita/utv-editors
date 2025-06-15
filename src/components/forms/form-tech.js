@@ -209,8 +209,8 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
     <Col style={{marginLeft: '10px', marginRight: '10px'}}>
 
-      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={(singleUser ? {width: '100%', color: 'grey'} : {width: '100%'})} placeholder={'фио'} value={(singleUser) ? singleUser.name + ' ' + singleUser.lastName : fio} onChange={(e) => {setFio(e.target.value)}} required={false}></MyInput></Col>
 
+      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-1'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
 
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}} placeholder={'название проекта'} type={'text'} value={title} onChange={(e) => {setTitle(e.target.value)}}></MyInput></Col>
