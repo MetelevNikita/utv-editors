@@ -39,11 +39,17 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
   const [YouGileKey, setYouGileKey] = useState('')
 
+  // 
+
+  const users = useSelector(state => state.users.users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
+
 
   // 
 
 
-  const [fio, setFio] = useState('')
+  const [fio, setFio] = useState((singleUser) ? `${singleUser.name} ${singleUser.lastName}` : '')
   const [title, setTitle] = useState('')
   const [phone, setPhone] = useState('')
   const [place, setPlace] = useState('')
@@ -57,11 +63,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
   const newDate = new Date(date)
   const timestamp = newDate.getTime()
 
-  // 
 
-  const users = useSelector(state => state.users.users)
-  const email = sessionStorage.getItem('email')
-  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
 
 
@@ -198,6 +200,7 @@ const FormTech = ({modalTechLike, modalTechDislike}) => {
 
   }
 }
+
 
 
 

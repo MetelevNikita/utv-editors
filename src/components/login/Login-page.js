@@ -98,7 +98,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
           <Col className='d-flex flex-column justify-content-center align-items-center'>
             
             <p className='mt-5'>Copyright © 2023 UTV</p>
-            <p className='mt-1'>version 2.0</p>
+            <p className='mt-1'>version 2.1</p>
 
           </Col>
         </Row>

@@ -42,9 +42,15 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [customerSticker, setCustomerSticker] = useState([])
   const [prioritySticker, setPrioritySticker] = useState([])
 
+   // user
+
+  const users = useSelector(state => state.users.users)
+  const email = sessionStorage.getItem('email')
+  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
 
 
-  const [fio, setFio] = useState('')
+
+  const [fio, setFio] = useState((singleUser) ? `${singleUser.name} ${singleUser.lastName}` : '')
   const [contacts, setContacts] = useState('')
   const [title, setTitle] = useState('')
   const [type, setType] = useState('')
@@ -59,11 +65,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-  // user
-
-  const users = useSelector(state => state.users.users)
-  const email = sessionStorage.getItem('email')
-  const singleUser = users.filter(user => user.email.toLowerCase() === email)[0]
+ 
 
 
 
