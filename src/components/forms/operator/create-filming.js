@@ -224,7 +224,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       dates.forEach((item, index) => {
             const id = uuid()
 
-            set(ref(db, 'cardsFilming/' + `${id}`), {
+            set(ref(db, 'cardsFilming/' + `${id} - ${title} - ${new Date().toLocaleDateString()}`), {
 
             id: id,
             name: fio,
