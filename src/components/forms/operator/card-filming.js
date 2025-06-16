@@ -18,7 +18,9 @@ import { useNavigate } from 'react-router-dom'
 import MyButton from '../../UI/MyButton'
 import MyButtonBack from '../../UI/MyButtonBack'
 
-//
+// server
+
+import operatorlist from './../../../server/operatorList'
 
 
 
@@ -41,6 +43,14 @@ const CardFilming = ({authEmailLog , ...props}) => {
 
 
 
+  const messageDel = (title, date, timeStart, timeEnd) => {
+    return `Съёмка - ${title}\n\nДата - ${date}\n\nВРЕМЯ - ${timeStart} : ${timeEnd}\n\nОТМЕНЕНА!!!!! `
+  }
+
+
+
+
+
   const getCard = () => {
       const db = getDatabase()
       const cardList = ref(db, 'cardsFilming/')
@@ -48,15 +58,8 @@ const CardFilming = ({authEmailLog , ...props}) => {
         setCardList(Object.values(data.val()))
         setLoading(false)
       })
-    }
+  }
 
-
-
-const delCard = () => {
-  const db = getDatabase()
-  remove(ref(db, `cardsFilming/${singleArr[0].id}`))
-  navigate('/main/operator/schedule')
-}
 
 
   useEffect(() => {
@@ -77,7 +80,64 @@ const delCard = () => {
   })
 
 
-  console.log(singleArr)
+  console.log(messageDel(singleArr[0].title, singleArr[0].date, singleArr[0].timeStart, singleArr[0].timeEnd))
+
+
+
+
+  const delCard = async () => {
+
+    try {
+
+      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
+
+
+      const users = singleArr[0].user.split(',')
+      const currentUsers = operatorlist.filter((item) => {
+      const res = users.includes(item.label)
+        return res
+      })
+
+
+      currentUsers.forEach(async (item) => {
+        const responce = await fetch(URL_API, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            chat_id: item.value,
+            text: messageDel(singleArr[0].title, singleArr[0].date, singleArr[0].timeStart, singleArr[0].timeEnd),
+          })
+        })
+
+        if (!responce.ok) {
+          alert(`Ошибка отправки сообщения об удалении карточки - ${responce.status}`)
+          throw new Error(`Ошибка отправки сообщения об удалении карточки - ${responce.status}`)
+        }
+
+        const data = await responce.json()
+        console.log(data)
+
+      })
+
+      const db = getDatabase()
+      remove(ref(db, `cardsFilming/${singleArr[0].id}`))
+      navigate('/main/operator/schedule')
+      
+    } catch (error) {
+
+      console.log(error)
+      
+    }
+
+}
+
+
+
+
+
+
+
 
 
 

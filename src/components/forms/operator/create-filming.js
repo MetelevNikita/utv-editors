@@ -207,6 +207,14 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   }
 
 
+
+  dates.forEach((item) => {
+
+    console.log(new Date(item).toDateString())
+
+  })
+
+
   const createDatabase = () => {
     const db = getDatabase()
   }
@@ -220,9 +228,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       const db = getDatabase()
 
 
-
-
-
       dates.forEach((item, index) => {
             const id = uuid()
 
@@ -232,7 +237,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
             name: fio,
             type: type.label,
             title: title,
-            user: selectedUser().join(' '),
+            user: selectedUser().join(','),
             userColor: selectedUserColor().join(),
             date: new Date(item).toDateString(),
             timeStart: (timeStart === '') ? type.value : timeStart,
@@ -246,8 +251,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
           })
 
-          selectedIdUserSend(date)
-          selectedAuthorSend(date)
+          selectedIdUserSend(item)
+          selectedAuthorSend(item)
 
 
           setFio('')
