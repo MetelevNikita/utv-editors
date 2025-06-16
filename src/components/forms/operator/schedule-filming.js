@@ -84,10 +84,6 @@ const weekArr = cardList.filter((item) => {return new Date(item.date).getMonth()
 const searchMonthCard = weekArr.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
 const filterDayCard = cardList.filter((item) => {
-  console.log(calendarDate.toDateString())
-
-
-
   if (item.date.date) {
     return item.date.date.includes(calendarDate.toDateString())
   } else if (typeof item.date === 'string') {

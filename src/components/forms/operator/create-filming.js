@@ -211,10 +211,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     const db = getDatabase()
   }
 
-
-  // console.log(date)
-
-
   const createCard = () => {
 
     if (fio === '' || date === '' ) {
@@ -224,7 +220,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       const db = getDatabase()
 
 
-      console.log(date)
+
 
 
       dates.forEach((item, index) => {
@@ -238,7 +234,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
             title: title,
             user: selectedUser().join(' '),
             userColor: selectedUserColor().join(),
-            date: new Date(date).toDateString(),
+            date: new Date(item).toDateString(),
             timeStart: (timeStart === '') ? type.value : timeStart,
             timeEnd: (timeEnd === '') ? type.value : timeEnd,
             place: place,
