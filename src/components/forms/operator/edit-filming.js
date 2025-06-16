@@ -152,7 +152,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
           title: checkedCard.title,
           user: selectedUser().join(' '),
           userColor: selectedUserColor().join(),
-          date: {date: new Date(date).toDateString(), dateCreate: new Date().toDateString() + ' ' + new Date().toLocaleTimeString()},
+          date: new Date(date).toDateString(),
           timeStart: checkedCard.timeStart,
           timeEnd: checkedCard.timeEnd,
           place: checkedCard.place,
@@ -161,7 +161,8 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
           projectPay: project.label,
           cloth: cloth.label,
           techEngineer: techCheck,
-          soundEngineer: soundCheck
+          soundEngineer: soundCheck,
+          createAt: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
 
         })
 

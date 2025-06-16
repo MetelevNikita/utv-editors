@@ -25,7 +25,6 @@ import ModalPageAuth from './components/modalpage/Modal-page-auth'
 import dislike from './asset/dislike.svg'
 import like from './asset/like.svg'
 
-export const emailContext = createContext(null)
 
 
 const App = () => {
@@ -132,7 +131,6 @@ const App = () => {
 
   return(
 
-    <emailContext.Provider value={authEmail}>
 
     <>
     <Routes>
@@ -155,11 +153,8 @@ const App = () => {
     {(modalPassRepeat === false) ? <ModalPageAuth ModalPageAuth={{modalAuth, setModalAuth}} ModalPassAuth={{modalPassAuth, setModalPassAuth}} AuthOk={{authOk, setAuthOk}} ModalPassRepeat={{modalPassRepeat, setModalPassRepeat}} modalDislikeImg={dislike} modalDislikeTitle={'Данный email занят другим пользователем'} modalBtnTitle={'продолжить'}/> : <></>}
 
 
-
-
     </>
 
-    </emailContext.Provider>
 
   )
 }

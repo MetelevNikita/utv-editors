@@ -31,6 +31,8 @@ const ScheludeFilming = ({fixedCalendarDay}) => {
 
   const {calendarDate, setCalendarDate} = fixedCalendarDay
 
+  const authEmail = sessionStorage.getItem('email')
+
 
 
   const [month, setMonth] = useState()
@@ -49,13 +51,15 @@ const ScheludeFilming = ({fixedCalendarDay}) => {
     })
   }
 
+  
+
 
   useEffect(() => {
       getCard()
   }, [])
 
 
-const authEmail = useContext(emailContext)
+
 
 
 // filter
@@ -80,11 +84,17 @@ const weekArr = cardList.filter((item) => {return new Date(item.date).getMonth()
 const searchMonthCard = weekArr.filter((item) => (user === 'не определен' || user.label === 'не определен') ?  cardList : item.user.includes(user.label))
 
 const filterDayCard = cardList.filter((item) => {
+  console.log(calendarDate.toDateString())
 
-  if (typeof item.date !== 'string') {
+
+
+  if (item.date.date) {
     return item.date.date.includes(calendarDate.toDateString())
-  } else {
+  } else if (typeof item.date === 'string') {
     return item.date.includes(calendarDate.toDateString())
+  } else if (Array.isArray(item.date)) {
+    return new Date(item.date[0]).toDateString()
+
   }
 
 

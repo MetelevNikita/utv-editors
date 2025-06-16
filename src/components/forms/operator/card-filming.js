@@ -5,15 +5,12 @@ import './filming.css'
 //
 
 import { useParams } from 'react-router-dom'
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useNavigate } from 'react-router-dom'
 
-// context
-
-import { emailContext } from '../../../App'
 
 
 // components
@@ -33,7 +30,7 @@ const CardFilming = ({authEmailLog , ...props}) => {
   const [loading, setLoading] = useState(true)
 
 
-  const authEmail = useContext(emailContext)
+  const authEmail = sessionStorage.getItem('email')
 
 
 
@@ -80,6 +77,9 @@ const delCard = () => {
   })
 
 
+  console.log(singleArr)
+
+
 
 
   if(loading === true) {
@@ -96,7 +96,16 @@ const delCard = () => {
 
         <div className='card-filming-date-box'>
 
-          <div className="card-filming-date_current">{singleArr[0].date}</div>
+          {/* <div className="card-filming-date_current">{(typeof singleArr[0].date !== 'string') ? singleArr[0].date.date : singleArr[0].date}</div> */}
+
+
+          {(typeof singleArr[0].date !== 'string' && !Array.isArray(singleArr[0].date)) && <div className="card-filming-date_current">{singleArr[0].date.date}</div>}
+
+          {(typeof singleArr[0].date === 'string' && Array.isArray(singleArr[0].date) === false) && <div className="card-filming-date_current">{singleArr[0].date}</div>}
+
+          {(Array.isArray(singleArr[0].date)) && <div className="card-filming-date_current">{new Date(singleArr[0].date).toDateString()}</div>}
+
+
           {(singleArr[0].createAt) ? <div className="card-filming-date_create">{`Дата создания: ${singleArr[0].createAt}`}</div> : ''}
 
         </div>

@@ -48,7 +48,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
           const user = userCredentioal.user
 
           console.log(user.email)
-
+          sessionStorage.setItem('email', user.email)
           setAuthEmail(user.email)
           sessionStorage.setItem('email', user.email)
           setAuth(true)
@@ -98,7 +98,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
           <Col className='d-flex flex-column justify-content-center align-items-center'>
             
             <p className='mt-5'>Copyright © 2023 UTV</p>
-            <p className='mt-1'>version 2.1</p>
+            <p className='mt-1'>version 2.2</p>
 
           </Col>
         </Row>

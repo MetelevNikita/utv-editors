@@ -212,6 +212,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   }
 
 
+  // console.log(date)
+
+
   const createCard = () => {
 
     if (fio === '' || date === '' ) {
@@ -227,7 +230,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       dates.forEach((item, index) => {
             const id = uuid()
 
-            set(ref(db, 'cardsFilming/' + `${id} - ${title}`), {
+            set(ref(db, 'cardsFilming/' + `${id}`), {
 
             id: id,
             name: fio,
