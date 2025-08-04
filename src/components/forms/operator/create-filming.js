@@ -228,7 +228,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       const db = getDatabase()
 
 
-      dates.forEach((item, index) => {
+      dates.forEach( async (item, index) => {
             const id = uuid()
 
             set(ref(db, 'cardsFilming/' + `${id}`), {
@@ -251,8 +251,15 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
           })
 
-          selectedIdUserSend(item)
-          selectedAuthorSend(item)
+          await selectedIdUserSend(item)
+          await selectedAuthorSend(item)
+          if(techCheck) {
+            await selectedSupportSend(techTGid, item)
+          } 
+
+          if (soundCheck) {
+              await selectedSupportSend(soundTgId, item)
+          }
 
 
           setFio('')
