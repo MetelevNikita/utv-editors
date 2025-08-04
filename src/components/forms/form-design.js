@@ -117,7 +117,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
       })
 
       const data = await responce.json()
-      setColumnId(data.content[6].id)
+      console.log(data)
+      setColumnId(data.content[5].id)
 
     } catch (error) {
       console.error(`ОШИБКА - ${error}`)
