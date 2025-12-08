@@ -50,8 +50,8 @@ const operatorList = [
   },
 
   {
-    label: 'Роман Седов',
-    value: '942533767',
+    label: 'Циглов Тимур',
+    value: '1704560609',
     colorId: "#05FCFC"
   },
 
