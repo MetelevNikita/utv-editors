@@ -34,6 +34,7 @@ import { getYGKey } from '../functions/getYGKey'
 
 const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
+
   const { setModalActiveLike } = modalDesLike
   const { setModaActiveDislike } = modalDesDislike
 
@@ -62,13 +63,6 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const [packageProject, setPackageProject] = useState('')
   const [reference, setReference] = useState('')
   const [date, setDate] = useState('')
-
-
-
- 
-
-
-
 
 
   const priorityStickerId = "1d3a9a91-0df6-4ade-b889-d05fb2327eb2"
@@ -108,22 +102,32 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const fetchDesk = async (key) => {
     try {
 
-      const responce = await fetch('https://yougile.com/api-v2/columns', {
+      const controller = new AbortController()
+
+      const response = await fetch('https://yougile.com/api-v2/columns', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${key}`
-        }
+        },
+        signal: controller.signal
       })
 
-      const data = await responce.json()
-      console.log(data)
-      setColumnId(data.content[5].id)
+      if (!response.ok) {
+        throw new Error(`HTTP error YOUGILE! status: ${response.status}`);
+      }
+      
+
+      const data = await response.json()
+      const currentId = data.content.find((item) => item.title === 'Входящие заявки')
+      setColumnId(currentId.id)
 
     } catch (error) {
       console.error(`ОШИБКА - ${error}`)
     }
   }
+
+
 
 
   // getStickers
@@ -165,6 +169,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
   const fetchAddTask = async (key) => {
 
     try {
+    const controller = new AbortController()
+    const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
     const responce = await fetch('https://yougile.com/api-v2/tasks', {
       method: 'POST',
@@ -172,10 +178,13 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         'Content-Type': 'application/json',
         "Authorization": `Bearer ${key}`
         },
-        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}})
+        body: JSON.stringify({title: title, columnId: columnId, description: messageYG, deadline: {deadline: timestamp}, stickers: {"1d3a9a91-0df6-4ade-b889-d05fb2327eb2": priority.value}}),
+        signal: controller.signal
     })
 
-    const data = responce.json()
+    clearTimeout(timeoutSignal);
+
+    const data = await responce.json()
     return data
 
     } catch (error) {
@@ -188,6 +197,8 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
   const sendToTelegram = async () => {
 
+    const controller = new AbortController()
+    const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
     const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
     const CHAT_ID = '-1002092523389'
@@ -201,8 +212,15 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG})
+        body: JSON.stringify({chat_id: CHAT_ID, text: messageTG}),
+        signal: controller.signal
       })
+
+      if (!responce.ok) {
+        throw new Error(`HTTP error TELEGRAM! status: ${responce.status}`)
+      }
+
+      clearInterval(timeoutSignal)
 
       const data = responce.json()
       return data
@@ -257,7 +275,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
 
 
 
-      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-1'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
 
 
       <Col md={12} sm={12} xs={12} className='mt-3'><MyInput style={{width: '100%'}}  placeholder={'контакная информация заказчика'} value={contacts} onChange={(e) => {setContacts(e.target.value)}}></MyInput></Col>

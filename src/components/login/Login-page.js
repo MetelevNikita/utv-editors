@@ -46,8 +46,6 @@ const LoginPage = ({isAuth, authEmailLog}) => {
     signInWithEmailAndPassword(userAuth, email, password)
       .then((userCredentioal) => {
           const user = userCredentioal.user
-
-          console.log(user.email)
           sessionStorage.setItem('email', user.email)
           setAuthEmail(user.email)
           sessionStorage.setItem('email', user.email)
@@ -59,7 +57,7 @@ const LoginPage = ({isAuth, authEmailLog}) => {
       })
       .catch((error) => {
         setModalAuth(false)
-        console.log(error.code, "ERROR")
+        console.error(error.code, "ERROR")
       })
 
   }

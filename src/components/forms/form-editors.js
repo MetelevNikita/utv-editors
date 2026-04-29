@@ -55,7 +55,7 @@ const { setModaActiveDislike } = modalDisLike
 const [user, setUser] = useState('')
 const [YouGileKey, setYouGileKey] = useState('')
 const [colums, setColums] = useState('')
-const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '8860a11e-c100-4949-8cbd-d01d945e20eb', tgId: ''})
+const [selectedOption, setSelectionOption] = useState({label: 'На усмотрение руководителя', value: '24cfbf0d-a0f5-4206-a40c-c32ff0e8d122', tgId: ''})
 
 
 //
@@ -131,6 +131,7 @@ const fetchDesk = async (keyEdit) => {
     }
 
     const data = await responce.json()
+    console.log(data)
     setColums(data)
 
 
@@ -147,7 +148,7 @@ const fetchDesk = async (keyEdit) => {
 const fetchUser = async (keyEdit) => {
 
   try {
-    const responce = await fetch(process.env.REACT_APP_YG_BOARDS, {
+    const responce = await fetch('https://yougile.com/api-v2/boards', {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -159,13 +160,13 @@ const fetchUser = async (keyEdit) => {
       alert(`Ошибка при получении данных Досок из YouGile ${responce.status} - попробуйте позже`)
       throw new Error('Ошибка при получении данных из YouGile')
     }
-
     const data = await responce.json()
     setUser(data)
     return data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
+    return error
   }
 
 }
@@ -214,6 +215,8 @@ const sendNewMessageCard = () => {
 
 }
 
+console.log(selectedOption)
+
 
 
 
@@ -221,6 +224,9 @@ const sendNewMessageCard = () => {
 
 
   const sendToTelegram = async (newMessageTG) => {
+
+      const controller = new AbortController()
+      const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
       const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
       const CHAT_ID = '-1002013845900'
@@ -234,7 +240,8 @@ const sendNewMessageCard = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG})
+          body: JSON.stringify({chat_id: CHAT_ID, text: newMessageTG}),
+          signal: controller.signal
         })
 
         if (!responceEditor.ok) {
@@ -242,9 +249,11 @@ const sendNewMessageCard = () => {
           throw new Error('Ошибка при отправке сообщения в Telegram')
         }
 
+        clearInterval(timeoutSignal)
+
+        // 
+
         const dataEditor = await responceEditor.json()
-
-
         if (selectedOption.tgId === "") return
 
         const responceAuthor = await fetch(URL_API, {
@@ -252,7 +261,8 @@ const sendNewMessageCard = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG})
+          body: JSON.stringify({chat_id: selectedOption.tgId, text: newMessageTG}),
+
 
         })
 
@@ -272,8 +282,14 @@ const sendNewMessageCard = () => {
 
   const fetchAddTask = async (newMessageYG) => {
 
+    console.log(category.label)
+    console.log(sample)
+
 
     try {
+
+      const controller = new AbortController()
+      const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
       const responce = await fetch(process.env.REACT_APP_YG_TASK, {
         method: 'POST',
@@ -281,16 +297,24 @@ const sendNewMessageCard = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${YouGileKey}`
         },
-        body: JSON.stringify({title: (category.label === 'шаблонный проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG})
+        body: JSON.stringify({title: (category.label === 'шаблонный тв проект') ? sample.label : title, columnId: selectedOption.value, deadline: {deadline: timestamp}, description: newMessageYG}),
+        signal: controller.signal
       })
 
       if (!responce.ok) {
         alert(`Ошибка при добавлении таска в YouGile: ${responce.status} - попробуйте позже`)
         throw new Error(`Ошибка при добавлении таска в YouGile: ${responce.status}`)
       }
+
+      clearTimeout(timeoutSignal)
+
+      const data = await responce.json()
+      console.log(data)
+      return data
       
     } catch (error) {
-      console.log(error)
+      console.error(`Ошика запроса ${error.message}`)
+      return error
     }
   }
 
@@ -352,8 +376,7 @@ const newProject = () => {
   return(
     <Col className='d-flex justify-content-center align-items-center mt-3 flex-column'>
 
-
-      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-1'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
 
       <Col className='mt-2' md={12} sm={12} xs={12}><MyInput style={{width: '100%'}} value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'}></MyInput></Col>
 
@@ -427,7 +450,7 @@ const typeProject = () => {
     <Col>
 
 
-      {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+      <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
 
       <Col md={12} sm={12} xs={12} className='mt-2'><MyInput value={title} onChange={(e) => {setTitle(e.target.value)}} placeholder={'название проекта'} style={{width: '100%'}}></MyInput></Col>
 
@@ -493,7 +516,7 @@ const masterProject = () => {
     <Col md={12} sm={12} xs={12}>
 
 
-          {(singleUser) ? <Col md={12} sm={12} xs={12} className='mt-3'><MyInput disabled={true} value={`${singleUser.name} ${singleUser.lastName}`} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col> : <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>}
+          <Col md={12} sm={12} xs={12} className='mt-3'><MyInput value={fio} onChange={(e) => {setFio(e.target.value)}} placeholder={'фио'} style={{width: '100%'}}></MyInput></Col>
 
           <Col md={12} sm={12} xs={12} className='mt-3'><MySelect styles={{control: (styles) => {return {...styles, width: '100%', height: 61 + 'px', borderRadius: 10 + 'px',  marginBottom: 1 + 'px', paddingLeft: 10 + 'px'}}}} options={sampleProject} placeholder={'проект'} onChange={setSample}></MySelect></Col>
 

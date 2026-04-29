@@ -19,7 +19,6 @@ export const getYGCompany = async (index) => {
         }
 
         const data = await responce.json();
-        console.log(data.content[index].name);
         return data.content[index].id;
 
         
