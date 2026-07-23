@@ -140,7 +140,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const messageAuthorTG =`ВНЕСЕНЫ ИЗМЕНЕНИЯ В КАРТОЧКУ ${checkedCard.title} \n \n${new Date(date).toDateString()}\n${checkedCard.timeStart} - ${checkedCard.timeEnd}\n${checkedCard.title} \nАдрес: ${checkedCard.place} \n \nОписание: ${checkedCard.conditions}\n \nПроект\n ${project.label}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
 
 
-  const updateCard = () => {
+  const updateCard = async () => {
 
       if(date !== '') {
 
@@ -167,14 +167,18 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
         })
 
       selectedIdUserSend()
-      selectedAuthorSend()
+
+
+      if (selectUser) {
+        await selectedAuthorSend()
+      }
 
       if(techCheck) {
-        selectedSupportSend(techTGid)
+        await selectedSupportSend(techTGid)
       }
 
       if(soundCheck) {
-        selectedSupportSend(soundTgId)
+        await selectedSupportSend(soundTgId)
       }
 
       setFio('')
@@ -208,7 +212,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
       return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
 
-        const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+        const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
         const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
         try {
@@ -234,7 +238,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedAuthorSend = async () => {
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {
@@ -258,7 +262,7 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedSupportSend = async (id) => {
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {

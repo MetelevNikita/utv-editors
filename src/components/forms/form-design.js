@@ -200,7 +200,7 @@ const FormDesign = ({modalDesLike, modalDesDislike}) => {
     const controller = new AbortController()
     const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const CHAT_ID = '-1002092523389'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 

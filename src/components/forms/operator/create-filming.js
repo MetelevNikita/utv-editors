@@ -66,6 +66,9 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
   const [selectUser, setSelectUser] = useState('')
 
 
+  console.log(type)
+
+
   // rangeDate
 
   const [dates, setDates] = useState([])
@@ -155,19 +158,15 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 //
 
 
+
+
   const messageTG = (date) => {
-
     return (title !== '') ? `${new Date(date).toDateString()} \n${timeStart} - ${timeEnd}\n${title}\nКонтакт: ${contacts}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n ${project.label}\nФорма одежды\n${cloth.label} \nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
-
   }
 
   const messageAuthorTG = (date) => {
-
     return (title !== '') ? `СЪЁМКА ПОДТВЕРЖДЕНА!\n\n${new Date(date).toDateString()}\n${timeStart} - ${timeEnd}\n${title}\nАдрес: ${place}\n\nОписание: ${conditions}\n\nПроект\n${project.label}\n\nОПЕРАТОРЫ:\n${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}` : `${type.label}\n${new Date(date).toDateString()}\nВремя: ${type.value}\n${title}\nОПЕРАТОРЫ:\n ${selectedUser().join(' ')}\n\nУчастие технического отдела ${(techCheck) ? 'ДА' : 'НЕТ'}\n\nУчастие звукорежиссера ${(soundCheck) ? 'ДА' : 'НЕТ'}`
-
   }
-
-
 
 
   const rangeDate = (dateStart, dateEnd) => {
@@ -208,12 +207,6 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-  dates.forEach((item) => {
-
-    console.log(new Date(item).toDateString())
-
-  })
-
 
   const createDatabase = () => {
     const db = getDatabase()
@@ -252,7 +245,20 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
           })
 
           await selectedIdUserSend(item)
-          await selectedAuthorSend(item)
+
+
+          if (selectUser) {
+            try {
+              await selectedAuthorSend(item)
+            } catch (error) {
+              console.log(`NOT USER ${error}`)
+            }
+          }
+
+  
+
+          
+
           if(techCheck) {
             await selectedSupportSend(techTGid, item)
           } 
@@ -284,13 +290,12 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
 
-
-
-
   const selectedIdUserSend = async (date) => {
     return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
-      const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+      console.log(item)
+
+      const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       try {
@@ -318,7 +323,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedAuthorSend = async (date) => {
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
@@ -341,7 +346,7 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedSupportSend = async (id, date) => {
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {
