@@ -42,6 +42,12 @@ import operatorCloth from '../../../server/operatorCloth'
 const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
 
+  // 
+
+  const TOKEN = process.env.REACT_APP_TG_TOKEN
+
+  // 
+
   const navigate = useNavigate()
   const users = useSelector(state => state.users.users)
 
@@ -211,8 +217,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
   const selectedIdUserSend = async () => {
       return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
-
-        const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
         const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
         try {
@@ -238,7 +242,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedAuthorSend = async () => {
 
-    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {
@@ -262,7 +265,6 @@ const EditFilming = ({modalOperLike, modalOperDislike}) => {
 
   const selectedSupportSend = async (id) => {
 
-    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {

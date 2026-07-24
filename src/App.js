@@ -29,6 +29,10 @@ import like from './asset/like.svg'
 
 const App = () => {
 
+
+  const TOKEN = process.env.REACT_APP_TG_TOKEN
+
+
   const navigate = useNavigate()
 
   // redux

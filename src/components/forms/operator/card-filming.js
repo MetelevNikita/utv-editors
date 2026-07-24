@@ -26,7 +26,11 @@ import operatorlist from './../../../server/operatorList'
 
 const CardFilming = ({authEmailLog , ...props}) => {
 
+  // 
 
+  const TOKEN = process.env.REACT_APP_TG_TOKEN
+
+  // 
 
   const [cardList, setCardList] = useState([])
   const [loading, setLoading] = useState(true)
@@ -89,7 +93,6 @@ const CardFilming = ({authEmailLog , ...props}) => {
 
     try {
 
-      const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
@@ -126,7 +129,8 @@ const CardFilming = ({authEmailLog , ...props}) => {
       
     } catch (error) {
 
-      console.log(error)
+      console.log(`Ошибка удаления задачи (съемки) ${error.message}`)
+      return `Ошибка удаления задачи (съемки) ${error.message}`
       
     }
 

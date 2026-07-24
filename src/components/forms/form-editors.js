@@ -38,7 +38,11 @@ import { useState, useEffect } from "react"
 
 const FormEditors = ({modalLike, modalDisLike}) => {
 
+// 
 
+const TOKEN = process.env.REACT_APP_TG_TOKEN
+
+// 
 
 const users = useSelector(state => state.users.users)
 const email = sessionStorage.getItem('email')
@@ -228,7 +232,6 @@ console.log(selectedOption)
       const controller = new AbortController()
       const timeoutSignal = setTimeout(() => controller.abort(), 3000)
 
-      const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
       const CHAT_ID = '-1002013845900'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 

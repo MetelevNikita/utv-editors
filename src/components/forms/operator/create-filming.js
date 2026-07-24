@@ -38,13 +38,14 @@ import operatorCotegory from '../../../server/operatorCotegory'
 
 const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
+  const TOKEN = process.env.REACT_APP_TG_TOKEN
+
+  // 
+
   const navigate = useNavigate()
   const users = useSelector(state => state.users.users)
 
-
-
-
-
+  // 
 
   const { setModalActiveLike} = modalOperLike
   const { setModaActiveDislike} = modalOperDislike
@@ -220,6 +221,27 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
       const db = getDatabase()
 
+      const id = uuid()
+      const arrOfTable = {
+            id: id,
+            name: fio,
+            type: type.label,
+            title: title,
+            user: selectedUser().join(','),
+            userColor: selectedUserColor().join(),
+            date: new Date().toDateString(),
+            timeStart: (timeStart === '') ? type.value : timeStart,
+            timeEnd: (timeEnd === '') ? type.value : timeEnd,
+            place: place,
+            contacts: contacts,
+            conditions: conditions,
+            cloth: cloth.label,
+            projectPay: project.label,
+            createAt: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+      }
+
+      console.log('Подготовка к созданию задачи')
+      console.table(arrOfTable)
 
       dates.forEach( async (item, index) => {
             const id = uuid()
@@ -244,7 +266,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
           })
 
-          await selectedIdUserSend(item)
+          try {
+            const sendUser = await selectedIdUserSend(item)
+          } catch (error) {
+            console.error('Оишбка отправка операторам ', error.message)
+          }
+
+          
 
 
           if (selectUser) {
@@ -286,16 +314,13 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
 
 
       })
-    }
+  }
 
-
+  // Telegram
 
   const selectedIdUserSend = async (date) => {
     return (user.length < 1) ? ['не определен'] : user.map(async (item) => {
 
-      console.log(item)
-
-      const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       try {
@@ -318,12 +343,11 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
       }
 
       })
-    }
+  }
 
 
   const selectedAuthorSend = async (date) => {
 
-    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
@@ -342,11 +366,8 @@ const CreateFilming = ({modalOperLike, modalOperDislike}) => {
     }
   }
 
-
-
   const selectedSupportSend = async (id, date) => {
 
-    const TOKEN = '6953905275:AAHEsFufPzfE0Yf8l-u9CLxKvhJQHCuAOFI'
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
     try {
