@@ -58,7 +58,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
 
   const sendMessageTg = () => {
 
-    const TOKEN = '6953905275:AAGor-AkqyqG9-RyE6oagsh_Jpl3XnaEeGg'
+    const TOKEN = process.env.REACT_APP_TG_TOKEN
     const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
 
@@ -91,7 +91,7 @@ const PlanFilming = ({modalOperLike, modalOperDislike}) => {
           setDescription('')
 
       } else {
-                setModaActiveDislike(true)
+          setModaActiveDislike(true)
       }
 
 
